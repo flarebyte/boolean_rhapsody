@@ -1,0 +1,6 @@
+{
+  "makefile.extensionOutputFolder": "./.vscode",
+  "yaml.schemas": {
+    "./script/schema/project.schema.json": "script/data/project.yaml"
+  }
+}

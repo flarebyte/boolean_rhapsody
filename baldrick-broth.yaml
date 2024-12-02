@@ -1,0 +1,431 @@
+model:
+  project:
+    title: todo
+    description: todo
+    version: 0.3.0
+    keywords:
+      - todo
+  readme:
+    highlights:
+      - todo
+    links:
+      - "[Dart dependencies](DEPENDENCIES.md)"
+      - "[Usage](USAGE.md)"
+      - "[Example](example/example.dart)"
+    related:
+      - "[form_validator](https://pub.dev/packages/form_validator)"
+    tags:
+      - image-hero
+    cheatsheetFormat: dart
+    cheatsheet:
+      - title: todo
+        example: "todo dart code here"
+  github:
+    account: flarebyte
+    name: boolean_rhapsody
+  copyright:
+    holder: Flarebyte.com
+    startYear: 2024
+  license: MIT
+  author:
+    name: Olivier Huin
+    url: https://github.com/olih
+  implementation:
+    tags:
+      - lib
+  workflow-version: 0.1.0
+workflows:
+  test:
+    title: Test the library
+    description: Test the library for defects
+    tasks:
+      unit:
+        title: Run dart unit tests
+        description: Standard way of writing and running tests in Dart
+        motivation: Prevent defects and regressions.
+        links:
+          - title: Standard Dart test package
+            url: https://pub.dev/packages/test
+        main:
+          commands:
+            - title: Format nicely the lib source code
+              run: dart format lib
+            - title: Format nicely the test source code
+              run: dart format test
+            - title: Run test coverage
+              run: flutter test --coverage
+            - title: Display test coverage Summary
+              description: Assuming that you have run "brew install lcov"
+              run: lcov --list coverage/lcov.info
+            - title: Format nicely the examples
+              run: dart format example
+            - title: run the example
+              run: dart run example/example.dart
+
+
+  deps:
+    title: Library dependencies
+    description: Npm dependencies
+    tasks:
+      upgrade:
+        title: Upgrade to latest dependencies
+        description: Upgrade to latest npm dependencies
+        motivation: Keep up with security and improvements
+        main:
+          commands:
+            - title: Upgrade to latest dependencies
+              run: dart pub upgrade --major-versions
+  doc:
+    title: Generate the documentation
+    description: Generate the documentation automatically
+    tasks:
+      dart:
+        title: Generate documentation
+        description: Generate the api documentation for Dart
+        motivation: Good documentation is essential for developer experience
+        main:
+          commands:
+            - title: Generate API documentation
+              run: dart doc
+            - name: deps
+              title: Document the dart dependencies
+              run: npx zx https://raw.githubusercontent.com/flarebyte/baldrick-reserve/main/script/dart-dependencies.mjs
+            - name: fix
+              title: Fix all the markdown files
+              run: npx baldrick-dev-ts@latest markdown fix
+            - name: github
+              title: Fixes markdown in github folder
+              run: npx baldrick-dev-ts@latest markdown fix -s .github/
+
+  github:
+    title: Management of the github project
+    description: Generate the documentation based on the source code
+    tasks:
+      standard:
+        title: Standardize the github repository
+        description: Enable useful features for the github project repository
+        motivation: Create consistent settings
+        main:
+          commands:
+            - name: edit
+              title: Configure usual settings for github project
+              run: gh repo edit --delete-branch-on-merge --enable-squash-merge
+  lint:
+    title: Static code analysis
+    description: Find problems in the code base
+    tasks:
+      check:
+        title: Static code analysis of Dart code
+        description: Find problems in Dart code
+        motivation: Make the code more consistent and avoid bugs
+        main:
+          commands:
+            - name: check
+              title: Lint check sources
+              run: dart analyze
+            - name: check fix
+              title: Preview of the proposed changes for a project
+              run: dart fix --dry-run
+      fix:
+        title: Fix static code analysis
+        description: Fix problems in Dart code
+        motivation: Facilitate routine maintenance of code
+        main:
+          commands:
+            - name: fix
+              title: Fix source code
+              run: dart fix --apply
+  md:
+    title: Markdown documentation
+    description: Manage markdown documentation
+    tasks:
+      check:
+        title: Check Markdown files
+        description: Checks that the markdown documents follows some consistent guidelines
+        motivation: Make the markdown documents consistent in style
+        main:
+          commands:
+            - name: check
+              title: Check markdown files
+              run: baldrick markdown check
+            - name: github
+              title: Check markdown files in github
+              run: npx baldrick-dev-ts@latest markdown check -s .github/
+      fix:
+        title: Fix Markdown files
+        description:
+          Modify the markdown documents to ensure they follow some consistent
+          guidelines
+        motivation: Make the markdown documents consistent in style
+        main:
+          commands:
+            - title: Fix markdown files
+              run: npx baldrick-dev-ts@latest markdown fix
+            - title: Fix markdown files in github
+              run: npx baldrick-dev-ts@latest markdown fix -s .github/
+  release:
+    title: Release of the library
+    tasks:
+      ready:
+        title: Ready for publishing
+        description:
+          Run a sequence of commands to check that the library is ready to be
+          published
+        motivation: Detect quality flaws before pushing the code
+        parameters:
+          - description: |
+              Pull request mode.
+            flags: -pr, --pull-request
+        main:
+          commands:
+            - name: remove-build
+              title: Remove previous build
+              run: rm -rf build
+            - name: remove-cov
+              title: Remove previous test coverage
+              run: rm -rf coverage
+            - name: lint
+              title: Check linting
+              run: dart analyze
+            - name: markdown
+              title: Check markdown files
+              run: npx baldrick-dev-ts@latest markdown check
+            - name: markdown-github
+              title: Check markdown files in github
+              run: npx baldrick-dev-ts@latest markdown check -s .github/
+            - name: outdated
+              title: Check whether some libraries are outdated
+              run: dart pub outdated
+            - name: rm-report
+              title: Remove previous report
+              run: rm -f temp/pull_request_relevant.md
+            - name: report
+              a: template
+              title: Create a report
+              template: >
+                # Summary of the change
+
+
+                ## Code check
+
+
+                {{#if _.result-of-lint}}- :heavy_check_mark:{{else}}- :heavy_exclamation_mark:{{/if}} Static analysis and linting
+
+                {{#if _.result-of-markdown}}- :heavy_check_mark:{{else}}- :heavy_exclamation_mark:{{/if}} Markdown formatting
+
+                {{#if _.result-of-outdated}}- :heavy_check_mark:{{else}}- :heavy_exclamation_mark:{{/if}} No outdated NPM libraries
+            - name: write-report
+              a: append-to-file
+              title: Write the report
+              value: data.report
+              filename: temp/pull_request_relevant.md
+      pr:
+        title: Pull request for the project
+        description: Create a pull request for the branch
+        motivation: Automate the body of pull request
+        main:
+          commands:
+            - a: prompt-choices
+              name: category
+              title: Category for the pull request
+              message: Classify the pull request
+              choices:
+                - feat
+                - fix
+                - chore
+                - docs
+                - style
+                - refactor
+            - a: prompt-input
+              name: title
+              title: Title for the pull request
+              description: A short title used for the pull request
+              message: Short title describing the pull request
+            - run:
+                gh pr create --title {{escapeSpace _.category}}:{{escapeSpace _.title}}
+                --body-file temp/pull_request_relevant.md
+              title: Create the pull request
+      publish:
+        title: Publish the current library
+        description: Publih the current library to npm
+        motivation: Detect quality flaws before pushing the code
+        main:
+          commands:
+            - name: checkout-main
+              title: Checkout main
+              run: git checkout main
+            - name: fetch-all
+              title: Fetch all
+              run: git fetch --all
+            - name: rebase-main
+              title: Rebase main
+              run: git rebase
+            - name: status
+              title: Git status
+              run: git status
+            - name: remove-build
+              title: Remove previous build
+              run: rm -rf build
+            - name: publish
+              title: Publish to Dart
+              run: dart
+            - name: release
+              title: Release the library to Github
+              run: gh release create v{{build.model.project.version}} --generate-notes
+            - name: refresh
+              title: Get the latest tag from Github
+              run: git fetch --all
+  scaffold:
+    title: Scaffolding for the project
+    tasks:
+      upgrade:
+        title: Upgrade baldrick-broth configuration to latest version
+        description: Gets the latest version of this configuration file
+        motivation: Always apply the latest project conventions
+        main:
+          commands:
+            - title: Remove previous temporary directory
+              run: rm -rf temp/broth
+            - title: Create temporary directory
+              run: mkdir -p temp/broth
+            - a: mask-object
+              name: broth-model
+              title: Extract model from this baldrick-broth.yaml
+              value: build
+              mask: model
+            - name: save-old-model
+              a: write-to-file
+              title: Save baldrick-broth file with existing model
+              value: data.broth-model
+              filename: temp/broth/baldrick-broth-model.yaml
+            - title: merge model with new workflow
+              run: npx baldrick-whisker@latest object baldrick-broth.yaml
+                temp/broth/baldrick-broth-model.yaml
+                github:flarebyte:baldrick-reserve:data/dart/baldrick-broth.yaml
+      norm:
+        title: Normalize the project
+        description: Normalize the project in a similar fashion that the other dart projects
+        motivation: Make the project structure consistent and easier to navigate
+        main:
+          commands:
+            - title: Create all github repositories
+              run: mkdir -p .github/workflows .github/ISSUE_TEMPLATE
+            - title: Github - create bug report form
+              run:
+                npx baldrick-whisker@latest object .github/ISSUE_TEMPLATE/bug_report.yaml
+                github:flarebyte:baldrick-reserve:data/dart/bug-report.yaml
+            - title: Github - create feature request form
+              run: npx baldrick-whisker@latest object
+                .github/ISSUE_TEMPLATE/feature_request.yaml
+                github:flarebyte:baldrick-reserve:data/dart/feature-request.yaml
+            - title: Github - create main workflow
+              run: npx baldrick-whisker@latest object .github/workflows/main.yml
+                github:flarebyte:baldrick-reserve:data/dart/workflow-main.yml
+            - title: Github - create pull request configuration
+              run: npx baldrick-whisker@latest render baldrick-broth.yaml
+                github:flarebyte:baldrick-reserve:template/dart/pull-request-template.hbs
+                .github/pull_request_template.md
+            - title: Create all needed repositories
+              run: mkdir -p .vscode lib/src test
+            - title: Create .gitignore
+              links:
+                - title: Specify files to ignore in source control
+                  url: https://git-scm.com/docs/gitignore
+              run:
+                npx baldrick-whisker@latest render --no-ext baldrick-broth.yaml
+                github:flarebyte:baldrick-reserve:template/dart/gitignore.hbs
+                .gitignore.sh
+            - title: Create .editorconfig
+              run:
+                npx baldrick-whisker@latest render --no-ext baldrick-broth.yaml
+                github:flarebyte:baldrick-reserve:template/editorconfig.hbs
+                .editorconfig.sh
+              links:
+                - title: Maintain consistent coding styles for spaces
+                  url: https://editorconfig.org/
+            - title: Create a starter .vscode/settings.json
+              run: npx baldrick-whisker@latest object .vscode/settings.json
+                github:flarebyte:baldrick-reserve:data/dart/vscode-settings.json
+                --no-overwrite
+            - title: Create .remarkrc.yml
+              run: npx baldrick-whisker@latest object .remarkrc.yml
+                github:flarebyte:baldrick-reserve:data/ts/remarkrc.yml
+            - title: Create CONTRIBUTING.md with contribution guidelines
+              run: npx baldrick-whisker@latest render baldrick-broth.yaml
+                github:flarebyte:baldrick-reserve:template/dart/contributing.hbs
+                CONTRIBUTING.md
+            - title: Create CODE_OF_CONDUCT.md with code of conduct guidelines
+              run: npx baldrick-whisker@latest render baldrick-broth.yaml
+                github:flarebyte:baldrick-reserve:template/code-of-conduct.hbs
+                CODE_OF_CONDUCT.md
+            - title: Create a starter DECISIONS.md
+              run: npx baldrick-whisker@latest render baldrick-broth.yaml
+                github:flarebyte:baldrick-reserve:template/decisions.hbs
+                DECISIONS.md --no-overwrite
+            - title: Create README.md
+              run: npx baldrick-whisker@latest render baldrick-broth.yaml
+                github:flarebyte:baldrick-reserve:template/dart/readme.hbs
+                README.md
+            - title: Create TECHNICAL_DESIGN.md
+              run: npx baldrick-whisker@latest render baldrick-broth.yaml
+                github:flarebyte:baldrick-reserve:template/dart/technical-design.hbs
+                TECHNICAL_DESIGN.md
+            - title: Create MAINTENANCE.md
+              run: npx baldrick-whisker@latest render baldrick-broth.yaml
+                github:flarebyte:baldrick-reserve:template/dart/maintenance.hbs
+                MAINTENANCE.md
+            - title: Create LICENSE
+              run:
+                npx baldrick-whisker@latest render --no-ext baldrick-broth.yaml
+                github:flarebyte:baldrick-reserve:template/dart/license.hbs
+                LICENSE.md
+            - title: Fix markdown
+              run: npx baldrick-broth@latest md fix
+      norm-package:
+        title: Normalize the project
+        description: Normalize the project in a similar fashion that the other dart projects
+        motivation: Make the project structure consistent and easier to navigate
+        main:
+          commands:
+            - name: package-yaml
+              title: Backup dependencies
+              run: cat pubspec.yaml
+              onSuccess:
+                - save
+                - silent
+                - yaml
+            - a: mask-object
+              title: Extracts dependencies from pubspec.yaml
+              name: package-yaml-deps
+              value: data.package-yaml
+              mask: environment,dependencies,dev_dependencies
+            - name: save-package-yaml-deps
+              title: Save pubspec.yaml with only dependencies
+              stdin: data.package-yaml-deps
+              run: sponge temp/broth/package-deps.yaml
+            - title: Create pubspec.yaml metadata from broth model
+              run: npx baldrick-whisker@latest render baldrick-broth.yaml
+                github:flarebyte:baldrick-reserve:template/dart/package.hbs
+                temp/broth/package-specific.yaml
+            - title: merge dependencies with broth model info
+              run: npx baldrick-whisker@latest object pubspec.yaml
+                temp/broth/package-specific.yaml temp/broth/package-deps.yaml
+      custom:
+        title: Normalize using the custom script
+        description: Normalize the project using a custom script for this project
+        motivation:
+          Enable an imperative approach for some of normalisation to keep the
+          model simple
+        main:
+          commands:
+            - title: Normalize using the custom script
+              run: sh custom-scaffolding.sh
+      readme:
+        title: Update readme
+        description: Updates readme
+        main:
+          commands:
+            - title: Create README.md
+              run: npx baldrick-whisker@latest render baldrick-broth.yaml
+                github:flarebyte:baldrick-reserve:template/dart/readme.hbs
+                README.md

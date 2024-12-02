@@ -1,0 +1,56 @@
+name: Feature request
+description: Suggest an idea for this project
+title: "[Feature]: "
+labels:
+  - feature
+  - triage
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this feature request!
+  - type: textarea
+    id: problem
+    attributes:
+      label: Describe the problem
+      description: Is your feature request related to a problem? Please describe.
+      placeholder: Describe the problem you would like to solve
+      value: My problem
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Describe the solution
+      description: A clear and concise description of what you want to happen.
+      placeholder: Tell us what you would like to see!
+      value: My solution
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Add any other context or screenshots about the feature request here.
+      placeholder: A context
+      value: The context
+    validations:
+      required: true
+  - type: checkboxes
+    id: suitability
+    attributes:
+      label: Is this new feature a good fit ?
+      description: Should this new feature really be part of this project
+      options:
+        - label: "__Needed__: an existing user is going to need this in the short term"
+          required: true
+        - label: "__Specific__: the problem is clearly understood and defined"
+          required: true
+        - label: "__Small change__: This new feature represents a reasonably small change"
+          required: true
+        - label: "__Same scope__: this new feature does not change significantly the scope
+            of this project"
+          required: true
+        - label: "__Long term maintenance__: moving this to a new project would make long
+            term maintenance harder"
+          required: true

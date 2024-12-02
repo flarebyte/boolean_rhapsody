@@ -1,39 +1,44 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# boolean\_rhapsody
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
+![Experimental](https://img.shields.io/badge/status-experimental-blue)
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
--->
+> todo
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+todo
 
-## Features
+![Hero image for boolean\_rhapsody](doc/boolean_rhapsody.jpeg)
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+Highlights:
 
-## Getting started
+-   todo
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+A few examples:
 
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
+todo:
 
 ```dart
-const like = 'sample';
+todo dart code here
 ```
 
-## Additional information
+## Documentation and links
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+-   [Code Maintenance :wrench:](MAINTENANCE.md)
+-   [Code Of Conduct](CODE_OF_CONDUCT.md)
+-   [Contributing :busts\_in\_silhouette: :construction:](CONTRIBUTING.md)
+-   [Architectural Decision Records :memo:](DECISIONS.md)
+-   [Contributors
+    :busts\_in\_silhouette:](https://github.com/flarebyte/boolean_rhapsody/graphs/contributors)
+-   [Dependencies](https://github.com/flarebyte/boolean_rhapsody/network/dependencies)
+-   [Glossary
+    :book:](https://github.com/flarebyte/overview/blob/main/GLOSSARY.md)
+-   [Software engineering principles
+    :gem:](https://github.com/flarebyte/overview/blob/main/PRINCIPLES.md)
+-   [Overview of Flarebyte.com ecosystem
+    :factory:](https://github.com/flarebyte/overview)
+-   [Dart dependencies](DEPENDENCIES.md)
+-   [Usage](USAGE.md)
+-   [Example](example/example.dart)
+
+## Related
+
+-   [form\_validator](https://pub.dev/packages/form_validator)
