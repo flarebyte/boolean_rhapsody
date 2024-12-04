@@ -148,3 +148,97 @@ control via parentheses.
     -   Rule: `[v:abc123, f:contains, "freeText"]` → Invalid.
     -   Rule: `[v:abc123, f:and, { complex: "data" }]` → Invalid.
 
+## Specification Refinement
+
+#### Function Names and Behaviors:
+
+1.  **Undefined Variable Check**
+
+    -   **Name**: `isUndefined`
+    -   **Description**: Returns `true` if the variable is not defined in the
+        input map.
+
+2.  **Empty String Check**
+
+    -   **Name**: `isEmptyString`
+    -   **Description**: Returns `true` if the variable is an empty string
+        (`""`).
+
+3.  **Non-Whitespace String Check**
+
+    -   **Name**: `hasNonWhitespaceChar`
+    -   **Description**: Returns `true` if the variable is a string with at
+        least one non-whitespace character.
+
+4.  **Whitespace-Only String Check**
+
+    -   **Name**: `isWhitespace`
+    -   **Description**: Returns `true` if the variable is a string containing
+        only whitespace characters.
+
+5.  **Multiple Lines Check**
+
+    -   **Name**: `isMultiline`
+    -   **Description**: Returns `true` if the variable contains multiple lines
+        (e.g., contains `\n`).
+
+6.  **Single Line Check**
+
+    -   **Name**: `isSingleLine`
+    -   **Description**: Returns `true` if the variable contains only a single
+        line.
+
+7.  **Substring Containment Check**
+
+    -   **Name**: `containsTerm`
+    -   **Description**: Returns `true` if the term (variable) is contained in
+        the text (variable).
+
+8.  **Prefix Check**
+
+    -   **Name**: `startsWith`
+    -   **Description**: Returns `true` if the text (variable) starts with the
+        prefix (variable).
+
+9.  **Suffix Check**
+
+    -   **Name**: `endsWith`
+    -   **Description**: Returns `true` if the text (variable) ends with the
+        suffix (variable).
+
+10. **Equality Check**
+
+    -   **Name**: `equals`
+    -   **Description**: Returns `true` if the text (variable) equals the other
+        text (variable).
+
+11. **Keyword Containment Check**
+
+    -   **Name**: `containsAnyKeywords`
+    -   **Description**: Returns `true` if the text (variable) contains any
+        keywords from the keyword list (variable). An optional separator
+        (variable) determines keyword splitting; defaults to line breaks
+        (`\n`).
+
+12. **Numeric Comparisons**:
+
+    -   **Name**: `isNumberGreaterThan`
+        -   **Description**: Returns `true` if the numeric value of text (variable)
+            is greater than the threshold (variable).
+    -   **Name**: `isNumberLessThan`
+        -   **Description**: Returns `true` if the numeric value of text (variable)
+            is less than the threshold (variable).
+    -   **Name**: `isNumberEqualTo`
+        -   **Description**: Returns `true` if the numeric value of text (variable)
+            equals the threshold (variable).
+
+13. **Length Comparisons**:
+    -   **Name**: `isLengthEqualTo`
+        -   **Description**: Returns `true` if the length of the text (variable)
+            equals the threshold (variable).
+    -   **Name**: `isLengthLessThan`
+        -   **Description**: Returns `true` if the length of the text (variable) is
+            less than the threshold (variable).
+    -   **Name**: `isLengthGreaterThan`
+        -   **Description**: Returns `true` if the length of the text (variable) is
+            greater than the threshold (variable).
