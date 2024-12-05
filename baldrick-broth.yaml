@@ -1,13 +1,21 @@
 model:
   project:
-    title: todo
-    description: todo
+    title: Tune into the truth with Boolean Rhapsody in Dart
+    description: A module for evaluating boolean expressions using predefined functions, logical operators, and references to previously defined rules. 
     version: 0.3.0
     keywords:
-      - todo
+      - boolean logic
+      - rule evaluation
+      - dynamic expressions
+      - logical operators
+      - modular evaluation
   readme:
     highlights:
-      - todo
+      - Combine predefined boolean functions, logical operators (`and`, `or`, `not`), and parentheses to create complex expressions.
+      - Supports referencing previously defined rules for modular and reusable logic.
+      - Ensures strict validation of syntax, variable existence, and type compatibility for robust execution.
+      - Functions evaluate conditions based on a dynamic context and return boolean results.
+      - Clear and well-defined grammar prioritizing expressiveness and error prevention.
     links:
       - "[Dart dependencies](DEPENDENCIES.md)"
       - "[Usage](USAGE.md)"
