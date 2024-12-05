@@ -334,3 +334,108 @@ control via parentheses.
 
 5.  `rule5 = func3(c, d) and (not rule1 or func4(e))`
     -   A complex expression with multiple operators and grouping.
+
+## Specification: Rule Evaluation Order and Validation
+
+### Rule Resolution Order:
+
+1.  **Independent Rules (No Dependencies)**:
+
+    -   Rules that do not reference any other rules are evaluated first.
+    -   These evaluations can be performed in parallel for efficiency.
+
+2.  **Dependent Rules (Sequential Evaluation)**:
+    -   Rules that reference other rules are evaluated in a sequence, ensuring
+        a rule is only evaluated after all rules it depends on are resolved.
+    -   Dependency chains are followed in the correct order.
+
+***
+
+### Validation Requirements:
+
+1.  **Circular Dependency Detection**:
+
+    -   Any circular dependency among rules (e.g., `rule1 -> rule2 -> rule1`)
+        should trigger an error.
+    -   The system must validate the dependency graph before evaluation and
+        provide a clear error message indicating the problematic cycle.
+
+2.  **Syntax Validation**:
+
+    -   Parentheses in the rule expressions must be balanced.
+    -   Each token in the rule expression must be valid:
+        -   Functions must exist and accept the correct number of variables.
+        -   Rule references must point to defined rules.
+        -   Variables must exist in the evaluation context.
+
+3.  **Dependency Consistency**:
+
+    -   Rules must reference only rules that are valid and properly defined.
+    -   A rule cannot reference itself directly (e.g., `rule1 = rule1`) or
+        indirectly (e.g., `rule1 = rule2 and rule2 = rule1`).
+
+4.  **Error Handling**:
+    -   Circular dependencies, syntax errors, or undefined references must halt
+        the evaluation with detailed error messages indicating the cause and
+        location of the issue.
+
+***
+
+### Execution Algorithm:
+
+1.  **Parse and Validate**:
+
+    -   Parse all rules into an internal representation (e.g., an abstract
+        syntax tree or dependency graph).
+    -   Validate syntax, rule references, and detect circular dependencies.
+
+2.  **Dependency Analysis**:
+
+    -   Build a dependency graph where each rule is a node, and dependencies
+        are directed edges.
+    -   Identify independent rules (nodes with no incoming edges) for parallel
+        evaluation.
+    -   Topologically sort dependent rules to determine evaluation order.
+
+3.  **Evaluate Rules**:
+    -   Evaluate independent rules first (in parallel if supported).
+    -   Sequentially evaluate dependent rules following the topological order
+        of the dependency graph.
+
+***
+
+### Constraints and Examples:
+
+#### Example 1: Valid Rule Set
+
+-   `rule1 = func1(a)`
+-   `rule2 = func2(b)`
+-   `rule3 = rule1 and rule2`
+-   Resolution Order:
+    1.  `rule1`, `rule2` (parallel)
+    2.  `rule3`
+
+#### Example 2: Circular Dependency
+
+-   `rule1 = rule2 and func1(a)`
+-   `rule2 = rule1 or func2(b)`
+-   Result: Circular dependency error.
+
+#### Example 3: Syntax Error
+
+-   `rule1 = func1(a`
+-   Result: Syntax error due to unbalanced parentheses.
+
+#### Example 4: Undefined Reference
+
+-   `rule1 = rule2 and func1(a)`
+-   Result: Error due to undefined rule `rule2`.
+
+***
+
+### Notes:
+
+-   The system should prioritize early detection of errors (syntax,
+    circular dependencies) before attempting evaluation.
+-   For scalability, dependency analysis and parallel evaluation should be
+    optimized for large rule sets.
