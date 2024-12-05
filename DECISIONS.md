@@ -242,3 +242,95 @@ control via parentheses.
     -   **Name**: `isLengthGreaterThan`
         -   **Description**: Returns `true` if the length of the text (variable) is
             greater than the threshold (variable).
+
+## Specification: Grammar for Boolean Rule Expressions
+
+### Grammar Components:
+
+1.  **Primitive Elements**:
+
+    -   **Function Call**: A boolean function applied to a list of variables.
+        -   **Syntax**: `<functionName>(<var1>, <var2>, ...)`
+        -   **Example**: `func1(a)`, `func2(b, c)`
+    -   **Rule Reference**: A reference to a previously defined rule.
+        -   **Syntax**: `<ruleName>`
+        -   **Example**: `rule42`
+
+2.  **Logical Operators**:
+
+    -   **AND**: Combines two expressions, both of which must evaluate to
+        `true`.
+        -   **Syntax**: `<expr> and <expr>`
+        -   **Example**: `func1(a) and func2(b)`
+    -   **OR**: Combines two expressions, at least one of which must evaluate
+        to `true`.
+        -   **Syntax**: `<expr> or <expr>`
+        -   **Example**: `rule1 or func1(a)`
+    -   **NOT**: Negates an expression, returning `true` if the expression is
+        `false`.
+        -   **Syntax**: `not <expr>`
+        -   **Example**: `not func1(a)`
+
+3.  **Parentheses**:
+
+    -   Used to group expressions and control evaluation precedence.
+        -   **Syntax**: `(<expr>)`
+        -   **Example**: `(func1(a) or func2(b)) and rule42`
+
+4.  **Rule Expression**:
+    -   Combines function calls and rule references into a logical expression.
+        -   **Syntax**:
+            ```
+            <rule> ::= <expr>
+            <expr> ::= <term> | <term> and <expr> | <term> or <expr>
+            <term> ::= not <term> | (<expr>) | <functionCall> | <ruleRef>
+            <functionCall> ::= <functionName>(<varList>)
+            <ruleRef> ::= <ruleName>
+            <varList> ::= <var> | <var>, <varList>
+            <var> ::= <identifier>
+            ```
+        -   **Example**: `(func1(a) or func2(b)) and not rule42`
+
+***
+
+### Evaluation Rules:
+
+1.  **Operator Precedence**:
+
+    -   Highest: `not`
+    -   Medium: `and`
+    -   Lowest: `or`
+    -   Parentheses override precedence.
+
+2.  **Short-Circuit Evaluation**:
+
+    -   **AND**: Stops evaluation if the first operand is `false`.
+    -   **OR**: Stops evaluation if the first operand is `true`.
+
+3.  **Validation**:
+    -   All function names and rule references must be valid and previously
+        defined.
+    -   Variables in function calls must exist in the provided context.
+
+***
+
+### Examples of Rule Expressions:
+
+1.  `rule1 = func1(a)`
+
+    -   A simple rule that directly evaluates a function.
+
+2.  `rule2 = func1(a) or func2(b)`
+
+    -   Combines two functions using OR.
+
+3.  `rule3 = not func1(a)`
+
+    -   Negates the result of a function.
+
+4.  `rule4 = (func1(a) or func2(b)) and rule2`
+
+    -   Combines functions and previously defined rules with precedence.
+
+5.  `rule5 = func3(c, d) and (not rule1 or func4(e))`
+    -   A complex expression with multiple operators and grouping.
