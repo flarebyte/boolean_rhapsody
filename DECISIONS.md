@@ -439,3 +439,151 @@ control via parentheses.
     circular dependencies) before attempting evaluation.
 -   For scalability, dependency analysis and parallel evaluation should be
     optimized for large rule sets.
+
+## Algorithms for Ordering Rules Based on Dependencies
+
+The problem of ordering rules for evaluation can be mapped to **topological
+sorting** of a **directed acyclic graph (DAG)**, where:
+
+-   **Nodes** represent rules.
+-   **Edges** represent dependencies between rules (e.g., `rule1 -> rule23`
+    means `rule1` depends on `rule23`).
+
+Below are a few algorithms to handle this problem, followed by a discussion
+on using sets to represent dependencies.
+
+***
+
+### 1. **Kahn’s Algorithm**
+
+-   **Description**:
+
+    -   Kahn's algorithm is an iterative approach to perform topological
+        sorting of a DAG.
+    -   It works by identifying nodes with no incoming edges (independent
+        rules) and removing them from the graph while recording their order.
+
+-   **Steps**:
+
+    1.  Calculate the in-degree (number of incoming edges) for each rule.
+    2.  Add all rules with in-degree `0` to a queue (independent rules).
+    3.  While the queue is not empty:
+        -   Remove a rule from the queue and add it to the sorted order.
+        -   For each dependent rule, reduce its in-degree by `1`.
+        -   If a rule’s in-degree becomes `0`, add it to the queue.
+    4.  If all rules are processed, return the sorted order. If not, a cycle exists.
+
+-   **Complexity**:
+
+    -   Time: (O(V + E)), where (V) is the number of rules and (E) is the
+        number of dependencies.
+    -   Space: (O(V + E)) for storing the graph and in-degrees.
+
+-   **Advantages**:
+    -   Simple to implement and efficient for DAGs.
+
+***
+
+### 2. **Depth-First Search (DFS) with Post-Order Traversal**
+
+-   **Description**:
+
+    -   DFS can also be used for topological sorting by recording the
+        post-order traversal of the graph.
+    -   Nodes are added to the sorted order in reverse post-order (process
+        after visiting all children).
+
+-   **Steps**:
+
+    1.  Create a visited set to track processed nodes.
+    2.  Perform a DFS starting from each unvisited rule:
+        -   Mark the current rule as visited.
+        -   Recursively visit all dependent rules.
+        -   Add the current rule to a stack when all its dependencies are
+            processed.
+    3.  Reverse the stack to get the sorted order.
+    4.  Detect cycles by tracking nodes in the current path (using a separate "currently visiting" set).
+
+-   **Complexity**:
+
+    -   Time: (O(V + E)), where (V) is the number of rules and (E) is the
+        number of dependencies.
+    -   Space: (O(V + E)) for storing the graph and recursion stack.
+
+-   **Advantages**:
+    -   Intuitive and well-suited for recursive implementations.
+
+***
+
+### 3. **Using Sets to Represent Dependencies**
+
+-   **Description**:
+
+    -   Represent each rule’s dependencies as a set (e.g., `rule1 = Set(rule23,
+        var12, var23)`).
+    -   Process rules iteratively by removing those with no dependencies and
+        resolving their impact on other rules.
+
+-   **Steps**:
+
+    1.  Create a mapping of each rule to its dependency set.
+    2.  Identify all rules with an empty dependency set (independent rules).
+    3.  Add independent rules to the sorted order and remove them from all dependency sets.
+    4.  Repeat until no rules remain in the mapping.
+    5.  If any rules remain with unresolved dependencies, a cycle exists.
+
+-   **Complexity**:
+
+    -   Time: (O(V^2)) in the worst case (iteratively checking and modifying
+        sets).
+    -   Space: (O(V^2)) for storing dependency sets.
+
+-   **Advantages**:
+    -   Conceptually simple and avoids explicit edge-based graph
+        representation.
+    -   Dependencies are directly tied to the rule definitions.
+
+***
+
+### Choosing an Algorithm
+
+-   **Kahn’s Algorithm**: Best for performance and straightforward
+    implementation in DAGs.
+-   **DFS**: Ideal for recursion-based solutions and cycle detection.
+-   **Set Representation**: Useful for small-scale problems or when
+    dependencies are naturally represented as sets in the input.
+
+***
+
+### Example with Set Representation
+
+#### Input:
+
+```
+rule1 = Set(rule2, var1)
+rule2 = Set(var3)
+rule3 = Set(rule1, var2)
+```
+
+#### Steps:
+
+1.  Start with rules that have no dependencies on other rules:
+    -   `rule2` depends only on `var3` (resolved via context).
+2.  Remove `rule2` and resolve its impact:
+    -   Remove `rule2` from `rule1`’s dependency set.
+3.  Proceed to `rule1`, then `rule3`.
+4.  If any rule still has dependencies, report a cycle.
+
+#### Result:
+
+-   Sorted order: `[rule2, rule1, rule3]`
+-   Cycle detection: If a rule still has dependencies after all iterations.
+
+***
+
+### Conclusion
+
+-   Using sets to represent dependencies provides a direct and readable way
+    to manage rule relationships.
+-   For larger or more complex graphs, algorithms like Kahn’s or DFS are
+    more efficient and scalable.
