@@ -15,6 +15,21 @@ void main() {
       expect(evaluator.orderOfEval, equals(['C', 'B', 'A']));
     });
 
+    test('Handles complex dependencies with Greek gods with no cycle', () {
+      final Map<String, List<String>> rules = {
+        'Zeus': ['Hera', 'Poseidon'],
+        'Hera': ['Apollo'],
+        'Poseidon': ['Aphrodite'],
+        'Apollo': ['Hermes'],
+        'Aphrodite': [],
+        'Hermes': [],
+      };
+      final evaluator = RuleEvaluator(rules);
+
+      expect(evaluator.hasCycle, isFalse);
+      expect(evaluator.orderOfEval, equals(['Hermes', 'Apollo', 'Hera', 'Aphrodite', 'Poseidon', 'Zeus']));
+    });
+
     test('Handles independent rules correctly', () {
       final Map<String, List<String>> rules = {
         'A': [],
@@ -70,8 +85,7 @@ void main() {
       expect(evaluator.hasCycle, isTrue);
       expect(evaluator.cycles.length, equals(1));
       expect(evaluator.cycles.first, containsAllInOrder(['E', 'F', 'E']));
-      expect(evaluator.orderOfEval,
-          containsAllInOrder(['D', 'B', 'C', 'A', 'H', 'G']));
+      expect(evaluator.orderOfEval, []);
     });
 
     test('Handles an empty set of rules', () {
