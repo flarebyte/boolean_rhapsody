@@ -1,13 +1,37 @@
+/// A class to evaluate the order of rule evaluation using Depth-First Search (DFS)
+/// with post-order traversal. This helps resolve the ordering of rules based on
+/// their dependencies and detect if there are any cycles among the rules.
+///
+/// The algorithm works by performing a DFS on the dependency graph of the rules.
+/// It tracks visited nodes, maintains an "on stack" state for cycle detection, and
+/// uses post-order traversal to produce the order of evaluation.
 class RuleEvaluator {
+  /// A map representing the rules and their dependencies.
+  /// Each key represents a rule, and its associated value is a list of rules that it depends on.
   final Map<String, List<String>> _rules;
+
+  /// The post-order traversal result representing the order of rule evaluation.
+  /// This is the order in which rules should be evaluated, respecting their dependencies.
   late final List<String> orderOfEval;
+
+  /// Indicates whether the dependency graph contains cycles.
+  /// If `true`, it means there are cyclic dependencies among the rules.
   late final bool hasCycle;
+
+  /// A list of detected cycles in the dependency graph.
+  /// Each element is a list of rules that form a cycle.
   late final List<List<String>> cycles;
 
+  /// Constructs a RuleEvaluator with the given rules and initializes the evaluation.
+  ///
+  /// The [rules] parameter is a map where each key represents a rule, and the value
+  /// is a list of rules that the key rule depends on.
   RuleEvaluator(this._rules) {
     _initialize();
   }
 
+  /// Initializes the evaluator by performing a DFS on each rule to determine
+  /// the order of evaluation and detect cycles.
   void _initialize() {
     final visited = <String, bool>{};
     final onStack = <String, bool>{};
@@ -25,6 +49,11 @@ class RuleEvaluator {
     orderOfEval = hasCycle ? [] : resultStack.reversed.toList();
   }
 
+  /// Performs Depth-First Search (DFS) on the given [rule].
+  ///
+  /// During traversal, it marks nodes as visited and tracks those currently
+  /// on the stack to detect cycles. When a node is fully processed, it is added
+  /// to the [resultStack] to determine the post-order evaluation order.
   void _dfs(
     String rule,
     Map<String, bool> visited,
@@ -47,6 +76,10 @@ class RuleEvaluator {
     resultStack.add(rule);
   }
 
+  /// Records a detected cycle starting from the [start] node.
+  ///
+  /// This method constructs the cycle by iterating through the [onStack] nodes
+  /// and adds it to the [detectedCycles] list.
   void _recordCycle(
     String start,
     String current,

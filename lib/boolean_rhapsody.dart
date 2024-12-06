@@ -1,8 +1,8 @@
 /// This module enables the evaluation of complex boolean expressions by combining predefined functions, logical operators (and, or, not),
-/// and parentheses for grouping. It supports referencing previously defined rules, allowing modular and reusable logic. 
-/// Functions take a list of variable names, evaluate conditions based on a provided context, and return a boolean. 
+/// and parentheses for grouping. It supports referencing previously defined rules, allowing modular and reusable logic.
+/// Functions take a list of variable names, evaluate conditions based on a provided context, and return a boolean.
 /// The grammar prioritizes clarity and ensures strict validation of syntax, variable existence, and type compatibility for robust execution.
-/// 
+///
 /// This module defines a system for evaluating boolean logic expressions using a combination of:
 /// - Predefined boolean functions applied to variables.
 /// - Logical operators (`and`, `or`, `not`).
@@ -59,5 +59,6 @@
 library;
 
 export 'src/boolean_rhapsody_base.dart';
+export 'src/rule_evaluator.dart';
 
 // TODO: Export any libraries intended for clients of this package.
