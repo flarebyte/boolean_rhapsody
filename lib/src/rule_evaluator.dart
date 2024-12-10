@@ -46,7 +46,7 @@ class RuleEvaluator {
 
     hasCycle = detectedCycles.isNotEmpty;
     cycles = detectedCycles;
-    orderOfEval = hasCycle ? [] : resultStack.reversed.toList();
+    orderOfEval = hasCycle ? [] : resultStack.toList();
   }
 
   /// Performs Depth-First Search (DFS) on the given [rule].
