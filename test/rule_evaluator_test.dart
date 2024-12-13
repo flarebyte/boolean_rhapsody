@@ -13,6 +13,7 @@ void main() {
 
       expect(evaluator.hasCycle, isFalse);
       expect(evaluator.orderOfEval, equals(['C', 'B', 'A']));
+      expect(evaluator.parallelEval, equals(['C']));
     });
 
     test('Handles complex dependencies with Greek gods with no cycle', () {
@@ -27,7 +28,11 @@ void main() {
       final evaluator = RuleEvaluator(rules);
 
       expect(evaluator.hasCycle, isFalse);
-      expect(evaluator.orderOfEval, equals(['Hermes', 'Apollo', 'Hera', 'Aphrodite', 'Poseidon', 'Zeus']));
+      expect(
+          evaluator.orderOfEval,
+          equals(
+              ['Hermes', 'Apollo', 'Hera', 'Aphrodite', 'Poseidon', 'Zeus']));
+      expect(evaluator.parallelEval, containsAll(['Aphrodite', 'Hermes']));
     });
 
     test('Handles independent rules correctly', () {
@@ -40,6 +45,7 @@ void main() {
 
       expect(evaluator.hasCycle, isFalse);
       expect(evaluator.orderOfEval, containsAllInOrder(['A', 'B', 'C']));
+      expect(evaluator.parallelEval, containsAll(['A', 'B', 'C']));
     });
 
     test('Detects a simple cycle', () {
@@ -52,6 +58,7 @@ void main() {
       expect(evaluator.hasCycle, isTrue);
       expect(evaluator.cycles, isNotEmpty);
       expect(evaluator.cycles.first, containsAllInOrder(['A', 'B', 'A']));
+      expect(evaluator.parallelEval.isEmpty, true);
     });
 
     test('Detects multiple independent cycles', () {
@@ -67,6 +74,7 @@ void main() {
       expect(evaluator.cycles.length, equals(2));
       expect(evaluator.cycles[0], containsAllInOrder(['A', 'B', 'A']));
       expect(evaluator.cycles[1], containsAllInOrder(['C', 'D', 'C']));
+      expect(evaluator.parallelEval.isEmpty, true);
     });
 
     test('Handles a complex graph with cycles and independent nodes', () {
@@ -86,6 +94,7 @@ void main() {
       expect(evaluator.cycles.length, equals(1));
       expect(evaluator.cycles.first, containsAllInOrder(['E', 'F', 'E']));
       expect(evaluator.orderOfEval, []);
+      expect(evaluator.parallelEval, containsAll(['D', 'H']));
     });
 
     test('Handles an empty set of rules', () {
@@ -94,6 +103,7 @@ void main() {
 
       expect(evaluator.hasCycle, isFalse);
       expect(evaluator.orderOfEval, isEmpty);
+      expect(evaluator.parallelEval.isEmpty, true);
     });
 
     test('Handles self-loop (single node cycle)', () {
@@ -105,6 +115,7 @@ void main() {
       expect(evaluator.hasCycle, isTrue);
       expect(evaluator.cycles, isNotEmpty);
       expect(evaluator.cycles.first, containsAllInOrder(['A', 'A']));
+      expect(evaluator.parallelEval.isEmpty, true);
     });
   });
 }

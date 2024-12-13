@@ -14,6 +14,14 @@ class RuleEvaluator {
   /// This is the order in which rules should be evaluated, respecting their dependencies.
   late final List<String> orderOfEval;
 
+  /// The post-order traversal result representing the rules that have to be evaluated first
+  /// in parallel
+  late final List<String> parallelEval;
+
+  /// The post-order traversal result representing the rules that have to be evaluated second
+  /// in sequential order
+  late final List<String> sequentialEval;
+
   /// Indicates whether the dependency graph contains cycles.
   /// If `true`, it means there are cyclic dependencies among the rules.
   late final bool hasCycle;
@@ -47,6 +55,11 @@ class RuleEvaluator {
     hasCycle = detectedCycles.isNotEmpty;
     cycles = detectedCycles;
     orderOfEval = hasCycle ? [] : resultStack.toList();
+    parallelEval = _rules.entries
+        .toList()
+        .where((rule) => rule.value.isEmpty)
+        .map((rule) => rule.key)
+        .toList();
   }
 
   /// Performs Depth-First Search (DFS) on the given [rule].
