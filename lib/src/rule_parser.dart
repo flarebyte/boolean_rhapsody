@@ -8,7 +8,7 @@ class BooleanExpressionParser {
 
   BooleanExpression parse(String expression) {
     final tokens = _tokenize(expression);
-    final ast = _parseExpression(tokens);
+    final ast = _parseOrExpression(tokens);
     if (tokens.isNotEmpty) {
       throw Exception("Unexpected tokens after parsing: $tokens");
     }
@@ -20,20 +20,20 @@ class BooleanExpressionParser {
     return regex.allMatches(expression).map((e) => e.group(0)!).toList();
   }
 
-  BooleanExpression _parseExpression(List<String> tokens) {
-    final expr = _parseTerm(tokens);
+  BooleanExpression _parseOrExpression(List<String> tokens) {
+    final expr = _parseAndTerm(tokens);
     if (tokens.isNotEmpty && tokens.first == 'or') {
       tokens.removeAt(0);
-      return OrOperator(expr, _parseExpression(tokens));
+      return OrOperator(expr, _parseOrExpression(tokens));
     }
     return expr;
   }
 
-  BooleanExpression _parseTerm(List<String> tokens) {
+  BooleanExpression _parseAndTerm(List<String> tokens) {
     final factor = _parseFactor(tokens);
     if (tokens.isNotEmpty && tokens.first == 'and') {
       tokens.removeAt(0);
-      return AndOperator(factor, _parseTerm(tokens));
+      return AndOperator(factor, _parseAndTerm(tokens));
     }
     return factor;
   }
@@ -47,7 +47,7 @@ class BooleanExpressionParser {
     if (token == 'not') {
       return NotOperator(_parseFactor(tokens));
     } else if (token == '(') {
-      final expr = _parseExpression(tokens);
+      final expr = _parseOrExpression(tokens);
       if (tokens.isEmpty || tokens.removeAt(0) != ')') {
         throw Exception("Missing closing parenthesis.");
       }
