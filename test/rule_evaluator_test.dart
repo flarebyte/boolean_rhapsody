@@ -2,14 +2,14 @@ import 'package:boolean_rhapsody/boolean_rhapsody.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('RuleEvaluator', () {
+  group('BooleanRhapsodyRuleEvaluator', () {
     test('Evaluates simple linear dependencies correctly', () {
       final Map<String, List<String>> rules = {
         'A': ['B'],
         'B': ['C'],
         'C': [],
       };
-      final evaluator = RuleEvaluator(rules);
+      final evaluator = BooleanRhapsodyRuleEvaluator(rules);
 
       expect(evaluator.hasCycle, isFalse);
       expect(evaluator.orderOfEval, equals(['C', 'B', 'A']));
@@ -26,7 +26,7 @@ void main() {
         'Aphrodite': [],
         'Hermes': [],
       };
-      final evaluator = RuleEvaluator(rules);
+      final evaluator = BooleanRhapsodyRuleEvaluator(rules);
 
       expect(evaluator.hasCycle, isFalse);
       expect(
@@ -42,7 +42,7 @@ void main() {
         'B': [],
         'C': [],
       };
-      final evaluator = RuleEvaluator(rules);
+      final evaluator = BooleanRhapsodyRuleEvaluator(rules);
 
       expect(evaluator.hasCycle, isFalse);
       expect(evaluator.orderOfEval, containsAllInOrder(['A', 'B', 'C']));
@@ -55,7 +55,7 @@ void main() {
         'A': ['B'],
         'B': ['A'],
       };
-      final evaluator = RuleEvaluator(rules);
+      final evaluator = BooleanRhapsodyRuleEvaluator(rules);
 
       expect(evaluator.hasCycle, isTrue);
       expect(evaluator.cycles, isNotEmpty);
@@ -71,7 +71,7 @@ void main() {
         'C': ['D'],
         'D': ['C'],
       };
-      final evaluator = RuleEvaluator(rules);
+      final evaluator = BooleanRhapsodyRuleEvaluator(rules);
 
       expect(evaluator.hasCycle, isTrue);
       expect(evaluator.cycles.length, equals(2));
@@ -92,7 +92,7 @@ void main() {
         'G': ['H'],
         'H': [],
       };
-      final evaluator = RuleEvaluator(rules);
+      final evaluator = BooleanRhapsodyRuleEvaluator(rules);
 
       expect(evaluator.hasCycle, isTrue);
       expect(evaluator.cycles.length, equals(1));
@@ -104,7 +104,7 @@ void main() {
 
     test('Handles an empty set of rules', () {
       final rules = <String, List<String>>{};
-      final evaluator = RuleEvaluator(rules);
+      final evaluator = BooleanRhapsodyRuleEvaluator(rules);
 
       expect(evaluator.hasCycle, isFalse);
       expect(evaluator.orderOfEval, isEmpty);
@@ -115,7 +115,7 @@ void main() {
       final Map<String, List<String>> rules = {
         'A': ['A'],
       };
-      final evaluator = RuleEvaluator(rules);
+      final evaluator = BooleanRhapsodyRuleEvaluator(rules);
 
       expect(evaluator.hasCycle, isTrue);
       expect(evaluator.cycles, isNotEmpty);

@@ -5,7 +5,7 @@
 /// The algorithm works by performing a DFS on the dependency graph of the rules.
 /// It tracks visited nodes, maintains an "on stack" state for cycle detection, and
 /// uses post-order traversal to produce the order of evaluation.
-class RuleEvaluator {
+class BooleanRhapsodyRuleEvaluator {
   /// A map representing the rules and their dependencies.
   /// Each key represents a rule, and its associated value is a list of rules that it depends on.
   final Map<String, List<String>> _rules;
@@ -34,7 +34,7 @@ class RuleEvaluator {
   ///
   /// The [rules] parameter is a map where each key represents a rule, and the value
   /// is a list of rules that the key rule depends on.
-  RuleEvaluator(this._rules) {
+  BooleanRhapsodyRuleEvaluator(this._rules) {
     _initialize();
   }
 
