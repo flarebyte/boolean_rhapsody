@@ -60,6 +60,10 @@ class RuleEvaluator {
         .where((rule) => rule.value.isEmpty)
         .map((rule) => rule.key)
         .toList();
+    final parallelEvalSet = parallelEval.toSet();
+    sequentialEval = orderOfEval
+        .where((ruleName) => !parallelEvalSet.contains(ruleName))
+        .toList();
   }
 
   /// Performs Depth-First Search (DFS) on the given [rule].
