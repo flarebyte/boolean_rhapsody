@@ -60,7 +60,8 @@ class BooleanExpressionParser {
     throw Exception("Unexpected token: $token");
   }
 
-  FunctionCall _parseFunctionCall(String functionToken, List<String> tokens) {
+  BooleanExpression _parseFunctionCall(
+      String functionToken, List<String> tokens) {
     final nameEnd = functionToken.indexOf('(');
     final functionName = functionToken.substring(0, nameEnd);
     final params = <String>[];
@@ -71,8 +72,7 @@ class BooleanExpressionParser {
       token = tokens.removeAt(0);
     }
     params.add(token.substring(0, token.length - 1));
-
-    final function = BooleanRhapsodyFunctionFactory.create(functionName, params);
-    return FunctionCall(function);
+    final fn = BooleanRhapsodyFunctionFactory.create(functionName, params);
+    return FunctionExpression(fn);
   }
 }
