@@ -7,7 +7,7 @@ abstract class BooleanRhapsodyFunction {
   /// Evaluates whether the boolean condition represented by this function is true.
   ///
   /// This method must be implemented by subclasses.
-  /// 
+  ///
   /// [context] - The evaluation context that provides necessary data and state
   /// for the evaluation.
   ///
@@ -55,30 +55,6 @@ abstract class BooleanRhapsodyFunction {
     if (hasUnsupportedPrefix) {
       throw Exception(
           "The references for the function $name should all start with v: or c: for $refs");
-    }
-  }
-}
-
-class IsAbsentRhapsodyFunction extends BooleanRhapsodyFunction {
-  final List<String> refs;
-  IsAbsentRhapsodyFunction({required this.refs}) {
-    basicValidateParams(refs: refs, minSize: 1, maxSize: 1, name: 'isAbsent');
-  }
-
-  @override
-  bool isTrue(RhapsodyEvaluationContext context) {
-    final value = context.getRefValue(refs[0]);
-    return value == null;
-  }
-}
-
-class BooleanRhapsodyFunctionFactory {
-  static BooleanRhapsodyFunction create(String name, List<String> params) {
-    switch (name) {
-      case 'is_absent':
-        return IsAbsentRhapsodyFunction(refs: params);
-      default:
-        throw Exception("The boolean function $name is unknown");
     }
   }
 }
