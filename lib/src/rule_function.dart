@@ -1,3 +1,5 @@
+import '../boolean_rhapsody.dart';
+
 abstract class BooleanRhapsodyFunction {
   bool isTrue(RhapsodyEvaluationContext context);
   basicValidateParams(
