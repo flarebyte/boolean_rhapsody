@@ -1,3 +1,5 @@
+import 'package:boolean_rhapsody/src/evaluation_context.dart';
+
 import 'rule_model.dart';
 
 abstract class BooleanExpression {

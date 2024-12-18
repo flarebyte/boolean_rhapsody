@@ -58,7 +58,6 @@
 /// This module allows for expressive and modular boolean logic that integrates with a dynamic context.
 library;
 
-export 'src/boolean_rhapsody_base.dart';
 export 'src/rule_evaluator.dart';
 
 // TODO: Export any libraries intended for clients of this package.
