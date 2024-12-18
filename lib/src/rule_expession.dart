@@ -2,15 +2,15 @@ import 'package:boolean_rhapsody/src/evaluation_context.dart';
 
 import 'rule_function.dart';
 
-abstract class BooleanExpression {
+abstract class RhapsodyBooleanExpression {
   bool evaluate(RhapsodyEvaluationContext context);
 }
 
-class AndOperator extends BooleanExpression {
-  final BooleanExpression left;
-  final BooleanExpression right;
+class RhapsodyAndOperator extends RhapsodyBooleanExpression {
+  final RhapsodyBooleanExpression left;
+  final RhapsodyBooleanExpression right;
 
-  AndOperator(this.left, this.right);
+  RhapsodyAndOperator(this.left, this.right);
 
   @override
   bool evaluate(RhapsodyEvaluationContext context) {
@@ -18,11 +18,11 @@ class AndOperator extends BooleanExpression {
   }
 }
 
-class OrOperator extends BooleanExpression {
-  final BooleanExpression left;
-  final BooleanExpression right;
+class RhapsodyOrOperator extends RhapsodyBooleanExpression {
+  final RhapsodyBooleanExpression left;
+  final RhapsodyBooleanExpression right;
 
-  OrOperator(this.left, this.right);
+  RhapsodyOrOperator(this.left, this.right);
 
   @override
   bool evaluate(RhapsodyEvaluationContext context) {
@@ -30,10 +30,10 @@ class OrOperator extends BooleanExpression {
   }
 }
 
-class NotOperator extends BooleanExpression {
-  final BooleanExpression operand;
+class RhapsodyNotOperator extends RhapsodyBooleanExpression {
+  final RhapsodyBooleanExpression operand;
 
-  NotOperator(this.operand);
+  RhapsodyNotOperator(this.operand);
 
   @override
   bool evaluate(RhapsodyEvaluationContext context) {
@@ -41,10 +41,10 @@ class NotOperator extends BooleanExpression {
   }
 }
 
-class FunctionExpression extends BooleanExpression {
+class RhapsodyFunctionExpression extends RhapsodyBooleanExpression {
   final BooleanRhapsodyFunction function;
 
-  FunctionExpression(this.function);
+  RhapsodyFunctionExpression(this.function);
 
   @override
   bool evaluate(RhapsodyEvaluationContext context) {
@@ -52,11 +52,11 @@ class FunctionExpression extends BooleanExpression {
   }
 }
 
-class RuleReference extends BooleanExpression {
+class RhapsodyRuleReference extends RhapsodyBooleanExpression {
   final String ruleName;
-  final Map<String, BooleanExpression> ruleDefinitions;
+  final Map<String, RhapsodyBooleanExpression> ruleDefinitions;
 
-  RuleReference(this.ruleName, this.ruleDefinitions);
+  RhapsodyRuleReference(this.ruleName, this.ruleDefinitions);
 
   @override
   bool evaluate(RhapsodyEvaluationContext context) {
