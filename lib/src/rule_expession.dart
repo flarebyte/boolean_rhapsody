@@ -1,6 +1,6 @@
 import 'package:boolean_rhapsody/src/evaluation_context.dart';
 
-import 'rule_model.dart';
+import 'rule_function.dart';
 
 abstract class BooleanExpression {
   bool evaluate(RhapsodyEvaluationContext context);

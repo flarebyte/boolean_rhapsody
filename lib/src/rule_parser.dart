@@ -1,5 +1,5 @@
 import 'rule_expession.dart';
-import 'rule_model.dart';
+import 'rule_function.dart';
 
 class BooleanExpressionParser {
   final Map<String, BooleanExpression> ruleDefinitions;
