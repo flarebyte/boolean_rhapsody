@@ -60,3 +60,4 @@ library;
 
 export 'src/rule_evaluator.dart';
 export 'src/evaluation_context.dart';
+export 'src/rule_expession.dart';
