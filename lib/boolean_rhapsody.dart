@@ -59,5 +59,4 @@
 library;
 
 export 'src/rule_evaluator.dart';
-
-// TODO: Export any libraries intended for clients of this package.
+export 'src/evaluation_context.dart';
