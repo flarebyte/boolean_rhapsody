@@ -1,3 +1,4 @@
+import 'list_function.dart';
 import 'number_comparator.dart';
 import 'number_function.dart';
 import 'rule_function.dart';
@@ -49,17 +50,49 @@ class BooleanRhapsodyFunctionFactory {
       case 'string_equal':
         return EqualsRhapsodyFunction(refs: params);
       case 'number_equal_to':
-        return NumberRhapsodyFunction(numberComparator: RhapsodyNumberComparators.equalTo,refs: params);
+        return NumberRhapsodyFunction(
+            numberComparator: RhapsodyNumberComparators.equalTo, refs: params);
       case 'number_not_equal_to':
-        return NumberRhapsodyFunction(numberComparator: RhapsodyNumberComparators.notEqualTo,refs: params);
+        return NumberRhapsodyFunction(
+            numberComparator: RhapsodyNumberComparators.notEqualTo,
+            refs: params);
       case 'number_greater_than':
-        return NumberRhapsodyFunction(numberComparator: RhapsodyNumberComparators.greaterThan,refs: params);
+        return NumberRhapsodyFunction(
+            numberComparator: RhapsodyNumberComparators.greaterThan,
+            refs: params);
       case 'number_greater_than_or_equal':
-        return NumberRhapsodyFunction(numberComparator: RhapsodyNumberComparators.greaterThanOrEqual,refs: params);
+        return NumberRhapsodyFunction(
+            numberComparator: RhapsodyNumberComparators.greaterThanOrEqual,
+            refs: params);
       case 'number_less_than':
-        return NumberRhapsodyFunction(numberComparator: RhapsodyNumberComparators.lessThan,refs: params);
+        return NumberRhapsodyFunction(
+            numberComparator: RhapsodyNumberComparators.lessThan, refs: params);
       case 'number_less_than_or_equal':
-        return NumberRhapsodyFunction(numberComparator: RhapsodyNumberComparators.lessThanOrEqual,refs: params);
+        return NumberRhapsodyFunction(
+            numberComparator: RhapsodyNumberComparators.lessThanOrEqual,
+            refs: params);
+      case 'list_size_equal_to':
+        return ListSizeRhapsodyFunction(
+            numberComparator: RhapsodyNumberComparators.equalTo, refs: params);
+      case 'list_size_not_equal_to':
+        return ListSizeRhapsodyFunction(
+            numberComparator: RhapsodyNumberComparators.notEqualTo,
+            refs: params);
+      case 'list_size_greater_than':
+        return ListSizeRhapsodyFunction(
+            numberComparator: RhapsodyNumberComparators.greaterThan,
+            refs: params);
+      case 'list_size_greater_than_or_equal':
+        return ListSizeRhapsodyFunction(
+            numberComparator: RhapsodyNumberComparators.greaterThanOrEqual,
+            refs: params);
+      case 'list_size_less_than':
+        return ListSizeRhapsodyFunction(
+            numberComparator: RhapsodyNumberComparators.lessThan, refs: params);
+      case 'list_size_less_than_or_equal':
+        return ListSizeRhapsodyFunction(
+            numberComparator: RhapsodyNumberComparators.lessThanOrEqual,
+            refs: params);
       default:
         throw Exception("The boolean function '$name' is unknown");
     }
