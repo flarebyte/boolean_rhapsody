@@ -1,3 +1,5 @@
+import 'number_comparator.dart';
+import 'number_function.dart';
 import 'rule_function.dart';
 import 'string_function.dart';
 
@@ -44,8 +46,20 @@ class BooleanRhapsodyFunctionFactory {
         return StartsWithPrefixRhapsodyFunction(refs: params);
       case 'ends_with_suffix':
         return EndsWithSuffixRhapsodyFunction(refs: params);
-      case 'equals':
+      case 'string_equal':
         return EqualsRhapsodyFunction(refs: params);
+      case 'number_equal_to':
+        return NumberRhapsodyFunction(numberComparator: RhapsodyNumberComparators.equalTo,refs: params);
+      case 'number_not_equal_to':
+        return NumberRhapsodyFunction(numberComparator: RhapsodyNumberComparators.notEqualTo,refs: params);
+      case 'number_greater_than':
+        return NumberRhapsodyFunction(numberComparator: RhapsodyNumberComparators.greaterThan,refs: params);
+      case 'number_greater_than_or_equal':
+        return NumberRhapsodyFunction(numberComparator: RhapsodyNumberComparators.greaterThanOrEqual,refs: params);
+      case 'number_less_than':
+        return NumberRhapsodyFunction(numberComparator: RhapsodyNumberComparators.lessThan,refs: params);
+      case 'number_less_than_or_equal':
+        return NumberRhapsodyFunction(numberComparator: RhapsodyNumberComparators.lessThanOrEqual,refs: params);
       default:
         throw Exception("The boolean function '$name' is unknown");
     }

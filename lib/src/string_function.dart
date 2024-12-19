@@ -359,7 +359,7 @@ class EqualsRhapsodyFunction extends BooleanRhapsodyFunction {
   /// - [Exception] if [refs] does not contain exactly two references.
   /// - [Exception] if any reference does not begin with `'v:'` or `'c:'`.
   EqualsRhapsodyFunction({required this.refs}) {
-    basicValidateParams(refs: refs, minSize: 2, maxSize: 2, name: 'equals');
+    basicValidateParams(refs: refs, minSize: 2, maxSize: 2, name: 'string_equal');
   }
 
   /// Evaluates whether the text specified in the first reference is equal to

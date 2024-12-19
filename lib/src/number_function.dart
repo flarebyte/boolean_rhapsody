@@ -2,17 +2,17 @@ import '../boolean_rhapsody.dart';
 import 'number_comparator.dart';
 import 'rule_function.dart';
 
-class NumberGreaterThanRhapsodyFunction extends BooleanRhapsodyFunction {
+class NumberRhapsodyFunction extends BooleanRhapsodyFunction {
   final RhapsodyNumberComparator numberComparator;
   final List<String> refs;
 
-  NumberGreaterThanRhapsodyFunction(
+  NumberRhapsodyFunction(
       {required this.numberComparator, required this.refs}) {
     basicValidateParams(
         refs: refs,
         minSize: 2,
         maxSize: 2,
-        name: "number_${numberComparator.name.replaceAll(' ', '-')}");
+        name: "number_${numberComparator.name.replaceAll(' ', '_')}");
   }
 
   @override
