@@ -1,0 +1,36 @@
+import 'package:boolean_rhapsody/src/date_time_comparator.dart';
+
+import '../boolean_rhapsody.dart';
+import 'rule_function.dart';
+
+class DateTimeRhapsodyFunction extends BooleanRhapsodyFunction {
+  final RhapsodyDateTimeComparator dateTimeComparator;
+  final List<String> refs;
+
+  DateTimeRhapsodyFunction(
+      {required this.dateTimeComparator, required this.refs}) {
+    basicValidateParams(
+        refs: refs,
+        minSize: 2,
+        maxSize: 2,
+        name: "date_time_${dateTimeComparator.name.replaceAll(' ', '_')}");
+  }
+
+  @override
+  bool isTrue(RhapsodyEvaluationContext context) {
+    final value = context.getRefValue(refs[0]);
+    final threshold = context.getRefValue(refs[1]);
+
+    if (value is! String || threshold is! String) {
+      return false;
+    }
+    final dtValue = DateTime.tryParse(value);
+    final dtThreshold = DateTime.tryParse(threshold);
+
+    if (dtValue == null || dtThreshold == null) {
+      return false;
+    }
+
+    return dateTimeComparator.compare(dtValue, dtThreshold);
+  }
+}

@@ -1,3 +1,5 @@
+import 'date_time_comparator.dart';
+import 'date_time_function.dart';
 import 'list_function.dart';
 import 'number_comparator.dart';
 import 'number_function.dart';
@@ -70,6 +72,30 @@ class BooleanRhapsodyFunctionFactory {
       case 'number_less_than_or_equal':
         return NumberRhapsodyFunction(
             numberComparator: RhapsodyNumberComparators.lessThanOrEqual,
+            refs: params);
+      case 'date_time_equal_to':
+        return DateTimeRhapsodyFunction(
+            dateTimeComparator: RhapsodyDateTimeComparators.equalTo,
+            refs: params);
+      case 'date_time_not_equal_to':
+        return DateTimeRhapsodyFunction(
+            dateTimeComparator: RhapsodyDateTimeComparators.notEqualTo,
+            refs: params);
+      case 'date_time_greater_than':
+        return DateTimeRhapsodyFunction(
+            dateTimeComparator: RhapsodyDateTimeComparators.greaterThan,
+            refs: params);
+      case 'date_time_greater_than_or_equal':
+        return DateTimeRhapsodyFunction(
+            dateTimeComparator: RhapsodyDateTimeComparators.greaterThanOrEqual,
+            refs: params);
+      case 'date_time_less_than':
+        return DateTimeRhapsodyFunction(
+            dateTimeComparator: RhapsodyDateTimeComparators.lessThan,
+            refs: params);
+      case 'date_time_less_than_or_equal':
+        return DateTimeRhapsodyFunction(
+            dateTimeComparator: RhapsodyDateTimeComparators.lessThanOrEqual,
             refs: params);
       case 'list_size_equal_to':
         return ListSizeRhapsodyFunction(
