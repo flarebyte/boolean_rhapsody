@@ -9,7 +9,6 @@ abstract class RhapsodyDateTimeComparator {
   bool compare(DateTime value, DateTime threshold);
 }
 
-
 /// Comparator for checking if a value is greater than a threshold.
 class RhapsodyGreaterThanComparator extends RhapsodyDateTimeComparator {
   @override
@@ -17,7 +16,7 @@ class RhapsodyGreaterThanComparator extends RhapsodyDateTimeComparator {
 
   @override
   bool compare(DateTime value, DateTime threshold) {
-    return value > threshold;
+    return value.isAfter(threshold);
   }
 }
 
@@ -28,7 +27,7 @@ class RhapsodyGreaterThanOrEqualComparator extends RhapsodyDateTimeComparator {
 
   @override
   bool compare(DateTime value, DateTime threshold) {
-    return value >= threshold;
+    return value.isAfter(threshold) || value.isAtSameMomentAs(threshold);
   }
 }
 
@@ -39,7 +38,7 @@ class RhapsodyLessThanComparator extends RhapsodyDateTimeComparator {
 
   @override
   bool compare(DateTime value, DateTime threshold) {
-    return value < threshold;
+    return value.isBefore(threshold);
   }
 }
 
@@ -50,7 +49,7 @@ class RhapsodyLessThanOrEqualComparator extends RhapsodyDateTimeComparator {
 
   @override
   bool compare(DateTime value, DateTime threshold) {
-    return value <= threshold;
+    return value.isBefore(threshold) || value.isAtSameMomentAs(threshold);
   }
 }
 
@@ -61,7 +60,7 @@ class RhapsodyEqualToComparator extends RhapsodyDateTimeComparator {
 
   @override
   bool compare(DateTime value, DateTime threshold) {
-    return value == threshold;
+    return value.isAtSameMomentAs(threshold);
   }
 }
 
@@ -72,18 +71,21 @@ class RhapsodyNotEqualToComparator extends RhapsodyDateTimeComparator {
 
   @override
   bool compare(DateTime value, DateTime threshold) {
-    return value != threshold;
+    return !value.isAtSameMomentAs(threshold);
   }
 }
 
 /// A static class providing access to various DateTime comparators.
 class RhapsodyDateTimeComparators {
-  static final RhapsodyDateTimeComparator greaterThan = RhapsodyGreaterThanComparator();
+  static final RhapsodyDateTimeComparator greaterThan =
+      RhapsodyGreaterThanComparator();
   static final RhapsodyDateTimeComparator greaterThanOrEqual =
       RhapsodyGreaterThanOrEqualComparator();
-  static final RhapsodyDateTimeComparator lessThan = RhapsodyLessThanComparator();
+  static final RhapsodyDateTimeComparator lessThan =
+      RhapsodyLessThanComparator();
   static final RhapsodyDateTimeComparator lessThanOrEqual =
       RhapsodyLessThanOrEqualComparator();
   static final RhapsodyDateTimeComparator equalTo = RhapsodyEqualToComparator();
-  static final RhapsodyDateTimeComparator notEqualTo = RhapsodyNotEqualToComparator();
+  static final RhapsodyDateTimeComparator notEqualTo =
+      RhapsodyNotEqualToComparator();
 }

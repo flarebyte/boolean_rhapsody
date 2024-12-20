@@ -6,8 +6,7 @@ class NumberRhapsodyFunction extends BooleanRhapsodyFunction {
   final RhapsodyNumberComparator numberComparator;
   final List<String> refs;
 
-  NumberRhapsodyFunction(
-      {required this.numberComparator, required this.refs}) {
+  NumberRhapsodyFunction({required this.numberComparator, required this.refs}) {
     basicValidateParams(
         refs: refs,
         minSize: 2,

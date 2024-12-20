@@ -9,7 +9,6 @@ abstract class RhapsodyNumberComparator {
   bool compare(num value, num threshold);
 }
 
-
 /// Comparator for checking if a value is greater than a threshold.
 class RhapsodyGreaterThanComparator extends RhapsodyNumberComparator {
   @override
@@ -78,12 +77,14 @@ class RhapsodyNotEqualToComparator extends RhapsodyNumberComparator {
 
 /// A static class providing access to various number comparators.
 class RhapsodyNumberComparators {
-  static final RhapsodyNumberComparator greaterThan = RhapsodyGreaterThanComparator();
+  static final RhapsodyNumberComparator greaterThan =
+      RhapsodyGreaterThanComparator();
   static final RhapsodyNumberComparator greaterThanOrEqual =
       RhapsodyGreaterThanOrEqualComparator();
   static final RhapsodyNumberComparator lessThan = RhapsodyLessThanComparator();
   static final RhapsodyNumberComparator lessThanOrEqual =
       RhapsodyLessThanOrEqualComparator();
   static final RhapsodyNumberComparator equalTo = RhapsodyEqualToComparator();
-  static final RhapsodyNumberComparator notEqualTo = RhapsodyNotEqualToComparator();
+  static final RhapsodyNumberComparator notEqualTo =
+      RhapsodyNotEqualToComparator();
 }
