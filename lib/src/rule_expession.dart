@@ -1,5 +1,6 @@
 import 'package:boolean_rhapsody/src/evaluation_context.dart';
 
+import 'fuzzy_boolean.dart';
 import 'rule_function.dart';
 
 /// **Abstract Class: RhapsodyBooleanExpression**
@@ -14,7 +15,7 @@ abstract class RhapsodyBooleanExpression {
   ///   constants, and other contextual data.
   ///
   /// **Returns:** A `bool` representing the result of the evaluation.
-  bool evaluate(RhapsodyEvaluationContext context);
+  RhapsodicBool evaluate(RhapsodyEvaluationContext context);
 }
 
 /// **Class: RhapsodyAndOperator**
@@ -43,7 +44,7 @@ class RhapsodyAndOperator extends RhapsodyBooleanExpression {
   ///
   /// **Returns:** `true` if both expressions evaluate to `true`, otherwise `false`.
   @override
-  bool evaluate(RhapsodyEvaluationContext context) {
+  RhapsodicBool evaluate(RhapsodyEvaluationContext context) {
     return left.evaluate(context) && right.evaluate(context);
   }
 }
@@ -74,8 +75,49 @@ class RhapsodyOrOperator extends RhapsodyBooleanExpression {
   ///
   /// **Returns:** `true` if at least one expression evaluates to `true`, otherwise `false`.
   @override
-  bool evaluate(RhapsodyEvaluationContext context) {
-    return left.evaluate(context) || right.evaluate(context);
+  RhapsodicBool evaluate(RhapsodyEvaluationContext context) {
+    final leftValue = left.evaluate(context);
+    final rightValue = right.evaluate(context);
+    switch (RhapsodicBool.asPairOfChars(leftValue, rightValue)) {
+      // Left True
+      case "TT":
+        return RhapsodicBool.truth();
+      case "Tt":
+        return RhapsodicBool.truth();
+      case "TF":
+        return RhapsodicBool.truth();
+      case "Tf":
+        return RhapsodicBool.truth();
+      // Left truthy
+      case "tT":
+        return RhapsodicBool.truth();
+      case "tt":
+        return RhapsodicBool.truthy();
+      case "tF":
+        return RhapsodicBool.truthy();
+      case "tf":
+        return RhapsodicBool.truthy();
+      // Left False
+      case "FT":
+        return RhapsodicBool.truth();
+      case "Ft":
+        return RhapsodicBool.truthy();
+      case "FF":
+        return RhapsodicBool.untruth();
+      case "Ff":
+        return RhapsodicBool.untruthy();
+      // Left Falsy
+      case "fT":
+        return RhapsodicBool.truth();
+      case "ft":
+        return RhapsodicBool.truthy();
+      case "fF":
+        return RhapsodicBool.untruthy();
+      case "ff":
+        return RhapsodicBool.untruthy();
+      default:
+        return RhapsodicBool.untruthy();
+    }
   }
 }
 
@@ -101,7 +143,7 @@ class RhapsodyNotOperator extends RhapsodyBooleanExpression {
   ///
   /// **Returns:** `true` if the operand evaluates to `false`, otherwise `false`.
   @override
-  bool evaluate(RhapsodyEvaluationContext context) {
+  RhapsodicBool evaluate(RhapsodyEvaluationContext context) {
     return !operand.evaluate(context);
   }
 }
@@ -128,7 +170,7 @@ class RhapsodyFunctionExpression extends RhapsodyBooleanExpression {
   ///
   /// **Returns:** The result of the function evaluation as a `bool`.
   @override
-  bool evaluate(RhapsodyEvaluationContext context) {
+  RhapsodicBool evaluate(RhapsodyEvaluationContext context) {
     return function.isTrue(context);
   }
 }
@@ -161,7 +203,7 @@ class RhapsodyRuleReference extends RhapsodyBooleanExpression {
   ///
   /// **Throws:** `Exception` if the rule is not found in `ruleDefinitions`.
   @override
-  bool evaluate(RhapsodyEvaluationContext context) {
+  RhapsodicBool evaluate(RhapsodyEvaluationContext context) {
     final rule = ruleDefinitions[ruleName];
     if (rule == null) {
       throw Exception("Rule $ruleName is not defined");

@@ -63,3 +63,4 @@ export 'src/evaluation_context.dart';
 export 'src/rule_expession.dart';
 export 'src/string_function.dart';
 export 'src/function_factory.dart';
+export 'src/fuzzy_boolean.dart';

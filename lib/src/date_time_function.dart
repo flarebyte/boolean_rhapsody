@@ -1,6 +1,5 @@
 import 'package:boolean_rhapsody/src/date_time_comparator.dart';
-
-import '../boolean_rhapsody.dart';
+import 'fuzzy_boolean.dart';
 import 'rule_function.dart';
 
 class DateTimeRhapsodyFunction extends BooleanRhapsodyFunction {
@@ -17,20 +16,21 @@ class DateTimeRhapsodyFunction extends BooleanRhapsodyFunction {
   }
 
   @override
-  bool isTrue(RhapsodyEvaluationContext context) {
+  RhapsodicBool isTrue(RhapsodyEvaluationContext context) {
     final value = context.getRefValue(refs[0]);
     final threshold = context.getRefValue(refs[1]);
 
     if (value is! String || threshold is! String) {
-      return false;
+      return RhapsodicBool.untruthy();
     }
     final dtValue = DateTime.tryParse(value);
     final dtThreshold = DateTime.tryParse(threshold);
 
     if (dtValue == null || dtThreshold == null) {
-      return false;
+      return RhapsodicBool.untruthy();
     }
 
-    return dateTimeComparator.compare(dtValue, dtThreshold);
+    return RhapsodicBool.fromBool(
+        dateTimeComparator.compare(dtValue, dtThreshold));
   }
 }

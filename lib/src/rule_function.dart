@@ -1,4 +1,5 @@
-import '../boolean_rhapsody.dart';
+import 'evaluation_context.dart';
+import 'fuzzy_boolean.dart';
 
 /// An abstract class that defines a boolean function in the Rhapsody framework.
 /// Implementing classes are expected to evaluate whether a condition is true
@@ -12,7 +13,7 @@ abstract class BooleanRhapsodyFunction {
   /// for the evaluation.
   ///
   /// Returns `true` if the condition is satisfied, otherwise `false`.
-  bool isTrue(RhapsodyEvaluationContext context);
+  RhapsodicBool isTrue(RhapsodyEvaluationContext context);
 
   /// Validates the parameters passed to a function to ensure they meet
   /// predefined size and formatting constraints.

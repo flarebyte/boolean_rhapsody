@@ -1,4 +1,5 @@
-import '../boolean_rhapsody.dart';
+import 'evaluation_context.dart';
+import 'fuzzy_boolean.dart';
 import 'number_comparator.dart';
 import 'rule_function.dart';
 
@@ -15,20 +16,21 @@ class NumberRhapsodyFunction extends BooleanRhapsodyFunction {
   }
 
   @override
-  bool isTrue(RhapsodyEvaluationContext context) {
+  RhapsodicBool isTrue(RhapsodyEvaluationContext context) {
     final value = context.getRefValue(refs[0]);
     final threshold = context.getRefValue(refs[1]);
 
     if (value is! String || threshold is! String) {
-      return false;
+      return RhapsodicBool.untruthy();
     }
     final numValue = num.tryParse(value);
     final numThreshold = num.tryParse(threshold);
 
     if (numValue == null || numThreshold == null) {
-      return false;
+      return RhapsodicBool.untruthy();
     }
 
-    return numberComparator.compare(numValue, numThreshold);
+    return RhapsodicBool.fromBool(
+        numberComparator.compare(numValue, numThreshold));
   }
 }

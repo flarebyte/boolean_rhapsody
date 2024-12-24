@@ -1,4 +1,5 @@
-import '../boolean_rhapsody.dart';
+import 'evaluation_context.dart';
+import 'fuzzy_boolean.dart';
 import 'rule_function.dart';
 
 /// A boolean function that checks if a specified reference is absent (null)
@@ -33,9 +34,9 @@ class IsAbsentRhapsodyFunction extends BooleanRhapsodyFunction {
   ///
   /// Returns `true` if the value of the reference is `null`, otherwise `false`.
   @override
-  bool isTrue(RhapsodyEvaluationContext context) {
+  RhapsodicBool isTrue(RhapsodyEvaluationContext context) {
     final value = context.getRefValue(refs[0]);
-    return value == null;
+    return RhapsodicBool.fromBool(value == null);
   }
 }
 
@@ -71,9 +72,9 @@ class IsPresentRhapsodyFunction extends BooleanRhapsodyFunction {
   ///
   /// Returns `true` if the value of the reference is not `null`, otherwise `false`.
   @override
-  bool isTrue(RhapsodyEvaluationContext context) {
+  RhapsodicBool isTrue(RhapsodyEvaluationContext context) {
     final value = context.getRefValue(refs[0]);
-    return value != null;
+    return RhapsodicBool.fromBool(value != null);
   }
 }
 
@@ -111,9 +112,9 @@ class IsEmptyStringRhapsodyFunction extends BooleanRhapsodyFunction {
   /// Returns `true` if the value of the reference is an empty string (`""`),
   /// otherwise `false`.
   @override
-  bool isTrue(RhapsodyEvaluationContext context) {
+  RhapsodicBool isTrue(RhapsodyEvaluationContext context) {
     final value = context.getRefValue(refs[0]);
-    return value is String && value.isEmpty;
+    return RhapsodicBool.fromBool(value is String && value.isEmpty);
   }
 }
 
@@ -152,9 +153,10 @@ class IsMultipleLinesRhapsodyFunction extends BooleanRhapsodyFunction {
   /// more than one line (i.e., has newline characters `\n` or `\r\n`),
   /// otherwise `false`.
   @override
-  bool isTrue(RhapsodyEvaluationContext context) {
+  RhapsodicBool isTrue(RhapsodyEvaluationContext context) {
     final value = context.getRefValue(refs[0]);
-    return value is String && value.contains(RegExp(r'\r?\n'));
+    return RhapsodicBool.fromBool(
+        value is String && value.contains(RegExp(r'\r?\n')));
   }
 }
 
@@ -192,9 +194,10 @@ class IsSingleLineRhapsodyFunction extends BooleanRhapsodyFunction {
   /// Returns `true` if the value of the reference is a string that does not
   /// contain newline characters (`\n` or `\r\n`), otherwise `false`.
   @override
-  bool isTrue(RhapsodyEvaluationContext context) {
+  RhapsodicBool isTrue(RhapsodyEvaluationContext context) {
     final value = context.getRefValue(refs[0]);
-    return value is String && !value.contains(RegExp(r'\r?\n'));
+    return RhapsodicBool.fromBool(
+        value is String && !value.contains(RegExp(r'\r?\n')));
   }
 }
 
@@ -232,15 +235,15 @@ class ContainsSubstringRhapsodyFunction extends BooleanRhapsodyFunction {
   ///
   /// Returns `true` if the term is found within the text, otherwise `false`.
   @override
-  bool isTrue(RhapsodyEvaluationContext context) {
+  RhapsodicBool isTrue(RhapsodyEvaluationContext context) {
     final text = context.getRefValue(refs[0]);
     final term = context.getRefValue(refs[1]);
 
     if (text is! String || term is! String) {
-      return false; // Both text and term must be strings.
+      return RhapsodicBool.untruthy(); // Both text and term must be strings.
     }
 
-    return text.contains(term);
+    return RhapsodicBool.fromBool(text.contains(term));
   }
 }
 
@@ -278,15 +281,15 @@ class StartsWithPrefixRhapsodyFunction extends BooleanRhapsodyFunction {
   ///
   /// Returns `true` if the text starts with the prefix, otherwise `false`.
   @override
-  bool isTrue(RhapsodyEvaluationContext context) {
+  RhapsodicBool isTrue(RhapsodyEvaluationContext context) {
     final text = context.getRefValue(refs[0]);
     final prefix = context.getRefValue(refs[1]);
 
     if (text is! String || prefix is! String) {
-      return false; // Both text and prefix must be strings.
+      return RhapsodicBool.untruthy(); // Both text and prefix must be strings.
     }
 
-    return text.startsWith(prefix);
+    return RhapsodicBool.fromBool(text.startsWith(prefix));
   }
 }
 
@@ -324,15 +327,15 @@ class EndsWithSuffixRhapsodyFunction extends BooleanRhapsodyFunction {
   ///
   /// Returns `true` if the text ends with the suffix, otherwise `false`.
   @override
-  bool isTrue(RhapsodyEvaluationContext context) {
+  RhapsodicBool isTrue(RhapsodyEvaluationContext context) {
     final text = context.getRefValue(refs[0]);
     final suffix = context.getRefValue(refs[1]);
 
     if (text is! String || suffix is! String) {
-      return false; // Both text and suffix must be strings.
+      return RhapsodicBool.untruthy(); // Both text and suffix must be strings.
     }
 
-    return text.endsWith(suffix);
+    return RhapsodicBool.fromBool(text.endsWith(suffix));
   }
 }
 
@@ -370,14 +373,14 @@ class EqualsRhapsodyFunction extends BooleanRhapsodyFunction {
   ///
   /// Returns `true` if the two texts are equal, otherwise `false`.
   @override
-  bool isTrue(RhapsodyEvaluationContext context) {
+  RhapsodicBool isTrue(RhapsodyEvaluationContext context) {
     final text1 = context.getRefValue(refs[0]);
     final text2 = context.getRefValue(refs[1]);
 
     if (text1 is! String || text2 is! String) {
-      return false; // Both inputs must be strings.
+      return RhapsodicBool.untruthy(); // Both inputs must be strings.
     }
 
-    return text1 == text2;
+    return RhapsodicBool.fromBool(text1 == text2);
   }
 }
