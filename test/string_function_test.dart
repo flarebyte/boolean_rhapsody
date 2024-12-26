@@ -31,29 +31,31 @@ void main() {
       final function =
           BooleanRhapsodyFunctionFactory.create('is_absent', ['v:example']);
 
-      expect(function.isTrue(emptyContext), isTrue);
+      expect(function.isTrue(emptyContext), RhapsodicBool.truth());
 
-      expect(
-          function.isTrue(setContextKeyValue('v:example', 'value')), isFalse);
+      expect(function.isTrue(setContextKeyValue('v:example', 'value')),
+          RhapsodicBool.untruth());
     });
 
     test('is_present function works correctly', () {
       final function =
           BooleanRhapsodyFunctionFactory.create('is_present', ['v:example']);
 
-      expect(function.isTrue(setContextKeyValue('v:example', 'value')), isTrue);
+      expect(function.isTrue(setContextKeyValue('v:example', 'value')),
+          RhapsodicBool.truth());
 
-      expect(function.isTrue(emptyContext), isFalse);
+      expect(function.isTrue(emptyContext), RhapsodicBool.untruth());
     });
 
     test('is_empty_string function works correctly', () {
       final function = BooleanRhapsodyFunctionFactory.create(
           'is_empty_string', ['v:example']);
 
-      expect(function.isTrue(setContextKeyValue('v:example', '')), isTrue);
+      expect(function.isTrue(setContextKeyValue('v:example', '')),
+          RhapsodicBool.truth());
 
       expect(function.isTrue(setContextKeyValue('v:example', 'not empty')),
-          isFalse);
+          RhapsodicBool.untruth());
     });
 
     test('is_multiple_lines function works correctly', () {
@@ -61,10 +63,10 @@ void main() {
           'is_multiple_lines', ['v:example']);
 
       expect(function.isTrue(setContextKeyValue('v:example', 'line1\nline2')),
-          isTrue);
+          RhapsodicBool.truth());
 
       expect(function.isTrue(setContextKeyValue('v:example', 'single line')),
-          isFalse);
+          RhapsodicBool.untruth());
     });
 
     test('is_single_line function works correctly', () {
@@ -72,10 +74,10 @@ void main() {
           'is_single_line', ['v:example']);
 
       expect(function.isTrue(setContextKeyValue('v:example', 'single line')),
-          isTrue);
+          RhapsodicBool.truth());
 
       expect(function.isTrue(setContextKeyValue('v:example', 'line1\nline2')),
-          isFalse);
+          RhapsodicBool.untruth());
     });
 
     test('contains_substring function works correctly', () {
@@ -85,9 +87,10 @@ void main() {
       expect(
           function.isTrue(setContextTwoKeyValue(
               'v:text', 'Hello, world!', 'v:term', 'world')),
-          isTrue);
+          RhapsodicBool.truth());
 
-      expect(function.isTrue(setContextKeyValue('v:term', 'absent')), isFalse);
+      expect(function.isTrue(setContextKeyValue('v:term', 'absent')),
+          RhapsodicBool.untruthy());
     });
 
     test('starts_with_prefix function works correctly', () {
@@ -97,9 +100,10 @@ void main() {
       expect(
           function.isTrue(setContextTwoKeyValue(
               'v:text', 'Hello, world!', 'v:prefix', 'Hello')),
-          isTrue);
+          RhapsodicBool.truth());
 
-      expect(function.isTrue(setContextKeyValue('v:prefix', 'world')), isFalse);
+      expect(function.isTrue(setContextKeyValue('v:prefix', 'world')),
+          RhapsodicBool.untruthy());
     });
 
     test('ends_with_suffix function works correctly', () {
@@ -109,8 +113,9 @@ void main() {
       expect(
           function.isTrue(setContextTwoKeyValue(
               'v:text', 'Hello, world!', 'v:suffix', 'world!')),
-          isTrue);
-      expect(function.isTrue(setContextKeyValue('v:suffix', 'Hello')), isFalse);
+          RhapsodicBool.truth());
+      expect(function.isTrue(setContextKeyValue('v:suffix', 'Hello')),
+          RhapsodicBool.untruthy());
     });
 
     test('equals function works correctly', () {
@@ -120,10 +125,10 @@ void main() {
       expect(
           function.isTrue(setContextTwoKeyValue(
               'v:text1', 'Hello, world!', 'v:text2', 'Hello, world!')),
-          isTrue);
+          RhapsodicBool.truth());
 
       expect(function.isTrue(setContextKeyValue('v:text2', 'Goodbye, world!')),
-          isFalse);
+          RhapsodicBool.untruthy());
     });
 
     test('Unknown function throws exception', () {
