@@ -120,7 +120,7 @@ void main() {
 
     test('equals function works correctly', () {
       final function = BooleanRhapsodyFunctionFactory.create(
-          'equals', ['v:text1', 'v:text2']);
+          'string_equals', ['v:text1', 'v:text2']);
 
       expect(
           function.isTrue(setContextTwoKeyValue(

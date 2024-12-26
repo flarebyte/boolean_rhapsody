@@ -23,7 +23,7 @@ class RhapsodyGreaterThanComparator extends RhapsodyNumberComparator {
 /// Comparator for checking if a value is greater than or equal to a threshold.
 class RhapsodyGreaterThanOrEqualComparator extends RhapsodyNumberComparator {
   @override
-  String get name => 'greater than or equal';
+  String get name => 'greater than equals';
 
   @override
   bool compare(num value, num threshold) {
@@ -45,7 +45,7 @@ class RhapsodyLessThanComparator extends RhapsodyNumberComparator {
 /// Comparator for checking if a value is less than or equal to a threshold.
 class RhapsodyLessThanOrEqualComparator extends RhapsodyNumberComparator {
   @override
-  String get name => 'less than or equal';
+  String get name => 'less than equals';
 
   @override
   bool compare(num value, num threshold) {
@@ -56,7 +56,7 @@ class RhapsodyLessThanOrEqualComparator extends RhapsodyNumberComparator {
 /// Comparator for checking if a value is equal to a threshold.
 class RhapsodyEqualToComparator extends RhapsodyNumberComparator {
   @override
-  String get name => 'equal to';
+  String get name => 'equals';
 
   @override
   bool compare(num value, num threshold) {
@@ -67,7 +67,7 @@ class RhapsodyEqualToComparator extends RhapsodyNumberComparator {
 /// Comparator for checking if a value is not equal to a threshold.
 class RhapsodyNotEqualToComparator extends RhapsodyNumberComparator {
   @override
-  String get name => 'not equal to';
+  String get name => 'not equals';
 
   @override
   bool compare(num value, num threshold) {

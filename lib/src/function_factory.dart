@@ -49,12 +49,12 @@ class BooleanRhapsodyFunctionFactory {
         return StartsWithPrefixRhapsodyFunction(refs: params);
       case 'ends_with_suffix':
         return EndsWithSuffixRhapsodyFunction(refs: params);
-      case 'string_equal':
+      case 'string_equals':
         return EqualsRhapsodyFunction(refs: params);
-      case 'number_equal_to':
+      case 'number_equals':
         return NumberRhapsodyFunction(
             numberComparator: RhapsodyNumberComparators.equalTo, refs: params);
-      case 'number_not_equal_to':
+      case 'number_not_equals':
         return NumberRhapsodyFunction(
             numberComparator: RhapsodyNumberComparators.notEqualTo,
             refs: params);
@@ -62,22 +62,22 @@ class BooleanRhapsodyFunctionFactory {
         return NumberRhapsodyFunction(
             numberComparator: RhapsodyNumberComparators.greaterThan,
             refs: params);
-      case 'number_greater_than_or_equal':
+      case 'number_greater_than_equals':
         return NumberRhapsodyFunction(
             numberComparator: RhapsodyNumberComparators.greaterThanOrEqual,
             refs: params);
       case 'number_less_than':
         return NumberRhapsodyFunction(
             numberComparator: RhapsodyNumberComparators.lessThan, refs: params);
-      case 'number_less_than_or_equal':
+      case 'number_less_than_equals':
         return NumberRhapsodyFunction(
             numberComparator: RhapsodyNumberComparators.lessThanOrEqual,
             refs: params);
-      case 'date_time_equal_to':
+      case 'date_time_equals':
         return DateTimeRhapsodyFunction(
             dateTimeComparator: RhapsodyDateTimeComparators.equalTo,
             refs: params);
-      case 'date_time_not_equal_to':
+      case 'date_time_not_equals':
         return DateTimeRhapsodyFunction(
             dateTimeComparator: RhapsodyDateTimeComparators.notEqualTo,
             refs: params);
@@ -85,7 +85,7 @@ class BooleanRhapsodyFunctionFactory {
         return DateTimeRhapsodyFunction(
             dateTimeComparator: RhapsodyDateTimeComparators.greaterThan,
             refs: params);
-      case 'date_time_greater_than_or_equal':
+      case 'date_time_greater_than_equals':
         return DateTimeRhapsodyFunction(
             dateTimeComparator: RhapsodyDateTimeComparators.greaterThanOrEqual,
             refs: params);
@@ -93,14 +93,14 @@ class BooleanRhapsodyFunctionFactory {
         return DateTimeRhapsodyFunction(
             dateTimeComparator: RhapsodyDateTimeComparators.lessThan,
             refs: params);
-      case 'date_time_less_than_or_equal':
+      case 'date_time_less_than_equals':
         return DateTimeRhapsodyFunction(
             dateTimeComparator: RhapsodyDateTimeComparators.lessThanOrEqual,
             refs: params);
-      case 'list_size_equal_to':
+      case 'list_size_equals':
         return ListSizeRhapsodyFunction(
             numberComparator: RhapsodyNumberComparators.equalTo, refs: params);
-      case 'list_size_not_equal_to':
+      case 'list_size_not_equals':
         return ListSizeRhapsodyFunction(
             numberComparator: RhapsodyNumberComparators.notEqualTo,
             refs: params);
@@ -108,14 +108,14 @@ class BooleanRhapsodyFunctionFactory {
         return ListSizeRhapsodyFunction(
             numberComparator: RhapsodyNumberComparators.greaterThan,
             refs: params);
-      case 'list_size_greater_than_or_equal':
+      case 'list_size_greater_than_equals':
         return ListSizeRhapsodyFunction(
             numberComparator: RhapsodyNumberComparators.greaterThanOrEqual,
             refs: params);
       case 'list_size_less_than':
         return ListSizeRhapsodyFunction(
             numberComparator: RhapsodyNumberComparators.lessThan, refs: params);
-      case 'list_size_less_than_or_equal':
+      case 'list_size_less_than_equals':
         return ListSizeRhapsodyFunction(
             numberComparator: RhapsodyNumberComparators.lessThanOrEqual,
             refs: params);
