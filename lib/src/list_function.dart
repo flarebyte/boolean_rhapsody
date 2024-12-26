@@ -1,3 +1,4 @@
+import 'evaluation_context.dart';
 import 'fuzzy_boolean.dart';
 import 'number_comparator.dart';
 import 'rule_function.dart';

@@ -3,6 +3,22 @@ class RhapsodicBool {
   final bool certain;
   RhapsodicBool({required this.value, required this.certain});
 
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is RhapsodicBool &&
+          runtimeType == other.runtimeType &&
+          value == other.value &&
+          certain == other.certain;
+
+  @override
+  int get hashCode => value.hashCode ^ certain.hashCode;
+
+  @override
+  String toString() {
+    return 'RhapsodicBool{value: $value, certain: $certain}';
+  }
+
   factory RhapsodicBool.truth() {
     return RhapsodicBool(value: true, certain: true);
   }
