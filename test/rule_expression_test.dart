@@ -31,20 +31,26 @@ void main() {
       );
     });
 
-    test('RhapsodyAndOperator evaluates correctly', () {
-      final expr = RhapsodyAndOperator(
-        RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.truth())),
-        RhapsodyFunctionExpression(
-            MockBooleanFunction(RhapsodicBool.untruth())),
-      );
-      final swapExpr = RhapsodyAndOperator(
-        RhapsodyFunctionExpression(
-            MockBooleanFunction(RhapsodicBool.untruth())),
-        RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.truth())),
-      );
+    test('And Operator evaluates correctly', () {
+      for (var secondValue in [
+        RhapsodicBool.untruth(),
+        RhapsodicBool.truthy(),
+        RhapsodicBool.untruthy()
+      ]) {
+        final expr = RhapsodyAndOperator(
+          RhapsodyFunctionExpression(
+              MockBooleanFunction(RhapsodicBool.truth())),
+          RhapsodyFunctionExpression(MockBooleanFunction(secondValue)),
+        );
+        final swapExpr = RhapsodyAndOperator(
+          RhapsodyFunctionExpression(MockBooleanFunction(secondValue)),
+          RhapsodyFunctionExpression(
+              MockBooleanFunction(RhapsodicBool.truth())),
+        );
 
-      expect(expr.evaluate(context), RhapsodicBool.untruth());
-      expect(expr.evaluate(context), swapExpr.evaluate(context));
+        expect(expr.evaluate(context), RhapsodicBool.untruth());
+        expect(expr.evaluate(context), swapExpr.evaluate(context));
+      }
 
       final exprTrue = RhapsodyAndOperator(
         RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.truth())),
@@ -54,7 +60,7 @@ void main() {
       expect(exprTrue.evaluate(context), RhapsodicBool.truth());
     });
 
-    test('RhapsodyOrOperator evaluates correctly', () {
+    test('Or Operator evaluates correctly', () {
       final expr = RhapsodyOrOperator(
         RhapsodyFunctionExpression(
             MockBooleanFunction(RhapsodicBool.untruth())),
@@ -64,34 +70,55 @@ void main() {
 
       expect(expr.evaluate(context), RhapsodicBool.untruth());
 
-      final exprTrue = RhapsodyOrOperator(
-        RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.truth())),
-        RhapsodyFunctionExpression(
-            MockBooleanFunction(RhapsodicBool.untruth())),
-      );
-      final swapExprTrue = RhapsodyOrOperator(
-        RhapsodyFunctionExpression(
-            MockBooleanFunction(RhapsodicBool.untruth())),
-        RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.truth())),
-      );
+      for (var secondValue in [
+        RhapsodicBool.truth(),
+        RhapsodicBool.untruth(),
+        RhapsodicBool.truthy(),
+        RhapsodicBool.untruthy()
+      ]) {
+        final exprTrue = RhapsodyOrOperator(
+          RhapsodyFunctionExpression(
+              MockBooleanFunction(RhapsodicBool.truth())),
+          RhapsodyFunctionExpression(MockBooleanFunction(secondValue)),
+        );
+        final swapExprTrue = RhapsodyOrOperator(
+          RhapsodyFunctionExpression(MockBooleanFunction(secondValue)),
+          RhapsodyFunctionExpression(
+              MockBooleanFunction(RhapsodicBool.truth())),
+        );
 
-      expect(exprTrue.evaluate(context), RhapsodicBool.truth());
-      expect(exprTrue.evaluate(context), swapExprTrue.evaluate(context));
+        expect(exprTrue.evaluate(context), RhapsodicBool.truth());
+        expect(exprTrue.evaluate(context), swapExprTrue.evaluate(context));
+      }
     });
 
-    test('RhapsodyNotOperator evaluates correctly', () {
-      final expr = RhapsodyNotOperator(
-        RhapsodyFunctionExpression(
-            MockBooleanFunction(RhapsodicBool.untruth())),
-      );
+    test('Not Operator evaluates correctly', () {
+      expect(
+          RhapsodyNotOperator(
+            RhapsodyFunctionExpression(
+                MockBooleanFunction(RhapsodicBool.untruth())),
+          ).evaluate(context),
+          RhapsodicBool.truth());
 
-      expect(expr.evaluate(context), RhapsodicBool.truth());
+      expect(
+          RhapsodyNotOperator(
+            RhapsodyFunctionExpression(
+                MockBooleanFunction(RhapsodicBool.untruthy())),
+          ).evaluate(context),
+          RhapsodicBool.truthy());
 
-      final exprFalse = RhapsodyNotOperator(
-        RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.truth())),
-      );
-
-      expect(exprFalse.evaluate(context), RhapsodicBool.untruth());
+      expect(
+          RhapsodyNotOperator(
+            RhapsodyFunctionExpression(
+                MockBooleanFunction(RhapsodicBool.truth())),
+          ).evaluate(context),
+          RhapsodicBool.untruth());
+      expect(
+          RhapsodyNotOperator(
+            RhapsodyFunctionExpression(
+                MockBooleanFunction(RhapsodicBool.truthy())),
+          ).evaluate(context),
+          RhapsodicBool.untruthy());
     });
 
     test('RhapsodyFunctionExpression evaluates correctly', () {
