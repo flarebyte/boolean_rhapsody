@@ -56,6 +56,6 @@ class RhapsodicBool {
   }
 
   static asPairOfChars(RhapsodicBool a, RhapsodicBool b) {
-    return "$a$b";
+    return "${a.toChar()}${b.toChar()}";
   }
 }

@@ -47,7 +47,8 @@ class RhapsodyAndOperator extends RhapsodyBooleanExpression {
   RhapsodicBool evaluate(RhapsodyEvaluationContext context) {
     final leftValue = left.evaluate(context);
     final rightValue = right.evaluate(context);
-    switch (RhapsodicBool.asPairOfChars(leftValue, rightValue)) {
+    final pair = RhapsodicBool.asPairOfChars(leftValue, rightValue);
+    switch (pair) {
       // Left True
       case "TT":
         return RhapsodicBool.truth();
@@ -119,7 +120,8 @@ class RhapsodyOrOperator extends RhapsodyBooleanExpression {
   RhapsodicBool evaluate(RhapsodyEvaluationContext context) {
     final leftValue = left.evaluate(context);
     final rightValue = right.evaluate(context);
-    switch (RhapsodicBool.asPairOfChars(leftValue, rightValue)) {
+    final pair = RhapsodicBool.asPairOfChars(leftValue, rightValue);
+    switch (pair) {
       // Left True
       case "TT":
         return RhapsodicBool.truth();
@@ -186,7 +188,8 @@ class RhapsodyNotOperator extends RhapsodyBooleanExpression {
   @override
   RhapsodicBool evaluate(RhapsodyEvaluationContext context) {
     final operandValue = operand.evaluate(context);
-    switch (operandValue.toChar()) {
+    final operandChar = operandValue.toChar();
+    switch (operandChar) {
       case 'T':
         return RhapsodicBool.untruth();
       case 'F':
