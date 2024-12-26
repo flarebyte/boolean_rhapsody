@@ -58,6 +58,22 @@ void main() {
       );
 
       expect(exprTrue.evaluate(context), RhapsodicBool.truth());
+      for (var firstValue in [
+        RhapsodicBool.truthy(),
+        RhapsodicBool.untruthy()
+      ]) {
+        for (var secondValue in [
+          RhapsodicBool.truthy(),
+          RhapsodicBool.untruthy()
+        ]) {
+          expect(
+              RhapsodyAndOperator(
+                RhapsodyFunctionExpression(MockBooleanFunction(firstValue)),
+                RhapsodyFunctionExpression(MockBooleanFunction(secondValue)),
+              ).evaluate(context).certain,
+              isFalse);
+        }
+      }
     });
 
     test('Or Operator evaluates correctly', () {
@@ -89,6 +105,22 @@ void main() {
 
         expect(exprTrue.evaluate(context), RhapsodicBool.truth());
         expect(exprTrue.evaluate(context), swapExprTrue.evaluate(context));
+        for (var firstValue in [
+          RhapsodicBool.truthy(),
+          RhapsodicBool.untruthy()
+        ]) {
+          for (var secondValue in [
+            RhapsodicBool.truthy(),
+            RhapsodicBool.untruthy()
+          ]) {
+            expect(
+                RhapsodyOrOperator(
+                  RhapsodyFunctionExpression(MockBooleanFunction(firstValue)),
+                  RhapsodyFunctionExpression(MockBooleanFunction(secondValue)),
+                ).evaluate(context).certain,
+                isFalse);
+          }
+        }
       }
     });
 
