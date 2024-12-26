@@ -3,12 +3,12 @@ import 'package:boolean_rhapsody/src/rule_function.dart';
 import 'package:test/test.dart';
 
 class MockBooleanFunction implements BooleanRhapsodyFunction {
-  final bool result;
+  final RhapsodicBool result;
 
   MockBooleanFunction(this.result);
 
   @override
-  bool isTrue(RhapsodyEvaluationContext context) => result;
+  RhapsodicBool isTrue(RhapsodyEvaluationContext context) => result;
 
   @override
   basicValidateParams(
@@ -24,24 +24,24 @@ void main() {
 
     setUp(() {
       context = RhapsodyEvaluationContext(
-        variables: {'v:testVar': 'true'},
-        constants: {'c:testConst': 'false'},
-        parameters: {'p:testParam': 'true'},
-        deviceVars: {'d:testDeviceVar': 'false'},
+        variables: {'v:testVar': 'RhapsodicBool.truth()'},
+        constants: {'c:testConst': 'RhapsodicBool.untruth()'},
+        parameters: {'p:testParam': 'RhapsodicBool.truth()'},
+        deviceVars: {'d:testDeviceVar': 'RhapsodicBool.untruth()'},
       );
     });
 
     test('RhapsodyAndOperator evaluates correctly', () {
       final expr = RhapsodyAndOperator(
-        RhapsodyFunctionExpression(MockBooleanFunction(true)),
-        RhapsodyFunctionExpression(MockBooleanFunction(false)),
+        RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.truth())),
+        RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.untruth())),
       );
 
       expect(expr.evaluate(context), isFalse);
 
       final exprTrue = RhapsodyAndOperator(
-        RhapsodyFunctionExpression(MockBooleanFunction(true)),
-        RhapsodyFunctionExpression(MockBooleanFunction(true)),
+        RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.truth())),
+        RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.truth())),
       );
 
       expect(exprTrue.evaluate(context), isTrue);
@@ -49,15 +49,15 @@ void main() {
 
     test('RhapsodyOrOperator evaluates correctly', () {
       final expr = RhapsodyOrOperator(
-        RhapsodyFunctionExpression(MockBooleanFunction(false)),
-        RhapsodyFunctionExpression(MockBooleanFunction(false)),
+        RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.untruth())),
+        RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.untruth())),
       );
 
       expect(expr.evaluate(context), isFalse);
 
       final exprTrue = RhapsodyOrOperator(
-        RhapsodyFunctionExpression(MockBooleanFunction(true)),
-        RhapsodyFunctionExpression(MockBooleanFunction(false)),
+        RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.truth())),
+        RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.untruth())),
       );
 
       expect(exprTrue.evaluate(context), isTrue);
@@ -65,30 +65,30 @@ void main() {
 
     test('RhapsodyNotOperator evaluates correctly', () {
       final expr = RhapsodyNotOperator(
-        RhapsodyFunctionExpression(MockBooleanFunction(false)),
+        RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.untruth())),
       );
 
       expect(expr.evaluate(context), isTrue);
 
       final exprFalse = RhapsodyNotOperator(
-        RhapsodyFunctionExpression(MockBooleanFunction(true)),
+        RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.truth())),
       );
 
       expect(exprFalse.evaluate(context), isFalse);
     });
 
     test('RhapsodyFunctionExpression evaluates correctly', () {
-      final exprTrue = RhapsodyFunctionExpression(MockBooleanFunction(true));
+      final exprTrue = RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.truth()));
       expect(exprTrue.evaluate(context), isTrue);
 
-      final exprFalse = RhapsodyFunctionExpression(MockBooleanFunction(false));
+      final exprFalse = RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.untruth()));
       expect(exprFalse.evaluate(context), isFalse);
     });
 
     test('RhapsodyRuleReference evaluates defined rules correctly', () {
       final ruleDefinitions = {
-        'rule1': RhapsodyFunctionExpression(MockBooleanFunction(true)),
-        'rule2': RhapsodyFunctionExpression(MockBooleanFunction(false)),
+        'rule1': RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.truth())),
+        'rule2': RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.untruth())),
       };
 
       final ruleReferenceTrue = RhapsodyRuleReference('rule1', ruleDefinitions);
@@ -101,7 +101,7 @@ void main() {
 
     test('RhapsodyRuleReference throws exception for undefined rules', () {
       final ruleDefinitions = {
-        'rule1': RhapsodyFunctionExpression(MockBooleanFunction(true)),
+        'rule1': RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.truth())),
       };
 
       final ruleReference =
@@ -113,11 +113,11 @@ void main() {
     test('Complex expressions evaluate correctly', () {
       final complexExpression = RhapsodyAndOperator(
         RhapsodyOrOperator(
-          RhapsodyFunctionExpression(MockBooleanFunction(false)),
-          RhapsodyFunctionExpression(MockBooleanFunction(true)),
+          RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.untruth())),
+          RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.truth())),
         ),
         RhapsodyNotOperator(
-          RhapsodyFunctionExpression(MockBooleanFunction(false)),
+          RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.untruth())),
         ),
       );
 
@@ -132,10 +132,10 @@ void main() {
         deviceVars: {},
       );
 
-      final expr = RhapsodyFunctionExpression(MockBooleanFunction(true));
+      final expr = RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.truth()));
       expect(expr.evaluate(emptyContext), isTrue);
 
-      final exprFalse = RhapsodyFunctionExpression(MockBooleanFunction(false));
+      final exprFalse = RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.untruth()));
       expect(exprFalse.evaluate(emptyContext), isFalse);
     });
 
@@ -143,14 +143,14 @@ void main() {
       final deeplyNested = RhapsodyAndOperator(
         RhapsodyOrOperator(
           RhapsodyAndOperator(
-            RhapsodyFunctionExpression(MockBooleanFunction(true)),
-            RhapsodyFunctionExpression(MockBooleanFunction(true)),
+            RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.truth())),
+            RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.truth())),
           ),
           RhapsodyNotOperator(
-            RhapsodyFunctionExpression(MockBooleanFunction(false)),
+            RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.untruth())),
           ),
         ),
-        RhapsodyFunctionExpression(MockBooleanFunction(true)),
+        RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.truth())),
       );
 
       expect(deeplyNested.evaluate(context), isTrue);
