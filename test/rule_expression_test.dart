@@ -37,8 +37,14 @@ void main() {
         RhapsodyFunctionExpression(
             MockBooleanFunction(RhapsodicBool.untruth())),
       );
+      final swapExpr = RhapsodyAndOperator(
+        RhapsodyFunctionExpression(
+            MockBooleanFunction(RhapsodicBool.untruth())),
+        RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.truth())),
+      );
 
       expect(expr.evaluate(context), RhapsodicBool.untruth());
+      expect(expr.evaluate(context), swapExpr.evaluate(context));
 
       final exprTrue = RhapsodyAndOperator(
         RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.truth())),
@@ -63,8 +69,14 @@ void main() {
         RhapsodyFunctionExpression(
             MockBooleanFunction(RhapsodicBool.untruth())),
       );
+      final swapExprTrue = RhapsodyOrOperator(
+        RhapsodyFunctionExpression(
+            MockBooleanFunction(RhapsodicBool.untruth())),
+        RhapsodyFunctionExpression(MockBooleanFunction(RhapsodicBool.truth())),
+      );
 
       expect(exprTrue.evaluate(context), RhapsodicBool.truth());
+      expect(exprTrue.evaluate(context), swapExprTrue.evaluate(context));
     });
 
     test('RhapsodyNotOperator evaluates correctly', () {
