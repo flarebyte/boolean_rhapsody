@@ -45,7 +45,48 @@ class RhapsodyAndOperator extends RhapsodyBooleanExpression {
   /// **Returns:** `true` if both expressions evaluate to `true`, otherwise `false`.
   @override
   RhapsodicBool evaluate(RhapsodyEvaluationContext context) {
-    return left.evaluate(context) && right.evaluate(context);
+    final leftValue = left.evaluate(context);
+    final rightValue = right.evaluate(context);
+    switch (RhapsodicBool.asPairOfChars(leftValue, rightValue)) {
+      // Left True
+      case "TT":
+        return RhapsodicBool.truth();
+      case "Tt":
+        return RhapsodicBool.untruth();
+      case "TF":
+        return RhapsodicBool.untruth();
+      case "Tf":
+        return RhapsodicBool.untruth();
+      // Left truthy
+      case "tT":
+        return RhapsodicBool.untruth();
+      case "tt":
+        return RhapsodicBool.truthy();
+      case "tF":
+        return RhapsodicBool.untruthy();
+      case "tf":
+        return RhapsodicBool.untruthy();
+      // Left False
+      case "FT":
+        return RhapsodicBool.untruth();
+      case "Ft":
+        return RhapsodicBool.untruthy();
+      case "FF":
+        return RhapsodicBool.untruth();
+      case "Ff":
+        return RhapsodicBool.untruthy();
+      // Left Falsy
+      case "fT":
+        return RhapsodicBool.untruth();
+      case "ft":
+        return RhapsodicBool.untruthy();
+      case "fF":
+        return RhapsodicBool.untruthy();
+      case "ff":
+        return RhapsodicBool.untruthy();
+      default:
+        return RhapsodicBool.untruthy();
+    }
   }
 }
 
@@ -144,7 +185,19 @@ class RhapsodyNotOperator extends RhapsodyBooleanExpression {
   /// **Returns:** `true` if the operand evaluates to `false`, otherwise `false`.
   @override
   RhapsodicBool evaluate(RhapsodyEvaluationContext context) {
-    return !operand.evaluate(context);
+    final operandValue = operand.evaluate(context);
+    switch (operandValue.toChar()) {
+      case 'T':
+        return RhapsodicBool.untruth();
+      case 'F':
+        return RhapsodicBool.truth();
+      case 't':
+        return RhapsodicBool.untruthy();
+      case 'f':
+        return RhapsodicBool.truthy();
+      default:
+        return RhapsodicBool.untruthy();
+    }
   }
 }
 
