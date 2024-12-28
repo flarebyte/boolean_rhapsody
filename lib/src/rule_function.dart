@@ -51,7 +51,7 @@ abstract class BooleanRhapsodyFunction {
           "The number of parameters for the function $name was $size but was expecting a maximum of $maxSize for $refs");
     }
     final hasUnsupportedPrefix = refs
-        .where((param) => !(param.startsWith('v:') || (param.startsWith('c:'))))
+        .where((param) => !RhapsodyEvaluationContext.isPrefixSupported(param))
         .isNotEmpty;
     if (hasUnsupportedPrefix) {
       throw Exception(
