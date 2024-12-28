@@ -1,0 +1,49 @@
+/// An abstract class defining the interface for string comparison.
+abstract class RhapsodyStringComparator {
+  /// The name of the comparator.
+  String get name;
+
+  /// Compares the given [text] against a [term].
+  ///
+  /// Returns `true` if the comparison meets the criteria, otherwise `false`.
+  bool compare(String text, String term, [bool ignoreCase = false]);
+}
+
+/// Comparator for checking if a term is contained in some text optionally ignoring the case
+class RhapsodyStringContainsComparator extends RhapsodyStringComparator {
+  @override
+  String get name => 'contains substring';
+
+  @override
+  bool compare(String text, String term, [bool ignoreCase = false]) {
+    return ignoreCase
+        ? text.toLowerCase().contains(term.toLowerCase())
+        : text.contains(term);
+  }
+}
+
+/// Comparator for checking if some text starts with a given prefix optionally ignoring the case
+class RhapsodyStringStartsWithComparator extends RhapsodyStringComparator {
+  @override
+  String get name => 'starts with prefix';
+
+  @override
+  bool compare(String text, String term, [bool ignoreCase = false]) {
+    return ignoreCase
+        ? text.toLowerCase().startsWith(term.toLowerCase())
+        : text.startsWith(term);
+  }
+}
+
+/// Comparator for checking if some text ends with a given prefix optionally ignoring the case
+class RhapsodyStringEndsWithComparator extends RhapsodyStringComparator {
+  @override
+  String get name => 'ends with suffix';
+
+  @override
+  bool compare(String text, String term, [bool ignoreCase = false]) {
+    return ignoreCase
+        ? text.toLowerCase().endsWith(term.toLowerCase())
+        : text.endsWith(term);
+  }
+}
