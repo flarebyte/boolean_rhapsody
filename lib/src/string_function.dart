@@ -1,6 +1,7 @@
 import 'evaluation_context.dart';
 import 'fuzzy_boolean.dart';
 import 'rule_function.dart';
+import 'string_comparator.dart';
 
 /// A boolean function that checks if a specified reference is absent (null)
 /// in the given [RhapsodyEvaluationContext].
@@ -201,17 +202,18 @@ class IsSingleLineRhapsodyFunction extends BooleanRhapsodyFunction {
   }
 }
 
-/// A boolean function that checks if a specified term is contained within
+/// A boolean function that checks if a specified term satisfies a string comparison for
 /// a given text in the [RhapsodyEvaluationContext].
 ///
 /// This class extends [BooleanRhapsodyFunction] and performs validation
 /// during instantiation to ensure the provided parameters meet the function's
 /// requirements.
-class ContainsSubstringRhapsodyFunction extends BooleanRhapsodyFunction {
+class CheckStringRhapsodyFunction extends BooleanRhapsodyFunction {
   /// A list of parameter references that the function evaluates.
   ///
   /// This function expects exactly two references: the first being the text
   /// and the second being the term to check for containment.
+  final RhapsodyStringComparator stringComparator;
   final List<String> refs;
 
   /// Creates an instance of [ContainsSubstringRhapsodyFunction].
@@ -223,9 +225,10 @@ class ContainsSubstringRhapsodyFunction extends BooleanRhapsodyFunction {
   /// Throws:
   /// - [Exception] if [refs] does not contain exactly two references.
   /// - [Exception] if any reference does not begin with `'v:'` or `'c:'`.
-  ContainsSubstringRhapsodyFunction({required this.refs}) {
+  CheckStringRhapsodyFunction(
+      {required this.refs, required this.stringComparator}) {
     basicValidateParams(
-        refs: refs, minSize: 2, maxSize: 2, name: 'contains_substring');
+        refs: refs, minSize: 2, maxSize: 3, name: stringComparator.name);
   }
 
   /// Evaluates whether the term specified in the second reference is contained
@@ -238,149 +241,14 @@ class ContainsSubstringRhapsodyFunction extends BooleanRhapsodyFunction {
   RhapsodicBool isTrue(RhapsodyEvaluationContext context) {
     final text = context.getRefValue(refs[0]);
     final term = context.getRefValue(refs[1]);
+    final ignoreCase =
+        context.getRefValueAsBool(refs.length > 2 ? refs[2] : null, false);
 
     if (text is! String || term is! String) {
       return RhapsodicBool.untruthy(); // Both text and term must be strings.
     }
 
-    return RhapsodicBool.fromBool(text.contains(term));
-  }
-}
-
-/// A boolean function that checks if a specified text starts with a given prefix
-/// in the [RhapsodyEvaluationContext].
-///
-/// This class extends [BooleanRhapsodyFunction] and performs validation
-/// during instantiation to ensure the provided parameters meet the function's
-/// requirements.
-class StartsWithPrefixRhapsodyFunction extends BooleanRhapsodyFunction {
-  /// A list of parameter references that the function evaluates.
-  ///
-  /// This function expects exactly two references: the first being the text
-  /// and the second being the prefix to check.
-  final List<String> refs;
-
-  /// Creates an instance of [StartsWithPrefixRhapsodyFunction].
-  ///
-  /// [refs] - A list of references to be evaluated. The list must contain
-  /// exactly two references, and each reference must begin with either `'v:'`
-  /// (variable) or `'c:'` (constant).
-  ///
-  /// Throws:
-  /// - [Exception] if [refs] does not contain exactly two references.
-  /// - [Exception] if any reference does not begin with `'v:'` or `'c:'`.
-  StartsWithPrefixRhapsodyFunction({required this.refs}) {
-    basicValidateParams(
-        refs: refs, minSize: 2, maxSize: 2, name: 'starts_with_prefix');
-  }
-
-  /// Evaluates whether the text specified in the first reference starts with
-  /// the prefix specified in the second reference.
-  ///
-  /// [context] - The evaluation context that provides data for the function.
-  ///
-  /// Returns `true` if the text starts with the prefix, otherwise `false`.
-  @override
-  RhapsodicBool isTrue(RhapsodyEvaluationContext context) {
-    final text = context.getRefValue(refs[0]);
-    final prefix = context.getRefValue(refs[1]);
-
-    if (text is! String || prefix is! String) {
-      return RhapsodicBool.untruthy(); // Both text and prefix must be strings.
-    }
-
-    return RhapsodicBool.fromBool(text.startsWith(prefix));
-  }
-}
-
-/// A boolean function that checks if a specified text ends with a given suffix
-/// in the [RhapsodyEvaluationContext].
-///
-/// This class extends [BooleanRhapsodyFunction] and performs validation
-/// during instantiation to ensure the provided parameters meet the function's
-/// requirements.
-class EndsWithSuffixRhapsodyFunction extends BooleanRhapsodyFunction {
-  /// A list of parameter references that the function evaluates.
-  ///
-  /// This function expects exactly two references: the first being the text
-  /// and the second being the suffix to check.
-  final List<String> refs;
-
-  /// Creates an instance of [EndsWithSuffixRhapsodyFunction].
-  ///
-  /// [refs] - A list of references to be evaluated. The list must contain
-  /// exactly two references, and each reference must begin with either `'v:'`
-  /// (variable) or `'c:'` (constant).
-  ///
-  /// Throws:
-  /// - [Exception] if [refs] does not contain exactly two references.
-  /// - [Exception] if any reference does not begin with `'v:'` or `'c:'`.
-  EndsWithSuffixRhapsodyFunction({required this.refs}) {
-    basicValidateParams(
-        refs: refs, minSize: 2, maxSize: 2, name: 'ends_with_suffix');
-  }
-
-  /// Evaluates whether the text specified in the first reference ends with
-  /// the suffix specified in the second reference.
-  ///
-  /// [context] - The evaluation context that provides data for the function.
-  ///
-  /// Returns `true` if the text ends with the suffix, otherwise `false`.
-  @override
-  RhapsodicBool isTrue(RhapsodyEvaluationContext context) {
-    final text = context.getRefValue(refs[0]);
-    final suffix = context.getRefValue(refs[1]);
-
-    if (text is! String || suffix is! String) {
-      return RhapsodicBool.untruthy(); // Both text and suffix must be strings.
-    }
-
-    return RhapsodicBool.fromBool(text.endsWith(suffix));
-  }
-}
-
-/// A boolean function that checks if two specified texts are equal
-/// in the [RhapsodyEvaluationContext].
-///
-/// This class extends [BooleanRhapsodyFunction] and performs validation
-/// during instantiation to ensure the provided parameters meet the function's
-/// requirements.
-class EqualsRhapsodyFunction extends BooleanRhapsodyFunction {
-  /// A list of parameter references that the function evaluates.
-  ///
-  /// This function expects exactly two references: the first being the text
-  /// and the second being the other text to compare.
-  final List<String> refs;
-
-  /// Creates an instance of [EqualsRhapsodyFunction].
-  ///
-  /// [refs] - A list of references to be evaluated. The list must contain
-  /// exactly two references, and each reference must begin with either `'v:'`
-  /// (variable) or `'c:'` (constant).
-  ///
-  /// Throws:
-  /// - [Exception] if [refs] does not contain exactly two references.
-  /// - [Exception] if any reference does not begin with `'v:'` or `'c:'`.
-  EqualsRhapsodyFunction({required this.refs}) {
-    basicValidateParams(
-        refs: refs, minSize: 2, maxSize: 2, name: 'string_equal');
-  }
-
-  /// Evaluates whether the text specified in the first reference is equal to
-  /// the text specified in the second reference.
-  ///
-  /// [context] - The evaluation context that provides data for the function.
-  ///
-  /// Returns `true` if the two texts are equal, otherwise `false`.
-  @override
-  RhapsodicBool isTrue(RhapsodyEvaluationContext context) {
-    final text1 = context.getRefValue(refs[0]);
-    final text2 = context.getRefValue(refs[1]);
-
-    if (text1 is! String || text2 is! String) {
-      return RhapsodicBool.untruthy(); // Both inputs must be strings.
-    }
-
-    return RhapsodicBool.fromBool(text1 == text2);
+    return RhapsodicBool.fromBool(
+        stringComparator.compare(text, term, ignoreCase));
   }
 }

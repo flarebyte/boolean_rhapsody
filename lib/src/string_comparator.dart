@@ -47,3 +47,28 @@ class RhapsodyStringEndsWithComparator extends RhapsodyStringComparator {
         : text.endsWith(term);
   }
 }
+
+/// Comparator for checking if some text ends with a given prefix optionally ignoring the case
+class RhapsodyStringEqualsComparator extends RhapsodyStringComparator {
+  @override
+  String get name => 'string equals';
+
+  @override
+  bool compare(String text, String term, [bool ignoreCase = false]) {
+    return ignoreCase
+        ? text.toLowerCase() == (term.toLowerCase())
+        : text == term;
+  }
+}
+
+/// A static class providing access to various string comparators.
+class RhapsodyStringComparators {
+  static final RhapsodyStringComparator contains =
+      RhapsodyStringContainsComparator();
+  static final RhapsodyStringComparator startsWith =
+      RhapsodyStringStartsWithComparator();
+  static final RhapsodyStringComparator endsWith =
+      RhapsodyStringEndsWithComparator();
+  static final RhapsodyStringComparator equals =
+      RhapsodyStringEqualsComparator();
+}

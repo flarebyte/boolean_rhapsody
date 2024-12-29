@@ -1,3 +1,5 @@
+import 'package:boolean_rhapsody/src/string_comparator.dart';
+
 import 'date_time_comparator.dart';
 import 'date_time_function.dart';
 import 'list_function.dart';
@@ -44,13 +46,18 @@ class BooleanRhapsodyFunctionFactory {
       case 'is_single_line':
         return IsSingleLineRhapsodyFunction(refs: params);
       case 'contains_substring':
-        return ContainsSubstringRhapsodyFunction(refs: params);
+        return CheckStringRhapsodyFunction(
+            refs: params, stringComparator: RhapsodyStringComparators.contains);
       case 'starts_with_prefix':
-        return StartsWithPrefixRhapsodyFunction(refs: params);
+        return CheckStringRhapsodyFunction(
+            refs: params,
+            stringComparator: RhapsodyStringComparators.startsWith);
       case 'ends_with_suffix':
-        return EndsWithSuffixRhapsodyFunction(refs: params);
+        return CheckStringRhapsodyFunction(
+            refs: params, stringComparator: RhapsodyStringComparators.endsWith);
       case 'string_equals':
-        return EqualsRhapsodyFunction(refs: params);
+        return CheckStringRhapsodyFunction(
+            refs: params, stringComparator: RhapsodyStringComparators.equals);
       case 'number_equals':
         return NumberRhapsodyFunction(
             numberComparator: RhapsodyNumberComparators.equalTo, refs: params);

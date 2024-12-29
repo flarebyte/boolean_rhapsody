@@ -68,6 +68,18 @@ class RhapsodyEvaluationContext {
     throw Exception("The ref $ref should start with v:, c:, p:, or d:");
   }
 
+  bool getRefValueAsBool(String? ref, bool defaultValue) {
+    if (ref == null) {
+      return defaultValue;
+    }
+    final value = getRefValue(ref);
+    if (value == null) {
+      return defaultValue;
+    } else {
+      return value == 'true';
+    }
+  }
+
   static bool isPrefixSupported(String ref) {
     return ref.startsWith('v:') ||
         ref.startsWith('c:') ||
