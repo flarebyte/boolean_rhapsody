@@ -33,7 +33,10 @@ void main() {
 
       expect(function.isTrue(emptyContext), RhapsodicBool.truth());
 
-      expect(function.isTrue(setContextKeyValue('v:example', 'value')),
+      expect(
+          function.isTrue(RhapsodyEvaluationContextBuilder()
+              .setRefValue('v:example', 'value')
+              .build()),
           RhapsodicBool.untruth());
     });
 
@@ -41,7 +44,10 @@ void main() {
       final function =
           BooleanRhapsodyFunctionFactory.create('is_present', ['v:example']);
 
-      expect(function.isTrue(setContextKeyValue('v:example', 'value')),
+      expect(
+          function.isTrue(RhapsodyEvaluationContextBuilder()
+              .setRefValue('v:example', 'value')
+              .build()),
           RhapsodicBool.truth());
 
       expect(function.isTrue(emptyContext), RhapsodicBool.untruth());
@@ -51,10 +57,16 @@ void main() {
       final function = BooleanRhapsodyFunctionFactory.create(
           'is_empty_string', ['v:example']);
 
-      expect(function.isTrue(setContextKeyValue('v:example', '')),
+      expect(
+          function.isTrue(RhapsodyEvaluationContextBuilder()
+              .setRefValue('v:example', '')
+              .build()),
           RhapsodicBool.truth());
 
-      expect(function.isTrue(setContextKeyValue('v:example', 'not empty')),
+      expect(
+          function.isTrue(RhapsodyEvaluationContextBuilder()
+              .setRefValue('v:example', 'not empty')
+              .build()),
           RhapsodicBool.untruth());
     });
 
@@ -62,10 +74,16 @@ void main() {
       final function = BooleanRhapsodyFunctionFactory.create(
           'is_multiple_lines', ['v:example']);
 
-      expect(function.isTrue(setContextKeyValue('v:example', 'line1\nline2')),
+      expect(
+          function.isTrue(RhapsodyEvaluationContextBuilder()
+              .setRefValue('v:example', 'line1\nline2')
+              .build()),
           RhapsodicBool.truth());
 
-      expect(function.isTrue(setContextKeyValue('v:example', 'single line')),
+      expect(
+          function.isTrue(RhapsodyEvaluationContextBuilder()
+              .setRefValue('v:example', 'single line')
+              .build()),
           RhapsodicBool.untruth());
     });
 
@@ -73,10 +91,16 @@ void main() {
       final function = BooleanRhapsodyFunctionFactory.create(
           'is_single_line', ['v:example']);
 
-      expect(function.isTrue(setContextKeyValue('v:example', 'single line')),
+      expect(
+          function.isTrue(RhapsodyEvaluationContextBuilder()
+              .setRefValue('v:example', 'single line')
+              .build()),
           RhapsodicBool.truth());
 
-      expect(function.isTrue(setContextKeyValue('v:example', 'line1\nline2')),
+      expect(
+          function.isTrue(RhapsodyEvaluationContextBuilder()
+              .setRefValue('v:example', 'line1\nline2')
+              .build()),
           RhapsodicBool.untruth());
     });
 
@@ -85,11 +109,35 @@ void main() {
           'contains_substring', ['v:text', 'v:term']);
 
       expect(
-          function.isTrue(setContextTwoKeyValue(
-              'v:text', 'Hello, world!', 'v:term', 'world')),
+          function.isTrue(RhapsodyEvaluationContextBuilder()
+              .setRefValue('v:text', 'Hello, world!')
+              .setRefValue('v:term', 'world')
+              .build()),
           RhapsodicBool.truth());
 
-      expect(function.isTrue(setContextKeyValue('v:term', 'absent')),
+      expect(
+          function.isTrue(RhapsodyEvaluationContextBuilder()
+              .setRefValue('v:term', 'absent')
+              .build()),
+          RhapsodicBool.untruthy());
+    });
+
+    test('contains_substring function works correctly while ignoring case', () {
+      final function = BooleanRhapsodyFunctionFactory.create(
+          'contains_substring', ['v:text', 'v:term', 'c:ignoreCase']);
+
+      expect(
+          function.isTrue(RhapsodyEvaluationContextBuilder()
+              .setRefValue('v:text', 'Hello, world!')
+              .setRefValue('v:term', 'World')
+              .setRefValue('c:ignoreCase', 'true')
+              .build()),
+          RhapsodicBool.truth());
+
+      expect(
+          function.isTrue(RhapsodyEvaluationContextBuilder()
+              .setRefValue('v:term', 'absent')
+              .build()),
           RhapsodicBool.untruthy());
     });
 
@@ -98,11 +146,16 @@ void main() {
           'starts_with_prefix', ['v:text', 'v:prefix']);
 
       expect(
-          function.isTrue(setContextTwoKeyValue(
-              'v:text', 'Hello, world!', 'v:prefix', 'Hello')),
+          function.isTrue(RhapsodyEvaluationContextBuilder()
+              .setRefValue('v:text', 'Hello, world!')
+              .setRefValue('v:prefix', 'Hello')
+              .build()),
           RhapsodicBool.truth());
 
-      expect(function.isTrue(setContextKeyValue('v:prefix', 'world')),
+      expect(
+          function.isTrue(RhapsodyEvaluationContextBuilder()
+              .setRefValue('v:prefix', 'world')
+              .build()),
           RhapsodicBool.untruthy());
     });
 
@@ -114,7 +167,10 @@ void main() {
           function.isTrue(setContextTwoKeyValue(
               'v:text', 'Hello, world!', 'v:suffix', 'world!')),
           RhapsodicBool.truth());
-      expect(function.isTrue(setContextKeyValue('v:suffix', 'Hello')),
+      expect(
+          function.isTrue(RhapsodyEvaluationContextBuilder()
+              .setRefValue('v:suffix', 'Hello')
+              .build()),
           RhapsodicBool.untruthy());
     });
 
@@ -123,11 +179,16 @@ void main() {
           'string_equals', ['v:text1', 'v:text2']);
 
       expect(
-          function.isTrue(setContextTwoKeyValue(
-              'v:text1', 'Hello, world!', 'v:text2', 'Hello, world!')),
+          function.isTrue(RhapsodyEvaluationContextBuilder()
+              .setRefValue('v:text1', 'Hello, world!')
+              .setRefValue('v:text2', 'Hello, world!')
+              .build()),
           RhapsodicBool.truth());
 
-      expect(function.isTrue(setContextKeyValue('v:text2', 'Goodbye, world!')),
+      expect(
+          function.isTrue(RhapsodyEvaluationContextBuilder()
+              .setRefValue('v:text2', 'Goodbye, world!')
+              .build()),
           RhapsodicBool.untruthy());
     });
 

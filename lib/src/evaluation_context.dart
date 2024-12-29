@@ -87,3 +87,43 @@ class RhapsodyEvaluationContext {
         ref.startsWith('d:');
   }
 }
+
+class RhapsodyEvaluationContextBuilder {
+  Map<String, String> variables = {};
+
+  Map<String, String> constants = {};
+
+  Map<String, String> parameters = {};
+
+  Map<String, String> deviceVars = {};
+
+  RhapsodyEvaluationContextBuilder();
+
+  RhapsodyEvaluationContextBuilder setRefValue(String ref, String value) {
+    if (ref.startsWith('v:')) {
+      variables[ref] = value;
+      return this;
+    }
+    if (ref.startsWith('c:')) {
+      constants[ref] = value;
+      return this;
+    }
+    if (ref.startsWith('p:')) {
+      parameters[ref] = value;
+      return this;
+    }
+    if (ref.startsWith('d:')) {
+      deviceVars[ref] = value;
+      return this;
+    }
+    throw Exception("The ref $ref should start with v:, c:, p:, or d:");
+  }
+
+  RhapsodyEvaluationContext build() {
+    return RhapsodyEvaluationContext(
+        constants: constants,
+        variables: variables,
+        parameters: parameters,
+        deviceVars: deviceVars);
+  }
+}
