@@ -224,7 +224,11 @@ class IsUrlRhapsodyFunction extends BooleanRhapsodyFunction {
   /// - [Exception] if [refs] does not contain exactly one reference.
   /// - [Exception] if the reference does not begin with `'v:'` or `'c:'`.
   IsUrlRhapsodyFunction({required this.refs}) {
-    basicValidateParams(refs: refs, minSize: 1, maxSize: 2, name: 'is_url');
+    basicValidateParams(refs: refs, minSize: 1, maxSize: 3, name: 'is_url');
+  }
+
+  bool _endsWithAnyDomain(String host, List<String> allowedEndings) {
+    return allowedEndings.any((ending) => host.endsWith(ending));
   }
 
   bool _isIPv4(String host) {
@@ -247,6 +251,7 @@ class IsUrlRhapsodyFunction extends BooleanRhapsodyFunction {
   RhapsodicBool isTrue(RhapsodyEvaluationContext context) {
     final value = context.getRefValue(refs[0]);
     final flags = context.getRefValueAsString(refs[1], '');
+    final allowDomains = context.getRefValueAsStringList(refs[2], [], ',');
     if (value == null) {
       return RhapsodicBool.untruth();
     }
@@ -265,13 +270,13 @@ class IsUrlRhapsodyFunction extends BooleanRhapsodyFunction {
     }
 
     final allowPort = flags.contains('port');
-    if (!allowPort && uri.hasPort ) {
+    if (!allowPort && uri.hasPort) {
       return RhapsodicBool.untruth();
     }
     if (uri.userInfo.isNotEmpty) {
       return RhapsodicBool.untruth();
     }
-    final allowFragment =flags.contains('fragment');
+    final allowFragment = flags.contains('fragment');
     if (!allowFragment && uri.hasFragment) {
       return RhapsodicBool.untruth();
     }
@@ -281,12 +286,10 @@ class IsUrlRhapsodyFunction extends BooleanRhapsodyFunction {
       return RhapsodicBool.untruth();
     }
 
-    // final allowDomains =
-    //     optionsMap.getStringList(options: options, id: allowDomainsKey).value;
-    // if (allowDomains.isNotEmpty &&
-    //     !_endsWithAnyDomain(uri.host, allowDomains)) {
-    //   return _produceDomainFailure(options, value);
-    // }
+    if (allowDomains.isNotEmpty &&
+        !_endsWithAnyDomain(uri.host, allowDomains)) {
+      return RhapsodicBool.untruth();
+    }
 
     final allowIP = flags.contains('IP');
     if ((_isIPv4(uri.host) || _isIPv6(uri.host)) && !allowIP) {

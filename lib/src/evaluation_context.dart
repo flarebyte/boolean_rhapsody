@@ -92,6 +92,19 @@ class RhapsodyEvaluationContext {
     }
   }
 
+  List<String> getRefValueAsStringList(String? ref, List<String> defaultValue,
+      [String separator = ',']) {
+    if (ref == null) {
+      return defaultValue;
+    }
+    final value = getRefValue(ref);
+    if (value == null) {
+      return defaultValue;
+    } else {
+      return value.split(separator).map((field) => field.trim()).toList();
+    }
+  }
+
   static bool isPrefixSupported(String ref) {
     return ref.startsWith('v:') ||
         ref.startsWith('c:') ||
