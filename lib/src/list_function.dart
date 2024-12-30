@@ -20,7 +20,7 @@ class ListSizeRhapsodyFunction extends BooleanRhapsodyFunction {
   RhapsodicBool isTrue(RhapsodyEvaluationContext context) {
     final value = context.getRefValue(refs[0]);
     final threshold = context.getRefValue(refs[1]);
-    final separator = context.getRefValue(refs[2]) ?? "\n";
+    final separator = context.getRefValueAsString(refs[2], "\n");
 
     if (value is! String || threshold is! String) {
       return RhapsodicBool.untruthy();
