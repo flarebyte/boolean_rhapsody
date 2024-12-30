@@ -45,6 +45,8 @@ class BooleanRhapsodyFunctionFactory {
         return IsMultipleLinesRhapsodyFunction(refs: params);
       case 'is_single_line':
         return IsSingleLineRhapsodyFunction(refs: params);
+      case 'is_numeric':
+        return IsNumericRhapsodyFunction(refs: params);
       case 'is_url':
         return IsUrlRhapsodyFunction(refs: params);
       case 'contains_substring':
