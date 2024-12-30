@@ -227,6 +227,15 @@ class IsUrlRhapsodyFunction extends BooleanRhapsodyFunction {
     basicValidateParams(refs: refs, minSize: 1, maxSize: 2, name: 'is_url');
   }
 
+  bool _isIPv4(String host) {
+    final ipv4Regex = RegExp(r'^(\d{1,3}\.){3}\d{1,3}$');
+    return ipv4Regex.hasMatch(host);
+  }
+
+  bool _isIPv6(String host) {
+    return host.contains(':') && !host.contains('.');
+  }
+
   /// Evaluates whether the reference specified in [refs] contains a single line
   /// in the provided [RhapsodyEvaluationContext].
   ///
@@ -237,6 +246,7 @@ class IsUrlRhapsodyFunction extends BooleanRhapsodyFunction {
   @override
   RhapsodicBool isTrue(RhapsodyEvaluationContext context) {
     final value = context.getRefValue(refs[0]);
+    final flags = context.getRefValueAsString(refs[1], '');
     if (value == null) {
       return RhapsodicBool.untruth();
     }
@@ -244,16 +254,45 @@ class IsUrlRhapsodyFunction extends BooleanRhapsodyFunction {
     if (uri == null) {
       return RhapsodicBool.untruth();
     }
+
     if (!(uri.isScheme('http') || uri.isScheme('https'))) {
       return RhapsodicBool.untruth();
     }
 
-    if (uri.hasPort) {
+    final expectHttps = flags.contains('https');
+    if (expectHttps && !uri.isScheme('https')) {
+      return RhapsodicBool.untruth();
+    }
+
+    final allowPort = flags.contains('port');
+    if (!allowPort && uri.hasPort ) {
       return RhapsodicBool.untruth();
     }
     if (uri.userInfo.isNotEmpty) {
       return RhapsodicBool.untruth();
     }
+    final allowFragment =flags.contains('fragment');
+    if (!allowFragment && uri.hasFragment) {
+      return RhapsodicBool.untruth();
+    }
+
+    final allowQuery = flags.contains('query');
+    if (!allowQuery && uri.hasQuery) {
+      return RhapsodicBool.untruth();
+    }
+
+    // final allowDomains =
+    //     optionsMap.getStringList(options: options, id: allowDomainsKey).value;
+    // if (allowDomains.isNotEmpty &&
+    //     !_endsWithAnyDomain(uri.host, allowDomains)) {
+    //   return _produceDomainFailure(options, value);
+    // }
+
+    final allowIP = flags.contains('IP');
+    if ((_isIPv4(uri.host) || _isIPv6(uri.host)) && !allowIP) {
+      return RhapsodicBool.untruth();
+    }
+
     return RhapsodicBool.truth();
   }
 }

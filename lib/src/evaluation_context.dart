@@ -80,6 +80,18 @@ class RhapsodyEvaluationContext {
     }
   }
 
+  String getRefValueAsString(String? ref, String defaultValue) {
+    if (ref == null) {
+      return defaultValue;
+    }
+    final value = getRefValue(ref);
+    if (value == null) {
+      return defaultValue;
+    } else {
+      return value;
+    }
+  }
+
   static bool isPrefixSupported(String ref) {
     return ref.startsWith('v:') ||
         ref.startsWith('c:') ||
