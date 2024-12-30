@@ -202,6 +202,62 @@ class IsSingleLineRhapsodyFunction extends BooleanRhapsodyFunction {
   }
 }
 
+/// A boolean function that checks if a specified reference contains a single line
+/// in the given [RhapsodyEvaluationContext].
+///
+/// This class extends [BooleanRhapsodyFunction] and performs validation
+/// during instantiation to ensure the provided parameters meet the function's
+/// requirements.
+class IsUrlRhapsodyFunction extends BooleanRhapsodyFunction {
+  /// A list of parameter references that the function evaluates.
+  ///
+  /// This function expects exactly one reference in the list.
+  final List<String> refs;
+
+  /// Creates an instance of [IsSingleLineRhapsodyFunction].
+  ///
+  /// [refs] - A list of references to be evaluated. The list must contain
+  /// exactly one reference, and the reference must begin with either `'v:'`
+  /// (variable) or `'c:'` (constant).
+  ///
+  /// Throws:
+  /// - [Exception] if [refs] does not contain exactly one reference.
+  /// - [Exception] if the reference does not begin with `'v:'` or `'c:'`.
+  IsUrlRhapsodyFunction({required this.refs}) {
+    basicValidateParams(refs: refs, minSize: 1, maxSize: 2, name: 'is_url');
+  }
+
+  /// Evaluates whether the reference specified in [refs] contains a single line
+  /// in the provided [RhapsodyEvaluationContext].
+  ///
+  /// [context] - The evaluation context that provides data for the function.
+  ///
+  /// Returns `true` if the value of the reference is a string that does not
+  /// contain newline characters (`\n` or `\r\n`), otherwise `false`.
+  @override
+  RhapsodicBool isTrue(RhapsodyEvaluationContext context) {
+    final value = context.getRefValue(refs[0]);
+    if (value == null) {
+      return RhapsodicBool.untruth();
+    }
+    final uri = Uri.tryParse(value);
+    if (uri == null) {
+      return RhapsodicBool.untruth();
+    }
+    if (!(uri.isScheme('http') || uri.isScheme('https'))) {
+      return RhapsodicBool.untruth();
+    }
+
+    if (uri.hasPort) {
+      return RhapsodicBool.untruth();
+    }
+    if (uri.userInfo.isNotEmpty) {
+      return RhapsodicBool.untruth();
+    }
+    return RhapsodicBool.truth();
+  }
+}
+
 /// A boolean function that checks if a specified term satisfies a string comparison for
 /// a given text in the [RhapsodyEvaluationContext].
 ///
