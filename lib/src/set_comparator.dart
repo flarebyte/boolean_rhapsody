@@ -51,3 +51,13 @@ class RhapsodySetIsDisjointToComparator extends RhapsodySetComparator {
     return value.intersection(threshold).isEmpty;
   }
 }
+
+/// A static class providing access to various number comparators.
+class RhapsodySetComparators {
+  static final RhapsodySetComparator equals = RhapsodySetEqualsToComparator();
+  static final RhapsodySetComparator isSubset = RhapsodyIsSubsetOfComparator();
+  static final RhapsodySetComparator isSuperset =
+      RhapsodyIsSupersetOfComparator();
+  static final RhapsodySetComparator isDisjoint =
+      RhapsodySetIsDisjointToComparator();
+}

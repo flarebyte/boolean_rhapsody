@@ -1,3 +1,5 @@
+import 'package:boolean_rhapsody/src/set_comparator.dart';
+import 'package:boolean_rhapsody/src/set_function.dart';
 import 'package:boolean_rhapsody/src/string_comparator.dart';
 
 import 'date_time_comparator.dart';
@@ -132,6 +134,18 @@ class BooleanRhapsodyFunctionFactory {
         return ListSizeRhapsodyFunction(
             numberComparator: RhapsodyNumberComparators.lessThanOrEqual,
             refs: params);
+      case 'set_equals':
+        return SetRhapsodyFunction(
+            setComparator: RhapsodySetComparators.equals, refs: params);
+      case 'is_subset_of':
+        return SetRhapsodyFunction(
+            setComparator: RhapsodySetComparators.isSubset, refs: params);
+      case 'is_superset_of':
+        return SetRhapsodyFunction(
+            setComparator: RhapsodySetComparators.isSuperset, refs: params);
+      case 'is_disjoint':
+        return SetRhapsodyFunction(
+            setComparator: RhapsodySetComparators.isDisjoint, refs: params);
       default:
         throw Exception("The boolean function '$name' is unknown");
     }

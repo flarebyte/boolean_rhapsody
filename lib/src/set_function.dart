@@ -12,8 +12,9 @@ class SetRhapsodyFunction extends BooleanRhapsodyFunction {
   }
 
   Set<String> _parseAsSet(String value, String separator) {
-      return Set.from(value.split(separator));
+    return Set.from(value.split(separator));
   }
+
   @override
   RhapsodicBool isTrue(RhapsodyEvaluationContext context) {
     final value = context.getRefValue(refs[0]);
@@ -23,7 +24,7 @@ class SetRhapsodyFunction extends BooleanRhapsodyFunction {
     if (value is! String || threshold is! String) {
       return RhapsodicBool.untruthy();
     }
-    
+
     final setValue = _parseAsSet(value, separator);
     final setThreshold = _parseAsSet(threshold, separator);
 
