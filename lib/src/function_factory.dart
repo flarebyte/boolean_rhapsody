@@ -51,6 +51,8 @@ class BooleanRhapsodyFunctionFactory {
         return IsSingleLineRhapsodyFunction(refs: params);
       case 'is_numeric':
         return IsNumericRhapsodyFunction(refs: params);
+      case 'is_integer':
+        return IsIntegerRhapsodyFunction(refs: params);
       case 'is_date_time':
         return IsDateTimeRhapsodyFunction(refs: params);
       case 'is_url':

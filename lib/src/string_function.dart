@@ -212,6 +212,52 @@ class IsNumericRhapsodyFunction extends BooleanRhapsodyFunction {
 /// This class extends [BooleanRhapsodyFunction] and performs validation
 /// during instantiation to ensure the provided parameters meet the function's
 /// requirements.
+class IsIntegerRhapsodyFunction extends BooleanRhapsodyFunction {
+  /// A list of parameter references that the function evaluates.
+  ///
+  /// This function expects exactly one reference in the list.
+  final List<String> refs;
+
+  /// Creates an instance of [IsEmptyStringRhapsodyFunction].
+  ///
+  /// [refs] - A list of references to be evaluated. The list must contain
+  /// exactly one reference, and the reference must begin with either `'v:'`
+  /// (variable) or `'c:'` (constant).
+  ///
+  /// Throws:
+  /// - [Exception] if [refs] does not contain exactly one reference.
+  /// - [Exception] if the reference does not begin with `'v:'` or `'c:'`.
+  IsIntegerRhapsodyFunction({required this.refs}) {
+    basicValidateParams(refs: refs, minSize: 1, maxSize: 1, name: 'is_integer');
+  }
+
+  /// Evaluates whether the reference specified in [refs] is an empty string
+  /// in the provided [RhapsodyEvaluationContext].
+  ///
+  /// [context] - The evaluation context that provides data for the function.
+  ///
+  /// Returns `true` if the value of the reference is an empty string (`""`),
+  /// otherwise `false`.
+  @override
+  RhapsodicBool isTrue(RhapsodyEvaluationContext context) {
+    final value = context.getRefValue(refs[0]);
+    if (value == null) {
+      return RhapsodicBool.untruth();
+    }
+    final numValue = int.tryParse(value);
+    if (numValue == null) {
+      return RhapsodicBool.untruth();
+    }
+    return RhapsodicBool.truth();
+  }
+}
+
+/// A boolean function that checks if a specified reference is an empty string
+/// in the given [RhapsodyEvaluationContext].
+///
+/// This class extends [BooleanRhapsodyFunction] and performs validation
+/// during instantiation to ensure the provided parameters meet the function's
+/// requirements.
 class IsDateTimeRhapsodyFunction extends BooleanRhapsodyFunction {
   /// A list of parameter references that the function evaluates.
   ///
