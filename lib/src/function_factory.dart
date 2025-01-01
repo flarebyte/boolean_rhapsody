@@ -49,12 +49,8 @@ class BooleanRhapsodyFunctionFactory {
         return IsComplexUnicodeRhapsodyFunction(refs: params);
       case 'is_simple_unicode':
         return IsSimpleUnicodeRhapsodyFunction(refs: params);
-      case 'is_qwerty':
-        return IsQwertyRhapsodyFunction(refs: params);
-      case 'is_azerty':
-        return IsAzertyRhapsodyFunction(refs: params);
-      case 'is_qwertz':
-        return IsQwertzRhapsodyFunction(refs: params);
+      case 'is_allowed_chars':
+        return IsAllowedCharsFunction(refs: params);
       case 'is_multiple_lines':
         return IsMultipleLinesRhapsodyFunction(refs: params);
       case 'is_single_line':

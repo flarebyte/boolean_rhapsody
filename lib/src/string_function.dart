@@ -248,7 +248,7 @@ class IsSimpleUnicodeRhapsodyFunction extends BooleanRhapsodyFunction {
 /// This class extends [BooleanRhapsodyFunction] and performs validation
 /// during instantiation to ensure the provided parameters meet the function's
 /// requirements.
-class IsQwertyRhapsodyFunction extends BooleanRhapsodyFunction {
+class IsAllowedCharsFunction extends BooleanRhapsodyFunction {
   /// A list of parameter references that the function evaluates.
   ///
   /// This function expects exactly one reference in the list.
@@ -263,8 +263,9 @@ class IsQwertyRhapsodyFunction extends BooleanRhapsodyFunction {
   /// Throws:
   /// - [Exception] if [refs] does not contain exactly one reference.
   /// - [Exception] if the reference does not begin with `'v:'` or `'c:'`.
-  IsQwertyRhapsodyFunction({required this.refs}) {
-    basicValidateParams(refs: refs, minSize: 1, maxSize: 1, name: 'is_qwerty');
+  IsAllowedCharsFunction({required this.refs}) {
+    basicValidateParams(
+        refs: refs, minSize: 1, maxSize: 2, name: 'is_allowed_chars');
   }
 
   /// Evaluates whether the reference specified in [refs] is an empty string
@@ -280,116 +281,10 @@ class IsQwertyRhapsodyFunction extends BooleanRhapsodyFunction {
     if (value == null) {
       return RhapsodicBool.untruth();
     }
-    const allowedChars = '''
+    final allowedChars = context.getRefValueAsString(refs[1], '''
     ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789
     `~!@#\$%^&*()-_=+[{]}\\|;:'",<.>/?\t\n\r 
-  ''';
-
-    for (var char in value.runes) {
-      if (!allowedChars.contains(String.fromCharCode(char))) {
-        return RhapsodicBool.untruth();
-      }
-    }
-    return RhapsodicBool.truth();
-  }
-}
-
-/// A boolean function that checks if a specified reference is an empty string
-/// in the given [RhapsodyEvaluationContext].
-///
-/// This class extends [BooleanRhapsodyFunction] and performs validation
-/// during instantiation to ensure the provided parameters meet the function's
-/// requirements.
-class IsAzertyRhapsodyFunction extends BooleanRhapsodyFunction {
-  /// A list of parameter references that the function evaluates.
-  ///
-  /// This function expects exactly one reference in the list.
-  final List<String> refs;
-
-  /// Creates an instance of [IsEmptyStringRhapsodyFunction].
-  ///
-  /// [refs] - A list of references to be evaluated. The list must contain
-  /// exactly one reference, and the reference must begin with either `'v:'`
-  /// (variable) or `'c:'` (constant).
-  ///
-  /// Throws:
-  /// - [Exception] if [refs] does not contain exactly one reference.
-  /// - [Exception] if the reference does not begin with `'v:'` or `'c:'`.
-  IsAzertyRhapsodyFunction({required this.refs}) {
-    basicValidateParams(refs: refs, minSize: 1, maxSize: 1, name: 'is_azerty');
-  }
-
-  /// Evaluates whether the reference specified in [refs] is an empty string
-  /// in the provided [RhapsodyEvaluationContext].
-  ///
-  /// [context] - The evaluation context that provides data for the function.
-  ///
-  /// Returns `true` if the value of the reference is an empty string (`""`),
-  /// otherwise `false`.
-  @override
-  RhapsodicBool isTrue(RhapsodyEvaluationContext context) {
-    final value = context.getRefValue(refs[0]);
-    if (value == null) {
-      return RhapsodicBool.untruth();
-    }
-    const allowedChars = '''
-    abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789
-    &é"'(-è_çà)=^\$ù*;:,!?./% \n\t
-    êëîïôû
-  ''';
-
-    for (var char in value.runes) {
-      if (!allowedChars.contains(String.fromCharCode(char))) {
-        return RhapsodicBool.untruth();
-      }
-    }
-    return RhapsodicBool.truth();
-  }
-}
-
-/// A boolean function that checks if a specified reference is an empty string
-/// in the given [RhapsodyEvaluationContext].
-///
-/// This class extends [BooleanRhapsodyFunction] and performs validation
-/// during instantiation to ensure the provided parameters meet the function's
-/// requirements.
-class IsQwertzRhapsodyFunction extends BooleanRhapsodyFunction {
-  /// A list of parameter references that the function evaluates.
-  ///
-  /// This function expects exactly one reference in the list.
-  final List<String> refs;
-
-  /// Creates an instance of [IsEmptyStringRhapsodyFunction].
-  ///
-  /// [refs] - A list of references to be evaluated. The list must contain
-  /// exactly one reference, and the reference must begin with either `'v:'`
-  /// (variable) or `'c:'` (constant).
-  ///
-  /// Throws:
-  /// - [Exception] if [refs] does not contain exactly one reference.
-  /// - [Exception] if the reference does not begin with `'v:'` or `'c:'`.
-  IsQwertzRhapsodyFunction({required this.refs}) {
-    basicValidateParams(refs: refs, minSize: 1, maxSize: 1, name: 'is_qwertz');
-  }
-
-  /// Evaluates whether the reference specified in [refs] is an empty string
-  /// in the provided [RhapsodyEvaluationContext].
-  ///
-  /// [context] - The evaluation context that provides data for the function.
-  ///
-  /// Returns `true` if the value of the reference is an empty string (`""`),
-  /// otherwise `false`.
-  @override
-  RhapsodicBool isTrue(RhapsodyEvaluationContext context) {
-    final value = context.getRefValue(refs[0]);
-    if (value == null) {
-      return RhapsodicBool.untruth();
-    }
-    const allowedChars = '''
-    abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789
-    äöüÄÖÜß
-    !"§\$%&/()=?`*'#+-_:.;,<>|@€[]{}\\^~ \n\t
-  ''';
+  '''); //default to qwerty
 
     for (var char in value.runes) {
       if (!allowedChars.contains(String.fromCharCode(char))) {
