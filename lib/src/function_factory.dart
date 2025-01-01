@@ -43,6 +43,8 @@ class BooleanRhapsodyFunctionFactory {
         return IsPresentRhapsodyFunction(refs: params);
       case 'is_empty_string':
         return IsEmptyStringRhapsodyFunction(refs: params);
+      case 'is_trimmable_string':
+        return IsTrimmableStringRhapsodyFunction(refs: params);
       case 'is_multiple_lines':
         return IsMultipleLinesRhapsodyFunction(refs: params);
       case 'is_single_line':
