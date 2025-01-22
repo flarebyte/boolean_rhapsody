@@ -52,4 +52,91 @@ void main() {
           throwsA(isA<Exception>()));
     });
   });
+  group('RhapsodySupportedPrefixes', () {
+    late RhapsodySupportedPrefixes supportedPrefixes;
+
+    setUp(() {
+      supportedPrefixes = RhapsodySupportedPrefixes(['http', 'https', 'ftp']);
+    });
+
+    test('isPrefixSupported returns true for supported prefix', () {
+      final result = supportedPrefixes.isPrefixSupported('http:example.com');
+      expect(result, isTrue);
+    });
+
+    test('isPrefixSupported returns false for unsupported prefix', () {
+      final result = supportedPrefixes.isPrefixSupported('mailto:example.com');
+      expect(result, isFalse);
+    });
+
+    test('isPrefixSupported returns false for empty ref', () {
+      final result = supportedPrefixes.isPrefixSupported('');
+      expect(result, isFalse);
+    });
+
+    test('assertPrefix does not throw for supported prefix', () {
+      expect(
+        () => supportedPrefixes.assertPrefix('https:secure.com'),
+        returnsNormally,
+      );
+    });
+
+    test('assertPrefix throws exception for unsupported prefix', () {
+      expect(
+        () => supportedPrefixes.assertPrefix('mailto:example.com'),
+        throwsA(isA<Exception>().having(
+          (e) => e.toString(),
+          'message',
+          contains('should start with any of'),
+        )),
+      );
+    });
+
+    test('assertPrefix throws exception for empty ref', () {
+      expect(
+        () => supportedPrefixes.assertPrefix(''),
+        throwsA(isA<Exception>().having(
+          (e) => e.toString(),
+          'message',
+          contains('should start with any of'),
+        )),
+      );
+    });
+
+    test(
+        'assertPrefix includes all supported prefixes in the exception message',
+        () {
+      expect(
+        () => supportedPrefixes.assertPrefix('mailto:example.com'),
+        throwsA(isA<Exception>().having(
+          (e) => e.toString(),
+          'message',
+          contains('http:, https:, ftp:'),
+        )),
+      );
+    });
+
+    test('isPrefixSupported is case-sensitive', () {
+      final result = supportedPrefixes.isPrefixSupported('HTTP:example.com');
+      expect(result, isFalse); // Prefixes are case-sensitive.
+    });
+
+    test('supports empty prefix list', () {
+      final emptyPrefixes = RhapsodySupportedPrefixes([]);
+      final result = emptyPrefixes.isPrefixSupported('http:example.com');
+      expect(result, isFalse);
+    });
+
+    test('assertPrefix throws exception when no prefixes are supported', () {
+      final emptyPrefixes = RhapsodySupportedPrefixes([]);
+      expect(
+        () => emptyPrefixes.assertPrefix('http:example.com'),
+        throwsA(isA<Exception>().having(
+          (e) => e.toString(),
+          'message',
+          contains('should start with any of'),
+        )),
+      );
+    });
+  });
 }
