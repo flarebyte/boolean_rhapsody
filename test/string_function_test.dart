@@ -5,7 +5,7 @@ const defaultPrefixes = ["c", "v", "p", "d"];
 void main() {
   final emptyContext = RhapsodyEvaluationContext(
     variables: {},
-    prefixes: ["c"],
+    prefixes: defaultPrefixes,
   );
 
   group('BooleanRhapsodyFunctionFactory Tests', () {

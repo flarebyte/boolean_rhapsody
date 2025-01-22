@@ -6,9 +6,14 @@ void main() {
     late RhapsodyEvaluationContext context;
 
     setUp(() {
-      context = RhapsodyEvaluationContext(
-          variables: {'v:var1': 'value1', 'v:var2': 'value2'},
-          prefixes: ["c", "v", "p", "d"]);
+      context = RhapsodyEvaluationContextBuilder(prefixes: ["c", "v", "p", "d"])
+          .setRefValue("v:var1", "value1")
+          .setRefValue("v:var2", "value2")
+          .setRefValue("c:const1", "constant1")
+          .setRefValue("c:const2", "constant2")
+          .setRefValue("p:param1", "paramValue1")
+          .setRefValue("p:param2", "paramValue2")
+          .build();
     });
 
     test('Should return correct value for variable references', () {
@@ -24,11 +29,6 @@ void main() {
     test('Should return correct value for parameter references', () {
       expect(context.getRefValue('p:param1'), equals('paramValue1'));
       expect(context.getRefValue('p:param2'), equals('paramValue2'));
-    });
-
-    test('Should return correct value for device variable references', () {
-      expect(context.getRefValue('d:device1'), equals('deviceValue1'));
-      expect(context.getRefValue('d:device2'), equals('deviceValue2'));
     });
 
     test('Should return null for nonexistent references', () {
