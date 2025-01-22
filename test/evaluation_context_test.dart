@@ -7,11 +7,8 @@ void main() {
 
     setUp(() {
       context = RhapsodyEvaluationContext(
-        variables: {'v:var1': 'value1', 'v:var2': 'value2'},
-        constants: {'c:const1': 'constant1', 'c:const2': 'constant2'},
-        parameters: {'p:param1': 'paramValue1', 'p:param2': 'paramValue2'},
-        deviceVars: {'d:device1': 'deviceValue1', 'd:device2': 'deviceValue2'},
-      );
+          variables: {'v:var1': 'value1', 'v:var2': 'value2'},
+          prefixes: ["c", "v", "p", "d"]);
     });
 
     test('Should return correct value for variable references', () {
@@ -47,12 +44,8 @@ void main() {
     });
 
     test('Should handle an empty context without errors', () {
-      final emptyContext = RhapsodyEvaluationContext(
-        variables: {},
-        constants: {},
-        parameters: {},
-        deviceVars: {},
-      );
+      final emptyContext =
+          RhapsodyEvaluationContext(variables: {}, prefixes: ["v"]);
 
       expect(emptyContext.getRefValue('v:var1'), isNull);
       expect(() => emptyContext.getRefValue('x:invalid'),

@@ -23,12 +23,17 @@ void main() {
     late RhapsodyEvaluationContext context;
 
     setUp(() {
-      context = RhapsodyEvaluationContext(
-        variables: {'v:testVar': 'RhapsodicBool.truth()'},
-        constants: {'c:testConst': 'RhapsodicBool.untruth()'},
-        parameters: {'p:testParam': 'RhapsodicBool.truth()'},
-        deviceVars: {'d:testDeviceVar': 'RhapsodicBool.untruth()'},
-      );
+      context = RhapsodyEvaluationContext(variables: {
+        'v:testVar': 'RhapsodicBool.truth()',
+        'c:testConst': 'RhapsodicBool.untruth()',
+        'p:testParam': 'RhapsodicBool.truth()',
+        'd:testDeviceVar': 'RhapsodicBool.untruth()'
+      }, prefixes: [
+        "c",
+        "v",
+        "p",
+        "d"
+      ]);
     });
 
     test('And Operator evaluates correctly', () {
@@ -209,12 +214,8 @@ void main() {
     });
 
     test('Empty evaluation context works with default functions', () {
-      final emptyContext = RhapsodyEvaluationContext(
-        variables: {},
-        constants: {},
-        parameters: {},
-        deviceVars: {},
-      );
+      final emptyContext =
+          RhapsodyEvaluationContext(variables: {}, prefixes: ["c"]);
 
       final expr = RhapsodyFunctionExpression(
           MockBooleanFunction(RhapsodicBool.truth()));

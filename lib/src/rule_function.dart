@@ -50,12 +50,10 @@ abstract class BooleanRhapsodyFunction {
       throw Exception(
           "The number of parameters for the function $name was $size but was expecting a maximum of $maxSize for $refs");
     }
-    final hasUnsupportedPrefix = refs
-        .where((param) => !RhapsodyEvaluationContext.isPrefixSupported(param))
-        .isNotEmpty;
-    if (hasUnsupportedPrefix) {
+    final hasPrefix = refs.any((ref) => !ref.contains(":"));
+    if (hasPrefix) {
       throw Exception(
-          "The references for the function $name should all start with v: or c: for $refs");
+          "The references for the function $name should all start with a prefix followed by : for $refs");
     }
   }
 }
