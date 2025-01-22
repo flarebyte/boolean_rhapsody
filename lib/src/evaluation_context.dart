@@ -1,24 +1,29 @@
+class RhapsodySupportedPrefixes {
+  List<String> prefixes;
+  RhapsodySupportedPrefixes(this.prefixes);
+
+  bool isPrefixSupported(String ref) {
+    return prefixes.any((prefix) => ref.startsWith("$prefix:"));
+  }
+
+  assertPrefix(String ref) {
+    if (!isPrefixSupported(ref)) {
+      final prefixesDisplay = prefixes.map((prefix) => "$prefix:").join(", ");
+      throw Exception("The ref $ref should start with any of $prefixesDisplay");
+    }
+  }
+}
+
 /// **Class: RhapsodyEvaluationContext**
 ///
 /// A class for managing evaluation contexts in a DSL for boolean logic.
 /// Provides mechanisms to retrieve values for references categorized
 /// as variables, constants, parameters, and device variables.
 class RhapsodyEvaluationContext {
-  /// A map containing variable references (keys prefixed with `v:`)
+  /// A map containing variable references
   /// and their associated values.
   Map<String, String> variables;
-
-  /// A map containing constant references (keys prefixed with `c:`)
-  /// and their associated values.
-  Map<String, String> constants;
-
-  /// A map containing parameter references (keys prefixed with `p:`)
-  /// and their associated values.
-  Map<String, String> parameters;
-
-  /// A map containing device variable references (keys prefixed with `d:`)
-  /// and their associated values.
-  Map<String, String> deviceVars;
+  late RhapsodySupportedPrefixes supportedPrefixes;
 
   /// **Constructor:**
   ///
@@ -26,46 +31,18 @@ class RhapsodyEvaluationContext {
   ///
   /// **Parameters:**
   /// - `variables` : A map of variable references and their values.
-  /// - `constants` : A map of constant references and their values.
-  /// - `parameters`: A map of parameter references and their values.
-  /// - `deviceVars`: A map of device variable references and their values.
-  RhapsodyEvaluationContext(
-      {required this.variables,
-      required this.constants,
-      required this.parameters,
-      required this.deviceVars});
+  /// - `prefixes` : todo
+  RhapsodyEvaluationContext({
+    required this.variables,
+    required List<String> prefixes,
+  }) {
+    supportedPrefixes = RhapsodySupportedPrefixes(prefixes);
+  }
 
-  /// **Method: getRefValue**
-  ///
-  /// Retrieves the value corresponding to a given reference string (`ref`).
-  ///
-  /// **Parameters:**
-  /// - `ref` : A reference string that must begin with one of the following prefixes:
-  ///   - `v:` for variables
-  ///   - `c:` for constants
-  ///   - `p:` for parameters
-  ///   - `d:` for device variables
-  ///
-  /// **Returns:**
-  /// - The value associated with the given reference string, or `null`
-  ///   if the reference does not exist in the corresponding map.
-  ///
-  /// **Throws:**
-  /// - `Exception` : If the `ref` does not start with a valid prefix (`v:`, `c:`, `p:`, `d:`).
   String? getRefValue(String ref) {
-    if (ref.startsWith('v:')) {
-      return variables[ref];
-    }
-    if (ref.startsWith('c:')) {
-      return constants[ref];
-    }
-    if (ref.startsWith('p:')) {
-      return parameters[ref];
-    }
-    if (ref.startsWith('d:')) {
-      return deviceVars[ref];
-    }
-    throw Exception("The ref $ref should start with v:, c:, p:, or d:");
+    supportedPrefixes.assertPrefix(ref);
+
+    return variables[ref];
   }
 
   bool getRefValueAsBool(String? ref, bool defaultValue) {
@@ -104,51 +81,27 @@ class RhapsodyEvaluationContext {
       return value.split(separator).map((field) => field.trim()).toList();
     }
   }
-
-  static bool isPrefixSupported(String ref) {
-    return ref.startsWith('v:') ||
-        ref.startsWith('c:') ||
-        ref.startsWith('p:') ||
-        ref.startsWith('d:');
-  }
 }
 
 class RhapsodyEvaluationContextBuilder {
+  late RhapsodySupportedPrefixes supportedPrefixes;
   Map<String, String> variables = {};
 
-  Map<String, String> constants = {};
-
-  Map<String, String> parameters = {};
-
-  Map<String, String> deviceVars = {};
-
-  RhapsodyEvaluationContextBuilder();
+  RhapsodyEvaluationContextBuilder({
+    required List<String> prefixes,
+  }) {
+    supportedPrefixes = RhapsodySupportedPrefixes(prefixes);
+  }
 
   RhapsodyEvaluationContextBuilder setRefValue(String ref, String value) {
-    if (ref.startsWith('v:')) {
-      variables[ref] = value;
-      return this;
-    }
-    if (ref.startsWith('c:')) {
-      constants[ref] = value;
-      return this;
-    }
-    if (ref.startsWith('p:')) {
-      parameters[ref] = value;
-      return this;
-    }
-    if (ref.startsWith('d:')) {
-      deviceVars[ref] = value;
-      return this;
-    }
-    throw Exception("The ref $ref should start with v:, c:, p:, or d:");
+    supportedPrefixes.assertPrefix(ref);
+
+    variables[ref] = value;
+    return this;
   }
 
   RhapsodyEvaluationContext build() {
     return RhapsodyEvaluationContext(
-        constants: constants,
-        variables: variables,
-        parameters: parameters,
-        deviceVars: deviceVars);
+        variables: variables, prefixes: supportedPrefixes.prefixes);
   }
 }
