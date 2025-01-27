@@ -2,6 +2,68 @@ import 'package:boolean_rhapsody/boolean_rhapsody.dart';
 import 'package:test/test.dart';
 
 void main() {
+  group('RhapsodyEvaluationContextBuilder', () {
+    late RhapsodyEvaluationContextBuilder builder;
+
+    setUp(() {
+      builder = RhapsodyEvaluationContextBuilder(prefixes: ['valid']);
+    });
+
+    test('should set default value when ref does not exist', () {
+      builder.transformRefValue(
+        'valid:example',
+        (value) => value.toUpperCase(),
+        'defaultValue',
+      );
+
+      expect(builder.variables['valid:example'], equals('defaultValue'));
+    });
+
+    test('should transform existing value when ref exists', () {
+      builder.variables['valid:example'] = 'existingValue';
+
+      builder.transformRefValue(
+        'valid:example',
+        (value) => value.toUpperCase(),
+        'defaultValue',
+      );
+
+      expect(builder.variables['valid:example'], equals('EXISTINGVALUE'));
+    });
+
+    test('should throw an exception for unsupported prefixes', () {
+      expect(
+        () => builder.transformRefValue(
+          'invalid:example',
+          (value) => value.toUpperCase(),
+          'defaultValue',
+        ),
+        throwsA(isA<Exception>()),
+      );
+    });
+
+    test('should not overwrite existing value if no transformation occurs', () {
+      builder.variables['valid:example'] = 'unchanged';
+
+      builder.transformRefValue(
+        'valid:example',
+        (value) => value, // Identity transformation
+        'defaultValue',
+      );
+
+      expect(builder.variables['valid:example'], equals('unchanged'));
+    });
+
+    test('should handle empty defaultValue', () {
+      builder.transformRefValue(
+        'valid:example',
+        (value) => value.toUpperCase(),
+        '',
+      );
+
+      expect(builder.variables['valid:example'], equals(''));
+    });
+  });
   group('RhapsodyEvaluationContext Tests', () {
     late RhapsodyEvaluationContext context;
 
