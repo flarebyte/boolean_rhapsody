@@ -125,6 +125,8 @@ class RhapsodyEvaluationContext {
   }
 }
 
+typedef RhapsodyStringTransformer = String Function(String);
+
 /// **Class: RhapsodyEvaluationContextBuilder**
 ///
 /// A builder class for creating `RhapsodyEvaluationContext` instances.
@@ -162,6 +164,18 @@ class RhapsodyEvaluationContextBuilder {
   RhapsodyEvaluationContextBuilder setRefValue(String ref, String value) {
     supportedPrefixes.assertPrefix(ref);
     variables[ref] = value;
+    return this;
+  }
+
+  RhapsodyEvaluationContextBuilder transformRefValue(
+      String ref, RhapsodyStringTransformer transform, String defaultValue) {
+    supportedPrefixes.assertPrefix(ref);
+    final previous = variables[ref];
+    if (previous == null) {
+      variables[ref] = defaultValue;
+    } else {
+      variables[ref] = transform(previous);
+    }
     return this;
   }
 
