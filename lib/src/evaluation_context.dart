@@ -167,15 +167,42 @@ class RhapsodyEvaluationContextBuilder {
     return this;
   }
 
+  /// Updates the value of a reference in the evaluation context, applying a
+  /// transformation if the reference already exists or setting a default value otherwise.
+  ///
+  /// The method ensures the `ref` value begins with a supported prefix before
+  /// proceeding. If the reference (`ref`) is not present in the `variables` map,
+  /// the `defaultValue` is assigned. Otherwise, the provided `transform` function
+  /// is applied to the existing value.
+  ///
+  /// - Parameters:
+  ///   - `ref`: The reference key to be updated. It must begin with a supported prefix.
+  ///   - `transform`: A function that transforms the current value of the reference,
+  ///      if it exists.
+  ///   - `defaultValue`: The value to be assigned if the reference does not
+  ///      currently exist in the `variables` map.
+  ///
+  /// - Returns:
+  ///   This builder instance (`RhapsodyEvaluationContextBuilder`) to allow
+  ///   method chaining.
+  ///
+  /// - Throws:
+  ///   An exception if the `ref` does not start with a supported prefix.
   RhapsodyEvaluationContextBuilder transformRefValue(
       String ref, RhapsodyStringTransformer transform, String defaultValue) {
-    supportedPrefixes.assertPrefix(ref);
-    final previous = variables[ref];
+    supportedPrefixes
+        .assertPrefix(ref); // Validates that the prefix is supported.
+    final previous = variables[ref]; // Gets the current value of the reference.
+
     if (previous == null) {
+      // If the reference does not exist, set the default value.
       variables[ref] = defaultValue;
     } else {
+      // If the reference exists, apply the transform function.
       variables[ref] = transform(previous);
     }
+
+    // Returns the current builder instance for method chaining.
     return this;
   }
 
