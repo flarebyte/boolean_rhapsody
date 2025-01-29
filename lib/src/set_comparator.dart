@@ -15,7 +15,7 @@ class RhapsodySetEqualsToComparator extends RhapsodySetComparator {
 
   @override
   bool compare(Set<String> value, Set<String> threshold) {
-    return value == threshold;
+    return value.difference(threshold).isEmpty;
   }
 }
 

@@ -11,6 +11,8 @@ void main() {
 
     test('equals should return true when sets are identical', () {
       expect(RhapsodySetComparators.equals.compare(setA, setABis), isTrue);
+      expect(RhapsodySetComparators.equals.compare(setABis, setA), isTrue);
+      expect(RhapsodySetComparators.equals.compare({}, {}), isTrue);
     });
 
     test('equals should return false when sets are different', () {
