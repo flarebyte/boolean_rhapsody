@@ -69,3 +69,5 @@ export 'src/date_time_function.dart';
 export 'src/date_time_comparator.dart';
 export 'src/number_function.dart';
 export 'src/number_comparator.dart';
+export 'src/set_comparator.dart';
+export 'src/set_function.dart';
