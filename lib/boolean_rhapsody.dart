@@ -62,6 +62,7 @@ export 'src/rule_evaluator.dart';
 export 'src/evaluation_context.dart';
 export 'src/rule_expession.dart';
 export 'src/string_function.dart';
+export 'src/string_comparator.dart';
 export 'src/function_factory.dart';
 export 'src/fuzzy_boolean.dart';
 export 'src/date_time_function.dart';
