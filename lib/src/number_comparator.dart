@@ -75,16 +75,30 @@ class RhapsodyNotEqualToComparator extends RhapsodyNumberComparator {
   }
 }
 
-/// A static class providing access to various number comparators.
+/// A static class providing access to common numeric comparators.
+///
+/// These comparators are used to evaluate relationships between numeric values,
+/// such as greater than, less than, or equality checks.
 class RhapsodyNumberComparators {
+  /// Comparator that checks if the first number is greater than the second.
   static final RhapsodyNumberComparator greaterThan =
       RhapsodyGreaterThanComparator();
+
+  /// Comparator that checks if the first number is greater than or equal to the second.
   static final RhapsodyNumberComparator greaterThanOrEqual =
       RhapsodyGreaterThanOrEqualComparator();
+
+  /// Comparator that checks if the first number is less than the second.
   static final RhapsodyNumberComparator lessThan = RhapsodyLessThanComparator();
+
+  /// Comparator that checks if the first number is less than or equal to the second.
   static final RhapsodyNumberComparator lessThanOrEqual =
       RhapsodyLessThanOrEqualComparator();
+
+  /// Comparator that checks if two numbers are equal.
   static final RhapsodyNumberComparator equalTo = RhapsodyEqualToComparator();
+
+  /// Comparator that checks if two numbers are not equal.
   static final RhapsodyNumberComparator notEqualTo =
       RhapsodyNotEqualToComparator();
 }

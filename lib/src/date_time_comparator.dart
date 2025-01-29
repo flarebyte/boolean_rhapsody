@@ -77,18 +77,32 @@ class RhapsodyDateTimeNotEqualToComparator extends RhapsodyDateTimeComparator {
   }
 }
 
-/// A static class providing access to various DateTime comparators.
+/// A static class providing access to common [DateTime] comparators.
+///
+/// These comparators evaluate relationships between two [DateTime] values,
+/// such as ordering and equality checks.
 class RhapsodyDateTimeComparators {
+  /// Comparator that checks if the first [DateTime] is later than the second.
   static final RhapsodyDateTimeComparator greaterThan =
       RhapsodyDateTimeGreaterThanComparator();
+
+  /// Comparator that checks if the first [DateTime] is later than or equal to the second.
   static final RhapsodyDateTimeComparator greaterThanOrEqual =
       RhapsodyDateTimeGreaterThanOrEqualComparator();
+
+  /// Comparator that checks if the first [DateTime] is earlier than the second.
   static final RhapsodyDateTimeComparator lessThan =
       RhapsodyDateTimeLessThanComparator();
+
+  /// Comparator that checks if the first [DateTime] is earlier than or equal to the second.
   static final RhapsodyDateTimeComparator lessThanOrEqual =
       RhapsodyDateTimeLessThanOrEqualComparator();
+
+  /// Comparator that checks if two [DateTime] values are equal.
   static final RhapsodyDateTimeComparator equalTo =
       RhapsodyDateTimeEqualToComparator();
+
+  /// Comparator that checks if two [DateTime] values are not equal.
   static final RhapsodyDateTimeComparator notEqualTo =
       RhapsodyDateTimeNotEqualToComparator();
 }

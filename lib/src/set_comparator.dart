@@ -52,12 +52,22 @@ class RhapsodySetIsDisjointToComparator extends RhapsodySetComparator {
   }
 }
 
-/// A static class providing access to various number comparators.
+/// A static class providing access to common set comparators.
+///
+/// These comparators evaluate relationships between two sets,
+/// such as equality, subset, superset, and disjoint checks.
 class RhapsodySetComparators {
+  /// Comparator that checks if two sets are equal.
   static final RhapsodySetComparator equals = RhapsodySetEqualsToComparator();
+
+  /// Comparator that checks if the first set is a subset of the second.
   static final RhapsodySetComparator isSubset = RhapsodyIsSubsetOfComparator();
+
+  /// Comparator that checks if the first set is a superset of the second.
   static final RhapsodySetComparator isSuperset =
       RhapsodyIsSupersetOfComparator();
+
+  /// Comparator that checks if two sets have no elements in common.
   static final RhapsodySetComparator isDisjoint =
       RhapsodySetIsDisjointToComparator();
 }

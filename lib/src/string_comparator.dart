@@ -61,14 +61,24 @@ class RhapsodyStringEqualsComparator extends RhapsodyStringComparator {
   }
 }
 
-/// A static class providing access to various string comparators.
+/// A static class providing access to common string comparators.
+///
+/// These comparators evaluate relationships between strings, such as containment,
+/// prefix, suffix, and equality checks.
 class RhapsodyStringComparators {
+  /// Comparator that checks if a string contains a specified substring.
   static final RhapsodyStringComparator contains =
       RhapsodyStringContainsComparator();
+
+  /// Comparator that checks if a string starts with a specified prefix.
   static final RhapsodyStringComparator startsWith =
       RhapsodyStringStartsWithComparator();
+
+  /// Comparator that checks if a string ends with a specified suffix.
   static final RhapsodyStringComparator endsWith =
       RhapsodyStringEndsWithComparator();
+
+  /// Comparator that checks if two strings are equal.
   static final RhapsodyStringComparator equals =
       RhapsodyStringEqualsComparator();
 }
