@@ -10,7 +10,7 @@ abstract class RhapsodyDateTimeComparator {
 }
 
 /// Comparator for checking if a value is greater than a threshold.
-class RhapsodyGreaterThanComparator extends RhapsodyDateTimeComparator {
+class RhapsodyDateTimeGreaterThanComparator extends RhapsodyDateTimeComparator {
   @override
   String get name => 'greater than';
 
@@ -21,7 +21,8 @@ class RhapsodyGreaterThanComparator extends RhapsodyDateTimeComparator {
 }
 
 /// Comparator for checking if a value is greater than or equal to a threshold.
-class RhapsodyGreaterThanOrEqualComparator extends RhapsodyDateTimeComparator {
+class RhapsodyDateTimeGreaterThanOrEqualComparator
+    extends RhapsodyDateTimeComparator {
   @override
   String get name => 'greater than equals';
 
@@ -32,7 +33,7 @@ class RhapsodyGreaterThanOrEqualComparator extends RhapsodyDateTimeComparator {
 }
 
 /// Comparator for checking if a value is less than a threshold.
-class RhapsodyLessThanComparator extends RhapsodyDateTimeComparator {
+class RhapsodyDateTimeLessThanComparator extends RhapsodyDateTimeComparator {
   @override
   String get name => 'less than';
 
@@ -43,7 +44,8 @@ class RhapsodyLessThanComparator extends RhapsodyDateTimeComparator {
 }
 
 /// Comparator for checking if a value is less than or equal to a threshold.
-class RhapsodyLessThanOrEqualComparator extends RhapsodyDateTimeComparator {
+class RhapsodyDateTimeLessThanOrEqualComparator
+    extends RhapsodyDateTimeComparator {
   @override
   String get name => 'less than equals';
 
@@ -54,7 +56,7 @@ class RhapsodyLessThanOrEqualComparator extends RhapsodyDateTimeComparator {
 }
 
 /// Comparator for checking if a value is equal to a threshold.
-class RhapsodyEqualToComparator extends RhapsodyDateTimeComparator {
+class RhapsodyDateTimeEqualToComparator extends RhapsodyDateTimeComparator {
   @override
   String get name => 'equals';
 
@@ -65,7 +67,7 @@ class RhapsodyEqualToComparator extends RhapsodyDateTimeComparator {
 }
 
 /// Comparator for checking if a value is not equal to a threshold.
-class RhapsodyNotEqualToComparator extends RhapsodyDateTimeComparator {
+class RhapsodyDateTimeNotEqualToComparator extends RhapsodyDateTimeComparator {
   @override
   String get name => 'not equals';
 
@@ -78,14 +80,15 @@ class RhapsodyNotEqualToComparator extends RhapsodyDateTimeComparator {
 /// A static class providing access to various DateTime comparators.
 class RhapsodyDateTimeComparators {
   static final RhapsodyDateTimeComparator greaterThan =
-      RhapsodyGreaterThanComparator();
+      RhapsodyDateTimeGreaterThanComparator();
   static final RhapsodyDateTimeComparator greaterThanOrEqual =
-      RhapsodyGreaterThanOrEqualComparator();
+      RhapsodyDateTimeGreaterThanOrEqualComparator();
   static final RhapsodyDateTimeComparator lessThan =
-      RhapsodyLessThanComparator();
+      RhapsodyDateTimeLessThanComparator();
   static final RhapsodyDateTimeComparator lessThanOrEqual =
-      RhapsodyLessThanOrEqualComparator();
-  static final RhapsodyDateTimeComparator equalTo = RhapsodyEqualToComparator();
+      RhapsodyDateTimeLessThanOrEqualComparator();
+  static final RhapsodyDateTimeComparator equalTo =
+      RhapsodyDateTimeEqualToComparator();
   static final RhapsodyDateTimeComparator notEqualTo =
-      RhapsodyNotEqualToComparator();
+      RhapsodyDateTimeNotEqualToComparator();
 }

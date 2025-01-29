@@ -5,7 +5,7 @@ const defaultPrefixes = ["c", "v", "p", "d"];
 void main() {
   group('DateTimeRhapsodyFunction', () {
     final RhapsodyDateTimeComparator lessThanComparator =
-        RhapsodyLessThanComparator();
+        RhapsodyDateTimeComparators.lessThan;
 
     test('should evaluate as truthy when comparator condition is satisfied',
         () {
