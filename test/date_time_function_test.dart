@@ -21,7 +21,7 @@ void main() {
               .setRefValue(threshold, '2025-12-31T06:12:33Z')
               .build());
 
-      expect(result.isTruthy(), isTrue);
+      expect(result.isTrue(), isTrue);
     });
 
     test(
@@ -38,7 +38,7 @@ void main() {
               .setRefValue(threshold, '2025-01-01T06:12:33Z')
               .build());
 
-      expect(result.isTruthy(), isFalse);
+      expect(result.isFalse(), isTrue);
     });
 
     test(
@@ -55,7 +55,7 @@ void main() {
               .setRefValue(threshold, '2025-01-01T06:12:33Z')
               .build());
 
-      expect(result.isTruthy(), isFalse);
+      expect(result.isUntruthy(), isTrue);
     });
 
     test(
@@ -69,7 +69,7 @@ void main() {
       final result = function.isTrue(
           RhapsodyEvaluationContextBuilder(prefixes: defaultPrefixes).build());
 
-      expect(result.isTruthy(), isFalse);
+      expect(result.isUntruthy(), isTrue);
     });
 
     test('should throw an error if refs do not contain exactly two elements',
