@@ -66,3 +66,5 @@ export 'src/function_factory.dart';
 export 'src/fuzzy_boolean.dart';
 export 'src/date_time_function.dart';
 export 'src/date_time_comparator.dart';
+export 'src/number_function.dart';
+export 'src/number_comparator.dart';
