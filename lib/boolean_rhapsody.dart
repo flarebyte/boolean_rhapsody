@@ -71,3 +71,4 @@ export 'src/number_function.dart';
 export 'src/number_comparator.dart';
 export 'src/set_comparator.dart';
 export 'src/set_function.dart';
+export 'src/list_size_function.dart';

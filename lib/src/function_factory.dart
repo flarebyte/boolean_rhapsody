@@ -4,7 +4,7 @@ import 'package:boolean_rhapsody/src/string_comparator.dart';
 
 import 'date_time_comparator.dart';
 import 'date_time_function.dart';
-import 'list_function.dart';
+import 'list_size_function.dart';
 import 'number_comparator.dart';
 import 'number_function.dart';
 import 'rule_function.dart';
