@@ -4,21 +4,21 @@ import 'supported_prefixes.dart';
 ///
 /// Variables are expected in the format `<prefix>:<variableName>`. The prefix must be one of the
 /// supported prefixes, and the variable name is validated using the provided function.
-class RhapsodicParserOptions {
+class RhapsodyParserOptions {
   final List<String> prefixes;
   final List<String> functions;
   final bool Function(String) variableValidator;
   final RhapsodySupportedPrefixes _supportedPrefixes;
   final Set<String> _functionsSet;
 
-  /// Creates an instance of [RhapsodicParserOptions] with the specified [prefixes],
+  /// Creates an instance of [RhapsodyParserOptions] with the specified [prefixes],
   /// [functions], and a [variableValidator] function.
   ///
   /// The [prefixes] are used to determine valid variable identifiers. Each variable
   /// must be prefixed with one of these values followed by a colon (e.g. `myprefix:variable`).
   /// The [functions] list is converted into a set for efficient lookup.
   /// The [variableValidator] should validate the variable name (the part after `:`).
-  RhapsodicParserOptions({
+  RhapsodyParserOptions({
     required this.prefixes,
     required this.functions,
     required this.variableValidator,
