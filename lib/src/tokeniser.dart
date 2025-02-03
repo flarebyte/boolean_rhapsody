@@ -1,5 +1,6 @@
 import 'parser_options.dart';
 import 'token.dart';
+import 'tokeniser_helper.dart';
 
 /// Defines all supported token types for the Rhapsody language.
 class TokenTypes {
@@ -20,27 +21,14 @@ class TokenTypes {
 ///
 /// This class converts a source [code] string into a sequence of [RhapsodyToken]s,
 /// preserving positional information for accurate error reporting and debugging.
-///
-/// The tokeniser supports:
-/// - Line comments initiated by `#` and now captures them as tokens.
-/// - Logical operators: `or`, `and`, and `not`.
-/// - Function calls with arguments, e.g. `func(a, b)`.
-/// - Grouping via parentheses.
-/// - Rule expressions like `rule 23 = (func1(a) or func2(b)) and not rule42;`.
+/// It now captures line comments as tokens and uses constants for token types.
 class RhapsodyTokeniser {
   final RhapsodyParserOptions options;
 
   /// Creates an instance of [RhapsodyTokeniser] with the provided [options].
-  ///
-  /// **Insight:** The [options] control variable validation and function lookup;
-  /// ensure they are correctly configured to match your language's rules.
   RhapsodyTokeniser(this.options);
 
   /// Parses the provided [code] into a list of [RhapsodyToken]s.
-  ///
-  /// The [code] is processed character-by-character. It skips over whitespace,
-  /// but now captures comments as tokens. It creates tokens for identifiers,
-  /// numbers, operators, and punctuation, with full position tracking.
   List<RhapsodyToken> parse(String code) {
     final List<RhapsodyToken> tokens = [];
     int index = 0;
@@ -51,7 +39,7 @@ class RhapsodyTokeniser {
       final String currentChar = code[index];
 
       // Skip whitespace while updating position.
-      if (_isWhitespace(currentChar)) {
+      if (isWhitespace(currentChar)) {
         if (currentChar == '\n') {
           line++;
           column = 0;
@@ -87,8 +75,8 @@ class RhapsodyTokeniser {
       }
 
       // Identify identifiers and keywords.
-      if (_isLetter(currentChar)) {
-        while (index < code.length && _isLetterOrDigit(code[index])) {
+      if (isLetter(currentChar)) {
+        while (index < code.length && isLetterOrDigit(code[index])) {
           index++;
           column++;
         }
@@ -111,8 +99,8 @@ class RhapsodyTokeniser {
       }
 
       // Identify numeric literals.
-      if (_isDigit(currentChar)) {
-        while (index < code.length && _isDigit(code[index])) {
+      if (isDigit(currentChar)) {
+        while (index < code.length && isDigit(code[index])) {
           index++;
           column++;
         }
@@ -174,35 +162,15 @@ class RhapsodyTokeniser {
   }
 
   /// Reconstructs the source code from a list of [tokens].
-  ///
-  /// **Tip:** This method heuristically reinserts spaces between tokens when needed,
-  /// which may not perfectly match the original formatting.
   String unparse(List<RhapsodyToken> tokens) {
     if (tokens.isEmpty) return '';
     final StringBuffer buffer = StringBuffer();
     for (int i = 0; i < tokens.length; i++) {
-      if (i > 0 && _needsSpace(tokens[i - 1], tokens[i])) {
+      if (i > 0 && needsSpace(tokens[i - 1], tokens[i])) {
         buffer.write(' ');
       }
       buffer.write(tokens[i].text);
     }
     return buffer.toString();
-  }
-
-  // --- Private helper methods ---
-
-  bool _isWhitespace(String char) =>
-      char == ' ' || char == '\t' || char == '\n' || char == '\r';
-
-  bool _isLetter(String char) => RegExp(r'[a-zA-Z]').hasMatch(char);
-
-  bool _isDigit(String char) => RegExp(r'[0-9]').hasMatch(char);
-
-  bool _isLetterOrDigit(String char) => _isLetter(char) || _isDigit(char);
-
-  bool _needsSpace(RhapsodyToken previous, RhapsodyToken current) {
-    // Insert a space if both tokens are alphanumeric.
-    return RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(previous.text) &&
-        RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(current.text);
   }
 }

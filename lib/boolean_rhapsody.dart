@@ -76,3 +76,4 @@ export 'src/parser_options.dart';
 export 'src/supported_prefixes.dart';
 export 'src/token.dart';
 export 'src/tokeniser.dart';
+export 'src/tokeniser_helper.dart';
