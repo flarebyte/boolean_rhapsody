@@ -36,16 +36,16 @@ void main() {
       //   Identifier "func1", ParenOpen "(", Identifier "a", ParenClose ")"
       expect(tokens.length, equals(4));
       expect(tokens[0].text, equals('func1'));
-      expect(tokens[0].type, equals('Identifier'));
+      expect(tokens[0].type, equals(TokenTypes.identifier));
 
       expect(tokens[1].text, equals('('));
-      expect(tokens[1].type, equals('ParenOpen'));
+      expect(tokens[1].type, equals(TokenTypes.parenOpen));
 
       expect(tokens[2].text, equals('a'));
-      expect(tokens[2].type, equals('Identifier'));
+      expect(tokens[2].type, equals(TokenTypes.identifier));
 
       expect(tokens[3].text, equals(')'));
-      expect(tokens[3].type, equals('ParenClose'));
+      expect(tokens[3].type, equals(TokenTypes.parenClose));
     });
 
     test('parses operators correctly', () {
@@ -56,23 +56,33 @@ void main() {
       //   Operator "or", Operator "not", Identifier "c"
       expect(tokens.length, equals(6));
       expect(tokens[0].text, equals('a'));
+      expect(tokens[0].type, equals(TokenTypes.identifier));
       expect(tokens[1].text, equals('and'));
-      expect(tokens[1].type, equals('Operator'));
+      expect(tokens[1].type, equals(TokenTypes.operatorType));
       expect(tokens[2].text, equals('b'));
+      expect(tokens[2].type, equals(TokenTypes.identifier));
       expect(tokens[3].text, equals('or'));
-      expect(tokens[3].type, equals('Operator'));
+      expect(tokens[3].type, equals(TokenTypes.operatorType));
       expect(tokens[4].text, equals('not'));
-      expect(tokens[4].type, equals('Operator'));
+      expect(tokens[4].type, equals(TokenTypes.operatorType));
       expect(tokens[5].text, equals('c'));
+      expect(tokens[5].type, equals(TokenTypes.identifier));
     });
 
-    test('skips comments correctly', () {
+    test('extracts comments correctly', () {
       final code = 'a # this is a comment \n b';
       final tokens = tokeniser.parse(code);
-      // Expected tokens: Identifier "a" and Identifier "b"
-      expect(tokens.length, equals(2));
+      // Expected tokens:
+      //   Identifier "a", Comment "# this is a comment ", Identifier "b"
+      expect(tokens.length, equals(3));
       expect(tokens[0].text, equals('a'));
-      expect(tokens[1].text, equals('b'));
+      expect(tokens[0].type, equals(TokenTypes.identifier));
+
+      expect(tokens[1].text, equals('# this is a comment '));
+      expect(tokens[1].type, equals(TokenTypes.comment));
+
+      expect(tokens[2].text, equals('b'));
+      expect(tokens[2].type, equals(TokenTypes.identifier));
     });
 
     test('parses numeric literals', () {
@@ -80,9 +90,9 @@ void main() {
       final tokens = tokeniser.parse(code);
       expect(tokens.length, equals(2));
       expect(tokens[0].text, equals('123'));
-      expect(tokens[0].type, equals('Number'));
+      expect(tokens[0].type, equals(TokenTypes.number));
       expect(tokens[1].text, equals('456'));
-      expect(tokens[1].type, equals('Number'));
+      expect(tokens[1].type, equals(TokenTypes.number));
     });
 
     test('parses a complex rule expression with semicolon', () {
@@ -110,35 +120,41 @@ void main() {
       expect(tokens.length, equals(18));
 
       expect(tokens[0].text, equals('rule'));
+      expect(tokens[0].type, equals(TokenTypes.identifier));
       expect(tokens[1].text, equals('23'));
-      expect(tokens[1].type, equals('Number'));
+      expect(tokens[1].type, equals(TokenTypes.number));
       expect(tokens[2].text, equals('='));
-      expect(tokens[2].type, equals('Equal'));
+      expect(tokens[2].type, equals(TokenTypes.equal));
       expect(tokens[3].text, equals('('));
-      expect(tokens[3].type, equals('ParenOpen'));
+      expect(tokens[3].type, equals(TokenTypes.parenOpen));
       expect(tokens[4].text, equals('func1'));
+      expect(tokens[4].type, equals(TokenTypes.identifier));
       expect(tokens[5].text, equals('('));
-      expect(tokens[5].type, equals('ParenOpen'));
+      expect(tokens[5].type, equals(TokenTypes.parenOpen));
       expect(tokens[6].text, equals('a'));
+      expect(tokens[6].type, equals(TokenTypes.identifier));
       expect(tokens[7].text, equals(')'));
-      expect(tokens[7].type, equals('ParenClose'));
+      expect(tokens[7].type, equals(TokenTypes.parenClose));
       expect(tokens[8].text, equals('or'));
-      expect(tokens[8].type, equals('Operator'));
+      expect(tokens[8].type, equals(TokenTypes.operatorType));
       expect(tokens[9].text, equals('func2'));
+      expect(tokens[9].type, equals(TokenTypes.identifier));
       expect(tokens[10].text, equals('('));
-      expect(tokens[10].type, equals('ParenOpen'));
+      expect(tokens[10].type, equals(TokenTypes.parenOpen));
       expect(tokens[11].text, equals('b'));
+      expect(tokens[11].type, equals(TokenTypes.identifier));
       expect(tokens[12].text, equals(')'));
-      expect(tokens[12].type, equals('ParenClose'));
+      expect(tokens[12].type, equals(TokenTypes.parenClose));
       expect(tokens[13].text, equals(')'));
-      expect(tokens[13].type, equals('ParenClose'));
+      expect(tokens[13].type, equals(TokenTypes.parenClose));
       expect(tokens[14].text, equals('and'));
-      expect(tokens[14].type, equals('Operator'));
+      expect(tokens[14].type, equals(TokenTypes.operatorType));
       expect(tokens[15].text, equals('not'));
-      expect(tokens[15].type, equals('Operator'));
+      expect(tokens[15].type, equals(TokenTypes.operatorType));
       expect(tokens[16].text, equals('rule42'));
+      expect(tokens[16].type, equals(TokenTypes.identifier));
       expect(tokens[17].text, equals(';'));
-      expect(tokens[17].type, equals('Semicolon'));
+      expect(tokens[17].type, equals(TokenTypes.semicolon));
     });
 
     test('unparses tokens back into code', () {
