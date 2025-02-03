@@ -75,3 +75,4 @@ export 'src/list_size_function.dart';
 export 'src/parser_options.dart';
 export 'src/supported_prefixes.dart';
 export 'src/token.dart';
+export 'src/tokeniser.dart';

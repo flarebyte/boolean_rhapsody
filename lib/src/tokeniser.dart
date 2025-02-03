@@ -57,7 +57,8 @@ class RhapsodyTokeniser {
       }
 
       final int tokenStartIndex = index;
-      final RhapsodyPosition startPosition = RhapsodyPosition(row: line, column: column);
+      final RhapsodyPosition startPosition =
+          RhapsodyPosition(row: line, column: column);
 
       // Identify identifiers and keywords.
       if (_isLetter(currentChar)) {
@@ -71,7 +72,8 @@ class RhapsodyTokeniser {
         if (tokenText == 'and' || tokenText == 'or' || tokenText == 'not') {
           tokenType = 'Operator';
         }
-        final RhapsodyPosition endPosition = RhapsodyPosition(row: line, column: column);
+        final RhapsodyPosition endPosition =
+            RhapsodyPosition(row: line, column: column);
         tokens.add(RhapsodyToken(
           type: tokenType,
           text: tokenText,
@@ -90,7 +92,8 @@ class RhapsodyTokeniser {
           column++;
         }
         final String tokenText = code.substring(tokenStartIndex, index);
-        final RhapsodyPosition endPosition = RhapsodyPosition(row: line, column: column);
+        final RhapsodyPosition endPosition =
+            RhapsodyPosition(row: line, column: column);
         tokens.add(RhapsodyToken(
           type: 'Number',
           text: tokenText,
@@ -129,7 +132,8 @@ class RhapsodyTokeniser {
       index++;
       column++;
       final String tokenText = code.substring(tokenStartIndex, index);
-      final RhapsodyPosition endPosition = RhapsodyPosition(row: line, column: column);
+      final RhapsodyPosition endPosition =
+          RhapsodyPosition(row: line, column: column);
       tokens.add(RhapsodyToken(
         type: tokenType,
         text: tokenText,
