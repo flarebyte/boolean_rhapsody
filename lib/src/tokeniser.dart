@@ -1,13 +1,28 @@
 import 'parser_options.dart';
 import 'token.dart';
 
+/// Defines all supported token types for the Rhapsody language.
+class TokenTypes {
+  static const String identifier = 'Identifier';
+  static const String number = 'Number';
+  static const String operatorType = 'Operator';
+  static const String equal = 'Equal';
+  static const String parenOpen = 'ParenOpen';
+  static const String parenClose = 'ParenClose';
+  static const String comma = 'Comma';
+  static const String semicolon = 'Semicolon';
+  static const String colon = 'Colon';
+  static const String comment = 'Comment';
+  static const String unknown = 'Unknown';
+}
+
 /// A lightweight tokeniser for Rhapsody rule expressions.
 ///
 /// This class converts a source [code] string into a sequence of [RhapsodyToken]s,
 /// preserving positional information for accurate error reporting and debugging.
 ///
 /// The tokeniser supports:
-/// - Line comments initiated by `#`.
+/// - Line comments initiated by `#` and now captures them as tokens.
 /// - Logical operators: `or`, `and`, and `not`.
 /// - Function calls with arguments, e.g. `func(a, b)`.
 /// - Grouping via parentheses.
@@ -23,9 +38,9 @@ class RhapsodyTokeniser {
 
   /// Parses the provided [code] into a list of [RhapsodyToken]s.
   ///
-  /// The [code] is processed character-by-character. It skips over whitespace and
-  /// comments, and creates tokens for identifiers, numbers, operators, and punctuation.
-  /// Each token records its position, which is useful for later stages of parsing.
+  /// The [code] is processed character-by-character. It skips over whitespace,
+  /// but now captures comments as tokens. It creates tokens for identifiers,
+  /// numbers, operators, and punctuation, with full position tracking.
   List<RhapsodyToken> parse(String code) {
     final List<RhapsodyToken> tokens = [];
     int index = 0;
@@ -35,7 +50,7 @@ class RhapsodyTokeniser {
     while (index < code.length) {
       final String currentChar = code[index];
 
-      // Skip whitespace.
+      // Skip whitespace while updating position.
       if (_isWhitespace(currentChar)) {
         if (currentChar == '\n') {
           line++;
@@ -47,18 +62,29 @@ class RhapsodyTokeniser {
         continue;
       }
 
-      // Skip line comments starting with '#'.
+      final int tokenStartIndex = index;
+      final RhapsodyPosition startPosition =
+          RhapsodyPosition(row: line, column: column);
+
+      // Capture comments starting with '#'.
       if (currentChar == '#') {
         while (index < code.length && code[index] != '\n') {
           index++;
           column++;
         }
+        final String tokenText = code.substring(tokenStartIndex, index);
+        final RhapsodyPosition endPosition =
+            RhapsodyPosition(row: line, column: column);
+        tokens.add(RhapsodyToken(
+          type: TokenTypes.comment,
+          text: tokenText,
+          startIndex: tokenStartIndex,
+          endIndex: index,
+          startPosition: startPosition,
+          endPosition: endPosition,
+        ));
         continue;
       }
-
-      final int tokenStartIndex = index;
-      final RhapsodyPosition startPosition =
-          RhapsodyPosition(row: line, column: column);
 
       // Identify identifiers and keywords.
       if (_isLetter(currentChar)) {
@@ -67,10 +93,9 @@ class RhapsodyTokeniser {
           column++;
         }
         final String tokenText = code.substring(tokenStartIndex, index);
-        // Operators like 'and', 'or', and 'not' are treated specially.
-        String tokenType = 'Identifier';
+        String tokenType = TokenTypes.identifier;
         if (tokenText == 'and' || tokenText == 'or' || tokenText == 'not') {
-          tokenType = 'Operator';
+          tokenType = TokenTypes.operatorType;
         }
         final RhapsodyPosition endPosition =
             RhapsodyPosition(row: line, column: column);
@@ -95,7 +120,7 @@ class RhapsodyTokeniser {
         final RhapsodyPosition endPosition =
             RhapsodyPosition(row: line, column: column);
         tokens.add(RhapsodyToken(
-          type: 'Number',
+          type: TokenTypes.number,
           text: tokenText,
           startIndex: tokenStartIndex,
           endIndex: index,
@@ -109,25 +134,25 @@ class RhapsodyTokeniser {
       String tokenType;
       switch (currentChar) {
         case '=':
-          tokenType = 'Equal';
+          tokenType = TokenTypes.equal;
           break;
         case '(':
-          tokenType = 'ParenOpen';
+          tokenType = TokenTypes.parenOpen;
           break;
         case ')':
-          tokenType = 'ParenClose';
+          tokenType = TokenTypes.parenClose;
           break;
         case ',':
-          tokenType = 'Comma';
+          tokenType = TokenTypes.comma;
           break;
         case ';':
-          tokenType = 'Semicolon';
+          tokenType = TokenTypes.semicolon;
           break;
         case ':':
-          tokenType = 'Colon';
+          tokenType = TokenTypes.colon;
           break;
         default:
-          tokenType = 'Unknown';
+          tokenType = TokenTypes.unknown;
       }
       index++;
       column++;
@@ -141,7 +166,7 @@ class RhapsodyTokeniser {
         endIndex: index,
         startPosition: startPosition,
         endPosition: endPosition,
-        hasError: tokenType == 'Unknown',
+        hasError: tokenType == TokenTypes.unknown,
       ));
     }
 
