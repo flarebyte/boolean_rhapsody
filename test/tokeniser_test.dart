@@ -24,14 +24,7 @@ String removeSpacesAndLineReturns(String input) {
 
 void main() {
   group('RhapsodyTokeniser', () {
-    // Create a dummy parser options instance.
-    final options = RhapsodyParserOptions(
-      prefixes: ['prefix'],
-      functions: ['func1', 'func2'],
-      variableValidator: (variable) => true,
-    );
-
-    final tokeniser = RhapsodyTokeniser(options);
+    final tokeniser = RhapsodyTokeniser();
 
     test('parses a simple function call with a prefixed variable', () {
       final code = 'func1(prefix:a)';
@@ -188,7 +181,7 @@ void main() {
     });
 
     test('parse and unparse multiple examples of code', () {
-      final testTokeniser = RhapsodyTokeniser(fixtureMockOptions);
+      final testTokeniser = RhapsodyTokeniser();
       for (var code in codeSamples) {
         final tokens = testTokeniser.parse(code);
         final reconstructed = testTokeniser.unparse(tokens);
@@ -199,13 +192,7 @@ void main() {
   });
 
   group('RhapsodyTokeniser token positions', () {
-    final options = RhapsodyParserOptions(
-      prefixes: ['prefix'],
-      functions: ['func1', 'func2'],
-      variableValidator: (variable) => true,
-    );
-
-    final tokeniser = RhapsodyTokeniser(options);
+    final tokeniser = RhapsodyTokeniser();
     test('Token positions are correct in a single-line code sample', () {
       final code = 'func1(prefix:a)';
       final tokens = tokeniser.parse(code);

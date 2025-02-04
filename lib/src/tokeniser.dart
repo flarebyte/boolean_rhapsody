@@ -1,4 +1,3 @@
-import 'parser_options.dart';
 import 'token.dart';
 import 'tokeniser_helper.dart';
 
@@ -23,10 +22,8 @@ class TokenTypes {
 /// preserving positional information for accurate error reporting and debugging.
 /// It now captures line comments as tokens and uses constants for token types.
 class RhapsodyTokeniser {
-  final RhapsodyParserOptions options;
-
-  /// Creates an instance of [RhapsodyTokeniser] with the provided [options].
-  RhapsodyTokeniser(this.options);
+  /// Creates an instance of [RhapsodyTokeniser].
+  RhapsodyTokeniser();
 
   /// Parses the provided [code] into a list of [RhapsodyToken]s.
   List<RhapsodyToken> parse(String code) {
