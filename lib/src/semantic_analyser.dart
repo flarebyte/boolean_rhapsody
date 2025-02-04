@@ -1,6 +1,9 @@
 import 'analysis_failure.dart';
+import 'parser_options.dart';
 import 'rule_definition.dart';
+import 'rule_expession.dart';
 import 'token.dart';
+import 'tokeniser.dart';
 
 /// Consolidates the result of the semantic analysis phase for a grammar.
 ///
@@ -31,13 +34,203 @@ class RhapsodySemanticAnalysisResult {
 }
 
 
+/// Analyser for a boolean query language that produces semantic rule definitions.
+///
+/// The analyser expects input tokens for one or more rule definitions that follow
+/// the syntax:
+/// 
+///     rule <ruleName> = <boolean expression> ;
+///
+/// For example:
+/// 
+///     rule rule23 = (func1(env:variable1) or func2(config:variable2)) and not rule42;
+///
+/// In the above, the analyzer will record that `rule23` depends on `rule42`.
 class RhapsodySemanticAnalyser {
-  RhapsodySemanticAnalysisResult analyse(List<RhapsodyToken> tokens);
+  /// Provides domain‐specific details (such as valid prefixes and functions)
+  /// used during the analysis phase.
+  final RhapsodyAnalyserOptions options;
+
+  /// Instantiates the analyser with custom options.
+  RhapsodySemanticAnalyser(this.options);
+
+  /// Analyzes a stream of tokens, returning either a set of valid rule definitions
+  /// or an analysis failure with detailed diagnostics.
+  ///
+  /// The analysis is done by “parsing” rule definitions from the token list.
+  /// Each definition is expected to begin with the keyword `rule` (an identifier token),
+  /// followed by a rule name, an equal sign, a boolean expression, and a terminating semicolon.
+  ///
+  /// The boolean expression is scanned for identifiers that (by the current semantic rules)
+  /// represent dependencies on other rules.
+  RhapsodySemanticAnalysisResult analyse(List<RhapsodyToken> tokens) {
+    final Map<String, RhapsodyRuleDefintition> ruleDefinitions = {};
+    int index = 0;
+
+    try {
+      while (index < tokens.length) {
+        // Expect the 'rule' keyword.
+        final RhapsodyToken ruleKeyword = tokens[index];
+        if (ruleKeyword.type != TokenTypes.identifier || ruleKeyword.text != 'rule') {
+          throw SemanticException("Expected 'rule' keyword", ruleKeyword);
+        }
+        final int ruleStartIndex = ruleKeyword.startIndex;
+        final RhapsodyPosition ruleStartPosition = ruleKeyword.startPosition;
+        index++;
+
+        // The next token should be the rule name.
+        if (index >= tokens.length) {
+          throw SemanticException("Expected rule name after 'rule'", ruleKeyword);
+        }
+        final RhapsodyToken ruleNameToken = tokens[index];
+        if (ruleNameToken.type != TokenTypes.identifier) {
+          throw SemanticException("Expected an identifier for the rule name", ruleNameToken);
+        }
+        final String ruleName = ruleNameToken.text;
+        index++;
+
+        // Expect an equal sign.
+        if (index >= tokens.length) {
+          throw SemanticException("Expected '=' after the rule name", ruleNameToken);
+        }
+        final RhapsodyToken equalToken = tokens[index];
+        if (equalToken.type != TokenTypes.equal) {
+          throw SemanticException("Expected '=' after the rule name", equalToken);
+        }
+        index++;
+
+        // Collect tokens that form the boolean expression.
+        final List<RhapsodyToken> exprTokens = [];
+        while (index < tokens.length && tokens[index].type != TokenTypes.semicolon) {
+          exprTokens.add(tokens[index]);
+          index++;
+        }
+        if (index >= tokens.length) {
+          throw SemanticException("Expected ';' at the end of the rule definition", tokens.last);
+        }
+        final RhapsodyToken semicolonToken = tokens[index];
+        final int ruleEndIndex = semicolonToken.endIndex;
+        final RhapsodyPosition ruleEndPosition = semicolonToken.endPosition;
+        index++; // Skip the semicolon.
+
+        // Process the expression tokens.
+        final _ExpressionParseResult parseResult = _parseBooleanExpression(exprTokens);
+        final RhapsodyBooleanExpression expression = parseResult.expression;
+        final List<String> requiredRules = parseResult.requiredRules;
+
+        // Reconstruct the rule’s source text by joining the tokens.
+        // (A real analyser might use the original input text instead.)
+        final int start = index - (exprTokens.length + 3); // rule keyword, name, '=' tokens
+        final String ruleText = tokens
+            .sublist(start, index)
+            .map((t) => t.text)
+            .join(' ');
+
+        final ruleDefinition = RhapsodyRuleDefintition(
+          ruleName: ruleName,
+          requiredRules: requiredRules,
+          expression: expression,
+          startIndex: ruleStartIndex,
+          endIndex: ruleEndIndex,
+          startPosition: ruleStartPosition,
+          endPosition: ruleEndPosition,
+          text: ruleText,
+        );
+        ruleDefinitions[ruleName] = ruleDefinition;
+      }
+      return RhapsodySemanticAnalysisResult(ruleDefinitions: ruleDefinitions);
+    } on SemanticException catch (e) {
+      // Package the diagnostic details into a failure object.
+      final RhapsodyToken errorToken = e.token;
+      final failure = RhapsodyAnalysisFailure(
+        position: errorToken.startPosition,
+        index: errorToken.startIndex,
+        errorType: "Semantic Analysis Error",
+        message: e.message,
+        contextCode: errorToken.text,
+        expected: "",
+        suggestion: "Check rule definition syntax near '${errorToken.text}'.",
+      );
+      return RhapsodySemanticAnalysisResult(
+        failure: failure,
+        ruleDefinitions: ruleDefinitions,
+      );
+    } catch (e) {
+      // Catch-all for any unexpected issues.
+      final failure = RhapsodyAnalysisFailure(
+        position: tokens.isNotEmpty ? tokens.first.startPosition : RhapsodyPosition(row: 0, column: 0),
+        index: tokens.isNotEmpty ? tokens.first.startIndex : 0,
+        errorType: "Unknown Error",
+        message: e.toString(),
+        contextCode: "",
+        expected: "",
+        suggestion: "Review the input.",
+      );
+      return RhapsodySemanticAnalysisResult(
+        failure: failure,
+        ruleDefinitions: ruleDefinitions,
+      );
+    }
+  }
+
+  /// Parses the tokens forming a boolean expression and extracts external rule references.
+  ///
+  /// This simplified parser does not build a full AST but:
+  /// 
+  /// - Joins the token texts into a string (for use by downstream processing).
+  /// - Scans for identifiers that do not belong to function calls,
+  ///   variables, or common boolean operators.
+  ///
+  /// Function calls are assumed to be an identifier immediately followed by a left parenthesis,
+  /// and prefixes (like `env` or `config`) are detected when an identifier is immediately followed by a colon.
+  _ExpressionParseResult _parseBooleanExpression(List<RhapsodyToken> tokens) {
+    final List<String> requiredRules = [];
+    for (int i = 0; i < tokens.length; i++) {
+      final RhapsodyToken token = tokens[i];
+      if (token.type == TokenTypes.identifier) {
+        // Do not treat function calls as rule dependencies.
+        if (i + 1 < tokens.length &&
+            (tokens[i + 1].type == TokenTypes.lparen ||
+             tokens[i + 1].type == TokenTypes.colon)) {
+          continue;
+        }
+        // Exclude logical operators.
+        if (token.text == "and" || token.text == "or" || token.text == "not") {
+          continue;
+        }
+        // Avoid misidentifying functions or valid variables.
+        if (options.isFunction(token.text) || options.isVariable(token.text)) {
+          continue;
+        }
+        if (!requiredRules.contains(token.text)) {
+          requiredRules.add(token.text);
+        }
+      }
+    }
+    final String exprText = tokens.map((t) => t.text).join(' ');
+    final RhapsodyBooleanExpression expression = RhapsodyBooleanExpression(exprText);
+    return _ExpressionParseResult(expression: expression, requiredRules: requiredRules);
+  }
 }
 
+/// Helper class to encapsulate the result of parsing a boolean expression.
+class _ExpressionParseResult {
+  final RhapsodyBooleanExpression expression;
+  final List<String> requiredRules;
+  _ExpressionParseResult({
+    required this.expression,
+    required this.requiredRules,
+  });
+}
 
+/// Thrown when the semantic analyser encounters an unexpected token.
+class SemanticException implements Exception {
+  final String message;
+  final RhapsodyToken token;
+  SemanticException(this.message, this.token);
 
-
-
+  @override
+  String toString() => "SemanticException: $message at token '${token.text}'";
+}
 
 
