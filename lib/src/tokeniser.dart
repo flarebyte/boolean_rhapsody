@@ -22,7 +22,21 @@ class TokenTypes {
 /// preserving positional information for accurate error reporting and debugging.
 /// It now captures line comments as tokens and uses constants for token types.
 class RhapsodyTokeniser {
-  /// Creates an instance of [RhapsodyTokeniser].
+  /// This tokeniser processes a textual representation of the Rhapsody rule language,
+  /// splitting the source code into a sequence of lexical tokens. It recognizes:
+  ///   - Identifiers (including prefixed variables like "prefix:a")
+  ///   - Numeric literals
+  ///   - Logical operators ("and", "or", "not")
+  ///   - Punctuation (parentheses, commas, colons, semicolons, etc.)
+  ///   - Comments (lines starting with "#")
+  ///
+  /// For each token, the tokeniser records precise positional information (start/end indices,
+  /// as well as line and column positions) to facilitate detailed error reporting and later analysis.
+  ///
+  /// The grammar supported includes function calls with arguments, grouped expressions using
+  /// parentheses, and complete rule declarations (e.g., "rule 23 = (func1(prefix:a) or func2(b))
+  /// and not rule42;"). This design focuses solely on lexical analysis, deferring semantic
+  /// validation to subsequent stages.
   RhapsodyTokeniser();
 
   /// Parses the provided [code] into a list of [RhapsodyToken]s.
