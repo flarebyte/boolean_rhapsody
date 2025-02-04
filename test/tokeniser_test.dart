@@ -197,4 +197,140 @@ void main() {
       }
     });
   });
+
+  group('RhapsodyTokeniser token positions', () {
+    final options = RhapsodyParserOptions(
+      prefixes: ['prefix'],
+      functions: ['func1', 'func2'],
+      variableValidator: (variable) => true,
+    );
+
+    final tokeniser = RhapsodyTokeniser(options);
+    test('Token positions are correct in a single-line code sample', () {
+      final code = 'func1(prefix:a)';
+      final tokens = tokeniser.parse(code);
+
+      // Expected breakdown for "func1(prefix:a)":
+      // Token 0: "func1"      -> indices [0, 5), row 0, col 0-5
+      // Token 1: "("          -> indices [5, 6), row 0, col 5-6
+      // Token 2: "prefix"     -> indices [6, 12), row 0, col 6-12
+      // Token 3: ":"          -> indices [12, 13), row 0, col 12-13
+      // Token 4: "a"          -> indices [13, 14), row 0, col 13-14
+      // Token 5: ")"          -> indices [14, 15), row 0, col 14-15
+
+      expect(tokens.length, equals(6));
+
+      // Check token "func1"
+      expect(tokens[0].startIndex, equals(0));
+      expect(tokens[0].endIndex, equals(5));
+      expect(tokens[0].startPosition.row, equals(0));
+      expect(tokens[0].startPosition.column, equals(0));
+      expect(tokens[0].endPosition.row, equals(0));
+      expect(tokens[0].endPosition.column, equals(5));
+
+      // Check token "("
+      expect(tokens[1].startIndex, equals(5));
+      expect(tokens[1].endIndex, equals(6));
+      expect(tokens[1].startPosition.row, equals(0));
+      expect(tokens[1].startPosition.column, equals(5));
+      expect(tokens[1].endPosition.row, equals(0));
+      expect(tokens[1].endPosition.column, equals(6));
+
+      // Check token "prefix"
+      expect(tokens[2].startIndex, equals(6));
+      expect(tokens[2].endIndex, equals(12));
+      expect(tokens[2].startPosition.row, equals(0));
+      expect(tokens[2].startPosition.column, equals(6));
+      expect(tokens[2].endPosition.row, equals(0));
+      expect(tokens[2].endPosition.column, equals(12));
+
+      // Check token ":"
+      expect(tokens[3].startIndex, equals(12));
+      expect(tokens[3].endIndex, equals(13));
+      expect(tokens[3].startPosition.row, equals(0));
+      expect(tokens[3].startPosition.column, equals(12));
+      expect(tokens[3].endPosition.row, equals(0));
+      expect(tokens[3].endPosition.column, equals(13));
+
+      // Check token "a"
+      expect(tokens[4].startIndex, equals(13));
+      expect(tokens[4].endIndex, equals(14));
+      expect(tokens[4].startPosition.row, equals(0));
+      expect(tokens[4].startPosition.column, equals(13));
+      expect(tokens[4].endPosition.row, equals(0));
+      expect(tokens[4].endPosition.column, equals(14));
+
+      // Check token ")"
+      expect(tokens[5].startIndex, equals(14));
+      expect(tokens[5].endIndex, equals(15));
+      expect(tokens[5].startPosition.row, equals(0));
+      expect(tokens[5].startPosition.column, equals(14));
+      expect(tokens[5].endPosition.row, equals(0));
+      expect(tokens[5].endPosition.column, equals(15));
+    });
+
+    test('Token positions are correct in a multi-line code sample', () {
+      final code = 'func1(prefix:a)\nfunc2(b)';
+      final tokens = tokeniser.parse(code);
+
+      // First line (same as the previous test):
+      // Tokens 0 to 5 are for "func1(prefix:a)".
+      expect(tokens.length, equals(10));
+
+      expect(tokens[0].text, equals('func1'));
+      expect(tokens[0].startIndex, equals(0));
+      expect(tokens[0].endIndex, equals(5));
+      expect(tokens[0].startPosition.row, equals(0));
+      expect(tokens[0].startPosition.column, equals(0));
+      expect(tokens[0].endPosition.row, equals(0));
+      expect(tokens[0].endPosition.column, equals(5));
+
+      // ( ... tokens[1] through tokens[5] are identical to the previous test )
+
+      // Second line:
+      // After the first line, a newline is encountered at index 15,
+      // so the second line tokens start after that.
+      // Expected breakdown for "func2(b)":
+      // Token 6: "func2"      -> indices [16, 21), row 1, col 0-5
+      // Token 7: "("          -> indices [21, 22), row 1, col 5-6
+      // Token 8: "b"          -> indices [22, 23), row 1, col 6-7
+      // Token 9: ")"          -> indices [23, 24), row 1, col 7-8
+
+      // Check token "func2"
+      expect(tokens[6].text, equals('func2'));
+      expect(tokens[6].startIndex, equals(16));
+      expect(tokens[6].endIndex, equals(21));
+      expect(tokens[6].startPosition.row, equals(1));
+      expect(tokens[6].startPosition.column, equals(0));
+      expect(tokens[6].endPosition.row, equals(1));
+      expect(tokens[6].endPosition.column, equals(5));
+
+      // Check token "(" on second line
+      expect(tokens[7].text, equals('('));
+      expect(tokens[7].startIndex, equals(21));
+      expect(tokens[7].endIndex, equals(22));
+      expect(tokens[7].startPosition.row, equals(1));
+      expect(tokens[7].startPosition.column, equals(5));
+      expect(tokens[7].endPosition.row, equals(1));
+      expect(tokens[7].endPosition.column, equals(6));
+
+      // Check token "b"
+      expect(tokens[8].text, equals('b'));
+      expect(tokens[8].startIndex, equals(22));
+      expect(tokens[8].endIndex, equals(23));
+      expect(tokens[8].startPosition.row, equals(1));
+      expect(tokens[8].startPosition.column, equals(6));
+      expect(tokens[8].endPosition.row, equals(1));
+      expect(tokens[8].endPosition.column, equals(7));
+
+      // Check token ")" on second line
+      expect(tokens[9].text, equals(')'));
+      expect(tokens[9].startIndex, equals(23));
+      expect(tokens[9].endIndex, equals(24));
+      expect(tokens[9].startPosition.row, equals(1));
+      expect(tokens[9].startPosition.column, equals(7));
+      expect(tokens[9].endPosition.row, equals(1));
+      expect(tokens[9].endPosition.column, equals(8));
+    });
+  });
 }
