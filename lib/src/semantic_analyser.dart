@@ -2,6 +2,7 @@ import 'analysis_failure.dart';
 import 'parser_options.dart';
 import 'rule_definition.dart';
 import 'rule_expession.dart';
+import 'semantic_exception.dart';
 import 'token.dart';
 import 'tokeniser.dart';
 
@@ -231,14 +232,4 @@ class _ExpressionParseResult {
     required this.expression,
     required this.requiredRules,
   });
-}
-
-/// Thrown when the semantic analyser encounters an unexpected token.
-class SemanticException implements Exception {
-  final String message;
-  final RhapsodyToken token;
-  SemanticException(this.message, this.token);
-
-  @override
-  String toString() => "SemanticException: $message at token '${token.text}'";
 }
