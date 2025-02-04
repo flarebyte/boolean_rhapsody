@@ -11,7 +11,7 @@ void main() {
     bool variableValidator(String varName) =>
         RegExp(r'^[a-zA-Z]+$').hasMatch(varName);
 
-    final parserOptions = RhapsodyParserOptions(
+    final parserOptions = RhapsodyAnalyserOptions(
       prefixes: prefixes,
       functions: functions,
       variableValidator: variableValidator,

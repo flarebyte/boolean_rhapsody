@@ -1,5 +1,6 @@
 import 'analysis_failure.dart';
 import 'rule_definition.dart';
+import 'token.dart';
 
 /// Consolidates the result of the semantic analysis phase for a grammar.
 ///
@@ -30,9 +31,9 @@ class RhapsodySemanticAnalysisResult {
 }
 
 
-// class RhapsodySemanticAnalyser {
-//   RhapsodySemanticAnalysisResult analyse(List<RhapsodyToken> tokens);
-// }
+class RhapsodySemanticAnalyser {
+  RhapsodySemanticAnalysisResult analyse(List<RhapsodyToken> tokens);
+}
 
 
 

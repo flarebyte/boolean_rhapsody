@@ -1,7 +1,7 @@
 // Example: mock options for RhapsodyParserOptions.
 import 'package:boolean_rhapsody/boolean_rhapsody.dart';
 
-final RhapsodyParserOptions fixtureMockOptions = RhapsodyParserOptions(
+final RhapsodyAnalyserOptions fixtureMockOptions = RhapsodyAnalyserOptions(
   prefixes: ['env', 'config'],
   functions: ['func1', 'func2', 'log', 'calc'],
   variableValidator: (String variableName) {
