@@ -1,6 +1,8 @@
 import 'package:boolean_rhapsody/boolean_rhapsody.dart';
 import 'package:test/test.dart';
 
+import 'code_fixtures.dart';
+
 /// Stub implementation to support tests. In a real scenario this class would
 /// be part of your library.
 class RhapsodySupportedPrefixes {
@@ -14,6 +16,10 @@ class RhapsodySupportedPrefixes {
     }
     return false;
   }
+}
+
+String removeSpacesAndLineReturns(String input) {
+  return input.replaceAll(RegExp(r'\s+'), '');
 }
 
 void main() {
@@ -170,6 +176,16 @@ void main() {
       expect(reconstructed.contains(')'), isTrue);
       expect(reconstructed.contains('and'), isTrue);
       expect(reconstructed.contains('func2'), isTrue);
+    });
+
+    test('parse and unparse multiple examples of code', () {
+      final testTokeniser = RhapsodyTokeniser(fixtureMockOptions);
+      for (var code in codeSamples) {
+        final tokens = testTokeniser.parse(code);
+        final reconstructed = testTokeniser.unparse(tokens);
+        expect(removeSpacesAndLineReturns(reconstructed),
+            equals(removeSpacesAndLineReturns(code)));
+      }
     });
   });
 }
