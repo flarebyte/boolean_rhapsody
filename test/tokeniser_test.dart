@@ -102,7 +102,7 @@ void main() {
     });
 
     test('parses a complex rule expression with semicolon', () {
-      final code = 'rule 23 = (func1(a) or func2(b)) and not rule42;';
+      final code = 'rule r23 = (func1(a) or func2(b)) and not rule42;';
       final tokens = tokeniser.parse(code);
       // Expected token breakdown:
       //   0: Identifier "rule"
@@ -127,8 +127,8 @@ void main() {
 
       expect(tokens[0].text, equals('rule'));
       expect(tokens[0].type, equals(TokenTypes.identifier));
-      expect(tokens[1].text, equals('23'));
-      expect(tokens[1].type, equals(TokenTypes.number));
+      expect(tokens[1].text, equals('r23'));
+      expect(tokens[1].type, equals(TokenTypes.identifier));
       expect(tokens[2].text, equals('='));
       expect(tokens[2].type, equals(TokenTypes.equal));
       expect(tokens[3].text, equals('('));
