@@ -48,7 +48,7 @@ void main() {
       expect(tokens[0].type, equals(TokenTypes.identifier));
 
       expect(tokens[1].text, equals('('));
-      expect(tokens[1].type, equals(TokenTypes.parenOpen));
+      expect(tokens[1].type, equals(TokenTypes.lparen));
 
       expect(tokens[2].text, equals('prefix'));
       expect(tokens[2].type, equals(TokenTypes.identifier));
@@ -60,7 +60,7 @@ void main() {
       expect(tokens[4].type, equals(TokenTypes.identifier));
 
       expect(tokens[5].text, equals(')'));
-      expect(tokens[5].type, equals(TokenTypes.parenClose));
+      expect(tokens[5].type, equals(TokenTypes.rparen));
     });
 
     test('parses operators correctly', () {
@@ -141,27 +141,27 @@ void main() {
       expect(tokens[2].text, equals('='));
       expect(tokens[2].type, equals(TokenTypes.equal));
       expect(tokens[3].text, equals('('));
-      expect(tokens[3].type, equals(TokenTypes.parenOpen));
+      expect(tokens[3].type, equals(TokenTypes.lparen));
       expect(tokens[4].text, equals('func1'));
       expect(tokens[4].type, equals(TokenTypes.identifier));
       expect(tokens[5].text, equals('('));
-      expect(tokens[5].type, equals(TokenTypes.parenOpen));
+      expect(tokens[5].type, equals(TokenTypes.lparen));
       expect(tokens[6].text, equals('a'));
       expect(tokens[6].type, equals(TokenTypes.identifier));
       expect(tokens[7].text, equals(')'));
-      expect(tokens[7].type, equals(TokenTypes.parenClose));
+      expect(tokens[7].type, equals(TokenTypes.rparen));
       expect(tokens[8].text, equals('or'));
       expect(tokens[8].type, equals(TokenTypes.operatorType));
       expect(tokens[9].text, equals('func2'));
       expect(tokens[9].type, equals(TokenTypes.identifier));
       expect(tokens[10].text, equals('('));
-      expect(tokens[10].type, equals(TokenTypes.parenOpen));
+      expect(tokens[10].type, equals(TokenTypes.lparen));
       expect(tokens[11].text, equals('b'));
       expect(tokens[11].type, equals(TokenTypes.identifier));
       expect(tokens[12].text, equals(')'));
-      expect(tokens[12].type, equals(TokenTypes.parenClose));
+      expect(tokens[12].type, equals(TokenTypes.rparen));
       expect(tokens[13].text, equals(')'));
-      expect(tokens[13].type, equals(TokenTypes.parenClose));
+      expect(tokens[13].type, equals(TokenTypes.rparen));
       expect(tokens[14].text, equals('and'));
       expect(tokens[14].type, equals(TokenTypes.operatorType));
       expect(tokens[15].text, equals('not'));

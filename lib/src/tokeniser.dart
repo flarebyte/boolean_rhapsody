@@ -4,17 +4,17 @@ import 'tokeniser_helper.dart';
 
 /// Defines all supported token types for the Rhapsody language.
 class TokenTypes {
-  static const String identifier = 'Identifier';
-  static const String number = 'Number';
-  static const String operatorType = 'Operator';
-  static const String equal = 'Equal';
-  static const String parenOpen = 'ParenOpen';
-  static const String parenClose = 'ParenClose';
-  static const String comma = 'Comma';
-  static const String semicolon = 'Semicolon';
-  static const String colon = 'Colon';
-  static const String comment = 'Comment';
-  static const String unknown = 'Unknown';
+  static const String identifier = 'identifier';
+  static const String number = 'number';
+  static const String operatorType = 'operator';
+  static const String equal = 'equal';
+  static const String lparen = 'lparen';
+  static const String rparen = 'rparen';
+  static const String comma = 'comma';
+  static const String semicolon = 'semicolon';
+  static const String colon = 'colon';
+  static const String comment = 'comment';
+  static const String unknown = 'unknown';
 }
 
 /// A lightweight tokeniser for Rhapsody rule expressions.
@@ -125,10 +125,10 @@ class RhapsodyTokeniser {
           tokenType = TokenTypes.equal;
           break;
         case '(':
-          tokenType = TokenTypes.parenOpen;
+          tokenType = TokenTypes.lparen;
           break;
         case ')':
-          tokenType = TokenTypes.parenClose;
+          tokenType = TokenTypes.rparen;
           break;
         case ',':
           tokenType = TokenTypes.comma;
