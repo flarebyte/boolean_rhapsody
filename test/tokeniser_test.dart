@@ -33,25 +33,34 @@ void main() {
 
     final tokeniser = RhapsodyTokeniser(options);
 
-    test('parses a simple function call', () {
-      final code = 'func1(a)';
+    test('parses a simple function call with a prefixed variable', () {
+      final code = 'func1(prefix:a)';
       final tokens = tokeniser.parse(code);
       expect(tokens, isNotEmpty);
 
       // Expected tokens:
-      //   Identifier "func1", ParenOpen "(", Identifier "a", ParenClose ")"
-      expect(tokens.length, equals(4));
+      //   Identifier "func1", ParenOpen "(",
+      //   Identifier "prefix", Colon ":", Identifier "a",
+      //   ParenClose ")"
+      expect(tokens.length, equals(6));
+
       expect(tokens[0].text, equals('func1'));
       expect(tokens[0].type, equals(TokenTypes.identifier));
 
       expect(tokens[1].text, equals('('));
       expect(tokens[1].type, equals(TokenTypes.parenOpen));
 
-      expect(tokens[2].text, equals('a'));
+      expect(tokens[2].text, equals('prefix'));
       expect(tokens[2].type, equals(TokenTypes.identifier));
 
-      expect(tokens[3].text, equals(')'));
-      expect(tokens[3].type, equals(TokenTypes.parenClose));
+      expect(tokens[3].text, equals(':'));
+      expect(tokens[3].type, equals(TokenTypes.colon));
+
+      expect(tokens[4].text, equals('a'));
+      expect(tokens[4].type, equals(TokenTypes.identifier));
+
+      expect(tokens[5].text, equals(')'));
+      expect(tokens[5].type, equals(TokenTypes.parenClose));
     });
 
     test('parses operators correctly', () {
