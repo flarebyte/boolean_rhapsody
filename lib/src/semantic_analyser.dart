@@ -1,4 +1,5 @@
 import 'analysis_failure.dart';
+import 'boolean_expression_analyser.dart';
 import 'parser_options.dart';
 import 'rule_definition.dart';
 import 'rule_expession.dart';
@@ -50,9 +51,12 @@ class RhapsodySemanticAnalyser {
   /// Provides domain‐specific details (such as valid prefixes and functions)
   /// used during the analysis phase.
   final RhapsodyAnalyserOptions options;
+  late RhapsodyBooleanExpressionAnalyser expressionAnalyser;
 
   /// Instantiates the analyser with custom options.
-  RhapsodySemanticAnalyser(this.options);
+  RhapsodySemanticAnalyser(this.options){
+    expressionAnalyser = RhapsodyBooleanExpressionAnalyser(options);
+  }
 
   /// Analyzes a stream of tokens, returning either a set of valid rule definitions
   /// or an analysis failure with detailed diagnostics.
@@ -121,8 +125,8 @@ class RhapsodySemanticAnalyser {
         index++; // Skip the semicolon.
 
         // Process the expression tokens.
-        final RhapsodyExpressionParseResult parseResult =
-            _parseBooleanExpression(exprTokens);
+        final RhapsodyExpressionAnalyserResult parseResult =
+            expressionAnalyser.analyse(exprTokens);
         final RhapsodyBooleanExpression expression = parseResult.expression;
         final List<String> requiredRules = parseResult.requiredRules;
 
@@ -181,105 +185,5 @@ class RhapsodySemanticAnalyser {
       );
     }
   }
-
-  /// Parses the tokens forming a boolean expression and extracts external rule references.
-  ///
-  /// This simplified parser does not build a full AST but:
-  ///
-  /// - Joins the token texts into a string (for use by downstream processing).
-  /// - Scans for identifiers that do not belong to function calls,
-  ///   variables, or common boolean operators.
-  ///
-  /// Function calls are assumed to be an identifier immediately followed by a left parenthesis,
-  /// and prefixes (like `env` or `config`) are detected when an identifier is immediately followed by a colon.
-  RhapsodyExpressionParseResult _parseBooleanExpression(List<RhapsodyToken> tokens) {
-    final List<String> requiredRules = [];
-    for (int i = 0; i < tokens.length; i++) {
-      final RhapsodyToken token = tokens[i];
-      if (token.type == TokenTypes.identifier) {
-        // Do not treat function calls as rule dependencies.
-        if (i + 1 < tokens.length &&
-            (tokens[i + 1].type == TokenTypes.lparen ||
-                tokens[i + 1].type == TokenTypes.colon)) {
-          continue;
-        }
-        // Exclude logical operators.
-        if (token.text == "and" || token.text == "or" || token.text == "not") {
-          continue;
-        }
-        // Avoid misidentifying functions or valid variables.
-        if (options.isFunction(token.text) || options.isVariable(token.text)) {
-          continue;
-        }
-        if (!requiredRules.contains(token.text)) {
-          requiredRules.add(token.text);
-        }
-      }
-    }
-    final String exprText = tokens.map((t) => t.text).join(' ');
-    final RhapsodyBooleanExpression expression =
-        RhapsodyBooleanExpression(exprText);
-    return RhapsodyExpressionParseResult(
-        expression: expression, requiredRules: requiredRules);
-  }
 }
 
-class RhapsodyBooleanExpressionAnalyser {
-
-  final RhapsodyAnalyserOptions options;
-
-  /// Instantiates the analyser with custom options.
-  RhapsodyBooleanExpressionAnalyser(this.options);
-
-
-  /// Parses the tokens forming a boolean expression and extracts external rule references.
-  ///
-  /// This simplified parser does not build a full AST but:
-  ///
-  /// - Joins the token texts into a string (for use by downstream processing).
-  /// - Scans for identifiers that do not belong to function calls,
-  ///   variables, or common boolean operators.
-  ///
-  /// Function calls are assumed to be an identifier immediately followed by a left parenthesis,
-  /// and prefixes (like `env` or `config`) are detected when an identifier is immediately followed by a colon.
-  RhapsodyExpressionParseResult analyse(List<RhapsodyToken> tokens) {
-    final List<String> requiredRules = [];
-    for (int i = 0; i < tokens.length; i++) {
-      final RhapsodyToken token = tokens[i];
-      if (token.type == TokenTypes.identifier) {
-        // Do not treat function calls as rule dependencies.
-        if (i + 1 < tokens.length &&
-            (tokens[i + 1].type == TokenTypes.lparen ||
-                tokens[i + 1].type == TokenTypes.colon)) {
-          continue;
-        }
-        // Exclude logical operators.
-        if (token.text == "and" || token.text == "or" || token.text == "not") {
-          continue;
-        }
-        // Avoid misidentifying functions or valid variables.
-        if (options.isFunction(token.text) || options.isVariable(token.text)) {
-          continue;
-        }
-        if (!requiredRules.contains(token.text)) {
-          requiredRules.add(token.text);
-        }
-      }
-    }
-    final String exprText = tokens.map((t) => t.text).join(' ');
-    final RhapsodyBooleanExpression expression =
-        RhapsodyBooleanExpression(exprText);
-    return RhapsodyExpressionParseResult(
-        expression: expression, requiredRules: requiredRules);
-  }
-}
-
-/// Helper class to encapsulate the result of parsing a boolean expression.
-class RhapsodyExpressionParseResult {
-  final RhapsodyBooleanExpression expression;
-  final List<String> requiredRules;
-  RhapsodyExpressionParseResult({
-    required this.expression,
-    required this.requiredRules,
-  });
-}
