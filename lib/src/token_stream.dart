@@ -34,6 +34,11 @@ class RhapsodyTokenStream {
   /// Returns `true` if the current token's type matches the given [value].
   bool matchType(String value) => !isAtEnd && _tokens[_index].type == value;
 
+  /// Checks if the current token matches the given [value] by text.
+  ///
+  /// Returns `true` if the current token's text matches the given [value].
+  bool matchText(String value) => !isAtEnd && _tokens[_index].text == value;
+
   /// Consumes and returns the current token, advancing the stream.
   ///
   /// Throws a [SemanticException] if there are no more tokens.
