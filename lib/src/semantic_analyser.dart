@@ -54,8 +54,9 @@ class RhapsodySemanticAnalyser {
   late RhapsodyBooleanExpressionAnalyser expressionAnalyser;
 
   /// Instantiates the analyser with custom options.
-  RhapsodySemanticAnalyser(this.options){
-    expressionAnalyser = RhapsodyBooleanExpressionAnalyser(options);
+  RhapsodySemanticAnalyser(this.options) {
+    expressionAnalyser = RhapsodyBooleanExpressionAnalyser(
+        options: options, ruleDefinitions: {});
   }
 
   /// Analyzes a stream of tokens, returning either a set of valid rule definitions
@@ -186,4 +187,3 @@ class RhapsodySemanticAnalyser {
     }
   }
 }
-
