@@ -8,7 +8,7 @@ void main() {
   group('RhapsodyAnalyserFunctionHelper', () {
     final RhapsodyAnalyserFunctionHelper analyser =
         RhapsodyAnalyserFunctionHelper(options: fixtureMockOptions);
-    test('should parse a function with a single variabled', () {
+    test('should parse a function with a single variable', () {
       // "func1(env:variable1)"
       final t = MockTokenCreator();
       final List<RhapsodyToken> func = [
@@ -17,6 +17,25 @@ void main() {
         t.token("env", TokenTypes.identifier),
         t.token(":", TokenTypes.colon),
         t.token("variable1", TokenTypes.identifier),
+        t.token(")", TokenTypes.rparen),
+      ];
+      final analyzed = analyser.parseFunctionCall(RhapsodyTokenStream(func));
+      expect(analyzed.toString(), equals(''));
+    });
+
+    test('should parse a function with multiple variables', () {
+      // "func1(env:variable1,config:variable2)"
+      final t = MockTokenCreator();
+      final List<RhapsodyToken> func = [
+        t.token("func1", TokenTypes.identifier),
+        t.token("(", TokenTypes.lparen),
+        t.token("env", TokenTypes.identifier),
+        t.token(":", TokenTypes.colon),
+        t.token("variable1", TokenTypes.identifier),
+        t.token(",", TokenTypes.comma),
+        t.token("config", TokenTypes.identifier),
+        t.token(":", TokenTypes.colon),
+        t.token("variable2", TokenTypes.identifier),
         t.token(")", TokenTypes.rparen),
       ];
       final analyzed = analyser.parseFunctionCall(RhapsodyTokenStream(func));
