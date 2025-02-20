@@ -72,9 +72,9 @@ class MockTokenCreator {
 // "rule rule23 = (func1(env:variable1) or func2(config:variable2)) and not rule42;"
 final r23 = MockTokenCreator();
 final List<RhapsodyToken> rule23 = [
-  r23.token("rule", TokenTypes.identifier),
-  r23.token("rule23", TokenTypes.identifier),
-  r23.token("=", TokenTypes.equal),
+  //r23.token("rule", TokenTypes.identifier),
+  //r23.token("rule23", TokenTypes.identifier),
+  //r23.token("=", TokenTypes.equal),
   r23.token("(", TokenTypes.lparen),
   r23.token("func1", TokenTypes.identifier),
   r23.token("(", TokenTypes.lparen),
