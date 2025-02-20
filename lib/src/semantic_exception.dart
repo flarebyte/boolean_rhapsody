@@ -7,5 +7,5 @@ class SemanticException implements Exception {
   SemanticException(this.message, this.token);
 
   @override
-  String toString() => "SemanticException: $message at token '${token.text}'";
+  String toString() => "SemanticException: $message at token '${token.text}' and index ${token.startIndex}";
 }

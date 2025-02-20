@@ -1,6 +1,7 @@
 import 'function_factory.dart';
 import 'parser_options.dart';
 import 'rule_expession.dart';
+import 'semantic_exception.dart';
 import 'token.dart';
 import 'token_stream.dart';
 import 'tokeniser.dart';
@@ -84,7 +85,7 @@ class RhapsodyBooleanExpressionAnalyser {
           requiredRules: funcCall.requiredRules);
     }
 
-    throw Exception("Unexpected token: $token");
+    throw SemanticException("Unexpected token", token);
   }
 
   RhapsodyExpressionAnalyserResult _parseFunctionCall(
