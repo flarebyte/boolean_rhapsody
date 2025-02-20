@@ -1,4 +1,5 @@
-import 'function_factory.dart';
+import 'analyser_function_helper.dart';
+import 'expression_analyzer_result.dart';
 import 'parser_options.dart';
 import 'rule_expession.dart';
 import 'semantic_exception.dart';
@@ -9,10 +10,14 @@ import 'tokeniser.dart';
 class RhapsodyBooleanExpressionAnalyser {
   final RhapsodyAnalyserOptions options;
   final Map<String, RhapsodyBooleanExpression> ruleDefinitions;
+  late RhapsodyBooleanExpressionAnalyserFunctionhelper functionHelper;
 
   /// Instantiates the analyser with custom options.
   RhapsodyBooleanExpressionAnalyser(
-      {required this.options, required this.ruleDefinitions});
+      {required this.options, required this.ruleDefinitions}) {
+    functionHelper =
+        RhapsodyBooleanExpressionAnalyserFunctionhelper(options: this.options);
+  }
 
   /// Parses the tokens forming a boolean expression and extracts external rule references.
   RhapsodyExpressionAnalyserResult analyse(List<RhapsodyToken> tokens) {
@@ -79,7 +84,7 @@ class RhapsodyBooleanExpressionAnalyser {
       return RhapsodyExpressionAnalyserResult(
           expression: ruleRef, requiredRules: []);
     } else if (token.text.contains('(')) {
-      final funcCall = _parseFunctionCall(token.text, tokens);
+      final funcCall = functionHelper.parseFunctionCall(token.text, tokens);
       return RhapsodyExpressionAnalyserResult(
           expression: funcCall.expression,
           requiredRules: funcCall.requiredRules);
@@ -87,39 +92,4 @@ class RhapsodyBooleanExpressionAnalyser {
 
     throw SemanticException("Unexpected token", token);
   }
-
-  RhapsodyExpressionAnalyserResult _parseFunctionCall(
-      String functionToken, RhapsodyTokenStream tokens) {
-    final nameEnd = functionToken.indexOf('(');
-    final functionName = functionToken.substring(0, nameEnd);
-    final params = <String>[];
-
-    var token = functionToken.substring(nameEnd + 1);
-    while (!token.endsWith(')')) {
-      params.add(token);
-      token = tokens.consume().text;
-    }
-    params.add(token.substring(0, token.length - 1));
-
-    final fn = BooleanRhapsodyFunctionFactory.create(functionName, params);
-    final fnExpression = RhapsodyFunctionExpression(fn);
-    return RhapsodyExpressionAnalyserResult(
-        expression: fnExpression, requiredRules: []);
-  }
-}
-
-/// Helper class to encapsulate the result of parsing a boolean expression.
-class RhapsodyExpressionAnalyserResult {
-  final RhapsodyBooleanExpression expression;
-  final List<String> requiredRules;
-
-  @override
-  String toString() {
-    return 'RhapsodyExpressionAnalyserResult{expression: $expression, requiredRules: $requiredRules}';
-  }
-
-  RhapsodyExpressionAnalyserResult({
-    required this.expression,
-    required this.requiredRules,
-  });
 }
