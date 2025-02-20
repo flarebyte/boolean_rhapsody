@@ -12,7 +12,7 @@ void main() {
     test('should evaluate as truthy when comparator condition is satisfied',
         () {
       final analyzed = analyser.analyse(rule23);
-      expect(analyzed, null);
+      expect(analyzed.toString(), '');
     });
   });
 }

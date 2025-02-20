@@ -89,6 +89,11 @@ class RhapsodyAndOperator extends RhapsodyBooleanExpression {
         return RhapsodicBool.untruthy();
     }
   }
+
+  @override
+  String toString() {
+    return 'RhapsodyAndOperator{left: $left, right: $right}';
+  }
 }
 
 /// **Class: RhapsodyOrOperator**
@@ -162,6 +167,11 @@ class RhapsodyOrOperator extends RhapsodyBooleanExpression {
         return RhapsodicBool.untruthy();
     }
   }
+
+  @override
+  String toString() {
+    return 'RhapsodyOrOperator{left: $left, right: $right}';
+  }
 }
 
 /// **Class: RhapsodyNotOperator**
@@ -176,6 +186,11 @@ class RhapsodyNotOperator extends RhapsodyBooleanExpression {
   /// **Parameters:**
   /// - `operand`: The boolean expression to invert.
   RhapsodyNotOperator(this.operand);
+
+  @override
+  String toString() {
+    return 'RhapsodyNotOperator{operand: $operand}';
+  }
 
   /// Evaluates the logical NOT of the operand expression.
   ///
@@ -217,6 +232,11 @@ class RhapsodyFunctionExpression extends RhapsodyBooleanExpression {
   /// - `function`: A function implementing boolean logic evaluation.
   RhapsodyFunctionExpression(this.function);
 
+  @override
+  String toString() {
+    return 'RhapsodyFunctionExpression{function: $function}';
+  }
+
   /// Evaluates the function within the given context.
   ///
   /// **Overrides:** `evaluate` in `RhapsodyBooleanExpression`.
@@ -247,6 +267,11 @@ class RhapsodyRuleReference extends RhapsodyBooleanExpression {
   /// - `ruleName`: The name of the rule to reference.
   /// - `ruleDefinitions`: A map of rule definitions to resolve the rule.
   RhapsodyRuleReference(this.ruleName, this.ruleDefinitions);
+
+  @override
+  String toString() {
+    return 'RhapsodyRuleReference{ruleName: $ruleName, ruleDefinitions: $ruleDefinitions}';
+  }
 
   /// Evaluates the referenced rule within the given context.
   ///

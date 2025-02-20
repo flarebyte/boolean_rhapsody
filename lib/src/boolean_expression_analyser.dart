@@ -111,6 +111,12 @@ class RhapsodyBooleanExpressionAnalyser {
 class RhapsodyExpressionAnalyserResult {
   final RhapsodyBooleanExpression expression;
   final List<String> requiredRules;
+
+  @override
+  String toString() {
+    return 'RhapsodyExpressionAnalyserResult{expression: $expression, requiredRules: $requiredRules}';
+  }
+
   RhapsodyExpressionAnalyserResult({
     required this.expression,
     required this.requiredRules,
