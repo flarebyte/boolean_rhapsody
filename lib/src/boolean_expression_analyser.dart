@@ -10,13 +10,12 @@ import 'tokeniser.dart';
 class RhapsodyBooleanExpressionAnalyser {
   final RhapsodyAnalyserOptions options;
   final Map<String, RhapsodyBooleanExpression> ruleDefinitions;
-  late RhapsodyBooleanExpressionAnalyserFunctionhelper functionHelper;
+  late RhapsodyAnalyserFunctionHelper functionHelper;
 
   /// Instantiates the analyser with custom options.
   RhapsodyBooleanExpressionAnalyser(
       {required this.options, required this.ruleDefinitions}) {
-    functionHelper =
-        RhapsodyBooleanExpressionAnalyserFunctionhelper(options: this.options);
+    functionHelper = RhapsodyAnalyserFunctionHelper(options: this.options);
   }
 
   /// Parses the tokens forming a boolean expression and extracts external rule references.

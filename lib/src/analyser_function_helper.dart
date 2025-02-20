@@ -4,14 +4,13 @@ import 'parser_options.dart';
 import 'rule_expession.dart';
 import 'token_stream.dart';
 
-class RhapsodyBooleanExpressionAnalyserFunctionhelper {
+class RhapsodyAnalyserFunctionHelper {
   final RhapsodyAnalyserOptions options;
 
-  /// Instantiates the analyser with custom options.
-  RhapsodyBooleanExpressionAnalyserFunctionhelper({required this.options});
+  RhapsodyAnalyserFunctionHelper({required this.options});
 
   RhapsodyExpressionAnalyserResult parseFunctionCall(
-      String functionToken, RhapsodyTokenStream tokens) {
+      RhapsodyTokenStream tokens) {
     final nameEnd = functionToken.indexOf('(');
     final functionName = functionToken.substring(0, nameEnd);
     final params = <String>[];
