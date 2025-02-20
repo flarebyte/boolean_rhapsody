@@ -54,6 +54,11 @@ class RhapsodyToken {
   /// enabling detailed position tracking.
   final RhapsodyPosition startPosition;
 
+  @override
+  String toString() {
+    return 'RhapsodyToken{type: $type, text: $text, startIndex: $startIndex, endIndex: $endIndex, startPosition: $startPosition, endPosition: $endPosition, hasError: $hasError}';
+  }
+
   /// The ending position (line and column) of this token.
   ///
   /// **Advice:** Ensure that [endPosition] correctly represents the token's
