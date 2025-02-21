@@ -3,7 +3,6 @@ import 'function_factory.dart';
 import 'parser_options.dart';
 import 'rule_expession.dart';
 import 'semantic_exception.dart';
-import 'token.dart';
 import 'token_stream.dart';
 import 'tokeniser.dart';
 
@@ -23,8 +22,7 @@ class RhapsodyAnalyserFunctionHelper {
 
     final isKnownFunction = options.isFunction(functionToken.text);
     if (!isKnownFunction) {
-      throw SemanticException(
-          "Call to unknown function ${functionToken.text}", functionToken);
+      throw SemanticException("Call to unknown function", functionToken);
     }
 
     final parenthesisStart = tokens.consume();
@@ -34,20 +32,30 @@ class RhapsodyAnalyserFunctionHelper {
           parenthesisStart);
     }
     final params = <String>[];
+    RhapsodyExpressionResultGatherer gatherer =
+        RhapsodyExpressionResultGatherer();
+    for (var safetyCounter = 1; safetyCounter < 100; safetyCounter++) {
+      final scopeVar = _parseScopeVariable(tokens);
+      params.add(scopeVar);
+      gatherer.addVariable(scopeVar);
+      final nextToken = tokens.consume();
+      if (nextToken.type == TokenTypes.rparen) {
+        break;
+      }
+      if (nextToken.type != TokenTypes.comma) {
+        final paramPosition =
+            safetyCounter <= 1 ? "${safetyCounter}st" : "${safetyCounter}nd";
+        throw SemanticException(
+            "Expecting comma but got ${nextToken.type} after $paramPosition parameter",
+            nextToken);
+      }
+    }
 
-    for (var safetyCounter = 0; safetyCounter < 100; safetyCounter++) {}
-    // while (safetyCounter> 0) {
-    //   // && token.type!=TokenTypes.rparen
-    //   safetyCounter--;
-    //   params.add(token);
-    //   token = tokens.consume().text;
-    // }
-    params.add(token.substring(0, token.length - 1));
-
-    final fn = BooleanRhapsodyFunctionFactory.create(functionName, params);
+    final fn =
+        BooleanRhapsodyFunctionFactory.create(functionToken.text, params);
     final fnExpression = RhapsodyFunctionExpression(fn);
     return RhapsodyExpressionAnalyserResult(
-        expression: fnExpression, requiredRules: []);
+        expression: fnExpression, gathering: gatherer);
   }
 
   String _parseScopeVariable(RhapsodyTokenStream tokens) {
