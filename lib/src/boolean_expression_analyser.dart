@@ -23,8 +23,8 @@ class RhapsodyBooleanExpressionAnalyser {
     final tokenStream = RhapsodyTokenStream(tokens);
     final ast = _parseOrExpression(tokenStream);
     if (!tokenStream.isAtEnd) {
-      throw Exception(
-          "Unexpected tokens after parsing: ${tokenStream.remainingTokens}");
+      throw SemanticException(
+          "Unexpected ${tokenStream.remainingTokens.length} tokens after parsing: ", tokenStream.current);
     }
     return ast;
   }
@@ -73,31 +73,41 @@ class RhapsodyBooleanExpressionAnalyser {
       throw Exception("Unexpected end of expression.");
     }
 
-    final token = tokens.consume();
+    final isFollowedByNot = tokens.nextMatchType(TokenTypes.operatorType) &&
+        tokens.nextMatchText('not');
+    final isFollowedByLeftParenthesis = tokens.nextMatchType(TokenTypes.lparen);
+    final isFollowedByFunction = tokens.nextMatchType(TokenTypes.identifier) && tokens.nextMatchType(TokenTypes.lparen, skip: 2);
+    final isFollowedByRule = tokens.nextMatchType(TokenTypes.identifier);
 
-    if (tokens.matchType(TokenTypes.operatorType) && tokens.matchText('not')) {
+    if (isFollowedByNot) {
+      tokens.consume(); //consume not
       final next = _parseFactor(tokens);
       final notExpression = RhapsodyNotOperator(next.expression);
       return RhapsodyExpressionAnalyserResult(
           expression: notExpression, gathering: next.gathering);
-    } else if (tokens.matchType(TokenTypes.lparen)) {
+    } else if (isFollowedByLeftParenthesis) {
+      tokens.consume(); // consumme (
       final expr = _parseOrExpression(tokens);
+      tokens.consume(); // consumme )
       if (!tokens.matchType(TokenTypes.rparen)) {
         throw SemanticException("Missing closing parenthesis.", tokens.current);
       }
-      tokens.consume();
       return expr;
-    } else if (token.text.startsWith('r:')) {
-      final ruleRef =
-          RhapsodyRuleReference(token.text.substring(2), ruleDefinitions);
-      return RhapsodyExpressionAnalyserResult(
-          expression: ruleRef, gathering: RhapsodyExpressionResultGatherer());
-    } else if (token.text.contains('(')) {
+    } else if (isFollowedByFunction) {
       final funcCall = functionHelper.parseFunctionCall(tokens);
       return RhapsodyExpressionAnalyserResult(
           expression: funcCall.expression, gathering: funcCall.gathering);
-    }
+    } 
+    else if (isFollowedByRule) {
+      final ruleIdToken = tokens.consume();
+      final ruleRef =
+          RhapsodyRuleReference(ruleIdToken.text, ruleDefinitions);
+      final gatherer = RhapsodyExpressionResultGatherer();
+      gatherer.addRule(ruleIdToken.text)
+      return RhapsodyExpressionAnalyserResult(
+          expression: ruleRef, gathering: gatherer);
+    } 
 
-    throw SemanticException("Unexpected token", token);
+    throw SemanticException("Unexpected token", tokens.consume());
   }
 }
