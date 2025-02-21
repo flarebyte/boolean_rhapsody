@@ -7,7 +7,7 @@ class RhapsodyExpressionAnalyserResult {
 
   @override
   String toString() {
-    return 'RhapsodyExpressionAnalyserResult{expression: $expression, gathering: $gathering}';
+    return 'R.E.A.Result{expression: $expression, gathering: $gathering}';
   }
 
   RhapsodyExpressionAnalyserResult({
@@ -63,5 +63,14 @@ class RhapsodyExpressionResultGatherer {
       merged.requiredVariables.addAll(gatherer.requiredVariables);
     }
     return merged;
+  }
+
+  @override
+  String toString() {
+    final List<String> rules = requiredRules.toList(growable: false);
+    final List<String> vars = requiredVariables.toList(growable: false);
+    rules.sort();
+    vars.sort();
+    return 'R.E.R.Gatherer{rules: $rules, vars: $vars}';
   }
 }
