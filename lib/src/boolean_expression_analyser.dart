@@ -103,7 +103,7 @@ class RhapsodyBooleanExpressionAnalyser {
       final ruleRef =
           RhapsodyRuleReference(ruleIdToken.text, ruleDefinitions);
       final gatherer = RhapsodyExpressionResultGatherer();
-      gatherer.addRule(ruleIdToken.text)
+      gatherer.addRule(ruleIdToken.text);
       return RhapsodyExpressionAnalyserResult(
           expression: ruleRef, gathering: gatherer);
     } 
