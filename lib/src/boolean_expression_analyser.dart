@@ -29,29 +29,41 @@ class RhapsodyBooleanExpressionAnalyser {
     return ast;
   }
 
+  /// An Or Expression can be one or more And terms joined by or.
+  /// OrExpression ::= AndTerm ( "or" OrExpression )*
   RhapsodyExpressionAnalyserResult _parseOrExpression(
       RhapsodyTokenStream tokens) {
     final result = _parseAndTerm(tokens);
-    if (tokens.matchType(TokenTypes.operatorType) && tokens.matchText('or')) {
-      tokens.consume();
+    final isFollowedByOr = tokens.nextMatchType(TokenTypes.operatorType) &&
+        tokens.nextMatchText('or');
+    if (isFollowedByOr) {
+      tokens.consume(); //consume or
       final nextOrExpression = _parseOrExpression(tokens);
       final orExpression =
           RhapsodyOrOperator(result.expression, nextOrExpression.expression);
       return RhapsodyExpressionAnalyserResult(
-          expression: orExpression, gathering: nextOrExpression.gathering);
+          expression: orExpression,
+          gathering: RhapsodyExpressionResultGatherer.merge(
+              [result.gathering, nextOrExpression.gathering]));
     }
     return result;
   }
 
+  /// And And term can be one or more Factors joined by and.
+  /// AndTerm ::= Factor ( "and" AndTerm )*
   RhapsodyExpressionAnalyserResult _parseAndTerm(RhapsodyTokenStream tokens) {
     final result = _parseFactor(tokens);
-    if (tokens.matchType(TokenTypes.operatorType) && tokens.matchText('and')) {
-      tokens.consume();
+    final isFollowedByAnd = tokens.nextMatchType(TokenTypes.operatorType) &&
+        tokens.nextMatchText('and');
+    if (isFollowedByAnd) {
+      tokens.consume(); //consume and
       final nextAndExpression = _parseAndTerm(tokens);
       final andExpression =
           RhapsodyAndOperator(result.expression, nextAndExpression.expression);
       return RhapsodyExpressionAnalyserResult(
-          expression: andExpression, gathering: nextAndExpression.gathering);
+          expression: andExpression,
+          gathering: RhapsodyExpressionResultGatherer.merge(
+              [result.gathering, nextAndExpression.gathering]));
     }
     return result;
   }
@@ -71,7 +83,7 @@ class RhapsodyBooleanExpressionAnalyser {
     } else if (tokens.matchType(TokenTypes.lparen)) {
       final expr = _parseOrExpression(tokens);
       if (!tokens.matchType(TokenTypes.rparen)) {
-        throw Exception("Missing closing parenthesis.");
+        throw SemanticException("Missing closing parenthesis.", tokens.current);
       }
       tokens.consume();
       return expr;

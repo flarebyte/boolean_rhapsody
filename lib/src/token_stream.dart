@@ -16,6 +16,9 @@ class RhapsodyTokenStream {
   /// Returns `true` if all tokens have been consumed.
   bool get isAtEnd => _index >= _tokens.length;
 
+  /// Returns `true` if the next token is the last one
+  bool nextIsAtEnd({int skip = 1}) => (_index + skip) >= _tokens.length;
+
   /// Returns the current token without consuming it.
   ///
   /// Throws an exception if the stream is at the end.
@@ -34,10 +37,22 @@ class RhapsodyTokenStream {
   /// Returns `true` if the current token's type matches the given [value].
   bool matchType(String value) => !isAtEnd && _tokens[_index].type == value;
 
+  /// Checks if the current token matches the given [value] by type.
+  ///
+  /// Returns `true` if the current token's type matches the given [value].
+  bool nextMatchType(String value, {int skip = 1}) =>
+      !nextIsAtEnd(skip: skip) && _tokens[_index + skip].type == value;
+
   /// Checks if the current token matches the given [value] by text.
   ///
   /// Returns `true` if the current token's text matches the given [value].
   bool matchText(String value) => !isAtEnd && _tokens[_index].text == value;
+
+  /// Checks if the current token matches the given [value] by text.
+  ///
+  /// Returns `true` if the current token's text matches the given [value].
+  bool nextMatchText(String value, {int skip = 1}) =>
+      !nextIsAtEnd(skip: skip) && _tokens[_index + skip].text == value;
 
   /// Consumes and returns the current token, advancing the stream.
   ///
