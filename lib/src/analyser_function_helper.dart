@@ -10,6 +10,34 @@ class RhapsodyAnalyserFunctionHelper {
 
   RhapsodyAnalyserFunctionHelper({required this.options});
 
+  /// Parses a function call expression from the provided [tokens] stream.
+  ///
+  /// The expected token format is:
+  /// ```
+  /// funcName(scope1:variable1, scope2:variable2, ...)
+  /// ```
+  ///
+  /// **Example:**
+  /// ```
+  /// func1(env:variable1, config:variable2)
+  /// ```
+  ///
+  /// **Parsing Details:**
+  /// - `funcName`: Must be a known function as registered in [RhapsodyAnalyserOptions].
+  /// - Each parameter follows the `scope:variable` format, where:
+  ///   - `scope` and `variable` are valid identifiers.
+  ///   - A colon (`:`) separates the scope and variable.
+  /// - Parameters are comma-separated (`','`) and enclosed in parentheses (`()`).
+  ///
+  /// **Throws:**
+  /// - [SemanticException] if:
+  ///   - The function name is missing or unknown.
+  ///   - Parentheses or commas are misplaced or missing.
+  ///   - Scope or variable identifiers are invalid or unregistered.
+  ///
+  /// **Returns:**
+  /// A [RhapsodyExpressionAnalyserResult] containing the parsed [RhapsodyFunctionExpression]
+  /// and the gathered variables used within the function call.
   RhapsodyExpressionAnalyserResult parseFunctionCall(
       RhapsodyTokenStream tokens) {
     final functionToken = tokens.consume();
