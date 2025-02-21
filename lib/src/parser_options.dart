@@ -1,3 +1,4 @@
+import 'function_factory.dart';
 import 'supported_prefixes.dart';
 
 /// Provides parsing options for Rhapsodic expressions, including variable and function validation.
@@ -7,6 +8,7 @@ import 'supported_prefixes.dart';
 class RhapsodyAnalyserOptions {
   final List<String> prefixes;
   final List<String> functions;
+  final BooleanRhapsodyFunctionRegistry functionRegistry;
   final bool Function(String) variableValidator;
   final RhapsodySupportedPrefixes _supportedPrefixes;
   final Set<String> _functionsSet;
@@ -22,6 +24,7 @@ class RhapsodyAnalyserOptions {
     required this.prefixes,
     required this.functions,
     required this.variableValidator,
+    required this.functionRegistry,
   })  : _supportedPrefixes = RhapsodySupportedPrefixes(prefixes),
         _functionsSet = functions.toSet();
 

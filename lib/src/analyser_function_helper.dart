@@ -1,5 +1,4 @@
 import 'expression_analyzer_result.dart';
-import 'function_factory.dart';
 import 'parser_options.dart';
 import 'rule_expession.dart';
 import 'semantic_exception.dart';
@@ -51,8 +50,7 @@ class RhapsodyAnalyserFunctionHelper {
       }
     }
 
-    final fn =
-        BooleanRhapsodyFunctionFactory.create(functionToken.text, params);
+    final fn = options.functionRegistry.create(functionToken.text, params);
     final fnExpression = RhapsodyFunctionExpression(fn);
     return RhapsodyExpressionAnalyserResult(
         expression: fnExpression, gathering: gatherer);

@@ -12,10 +12,10 @@ void main() {
         RegExp(r'^[a-zA-Z]+$').hasMatch(varName);
 
     final parserOptions = RhapsodyAnalyserOptions(
-      prefixes: prefixes,
-      functions: functions,
-      variableValidator: variableValidator,
-    );
+        prefixes: prefixes,
+        functions: functions,
+        variableValidator: variableValidator,
+        functionRegistry: BooleanRhapsodyFunctionRegistry());
 
     test('isVariable returns true for valid variable names', () {
       // Valid because the prefix is supported and the variable part is alphabetic.

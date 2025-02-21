@@ -1,9 +1,12 @@
 // Example: mock options for RhapsodyParserOptions.
 import 'package:boolean_rhapsody/boolean_rhapsody.dart';
+import 'package:boolean_rhapsody/src/rule_function.dart';
 
 final RhapsodyAnalyserOptions fixtureMockOptions = RhapsodyAnalyserOptions(
   prefixes: ['env', 'config'],
   functions: ['func1', 'func2', 'log', 'calc'],
+  functionRegistry: BooleanRhapsodyFunctionRegistry(
+      factory: MockBooleanRhapsodyFunctionFactory()),
   variableValidator: (String variableName) {
     // A valid variable name must start with a letter and may contain letters and digits.
     return RegExp(r'^[a-zA-Z][a-zA-Z0-9]*$').hasMatch(variableName);
@@ -153,3 +156,46 @@ final List<RhapsodyToken> rule27 = [
   r27.token(")", TokenTypes.rparen),
   r27.token(";", TokenTypes.semicolon),
 ];
+
+/// Mock implementation of [BooleanRhapsodyFunction] for testing.
+class MockBooleanRhapsodyFunction implements BooleanRhapsodyFunction {
+  final String name;
+  final List<String> params;
+
+  MockBooleanRhapsodyFunction(this.name, this.params);
+
+  /// Simulates execution: returns `true` for 'func1' and 'log'; otherwise `false`.
+  bool execute() => (name == 'func1' || name == 'log');
+
+  @override
+  String toString() => 'MockFunction(name: $name, params: $params)';
+
+  @override
+  void basicValidateParams(
+      {required List<String> refs,
+      required int minSize,
+      required int maxSize,
+      required String name}) {}
+
+  @override
+  RhapsodicBool isTrue(RhapsodyEvaluationContext context) {
+    return RhapsodicBool.truth();
+  }
+}
+
+/// Mock factory for ['func1', 'func2', 'log', 'calc'].
+class MockBooleanRhapsodyFunctionFactory
+    extends BooleanRhapsodyFunctionBaseFactory {
+  @override
+  BooleanRhapsodyFunction create(String name, List<String> params) {
+    switch (name) {
+      case 'func1':
+      case 'func2':
+      case 'log':
+      case 'calc':
+        return MockBooleanRhapsodyFunction(name, params);
+      default:
+        throw Exception("Mock function '$name' is not supported.");
+    }
+  }
+}
