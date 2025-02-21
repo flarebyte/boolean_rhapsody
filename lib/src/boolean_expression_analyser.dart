@@ -38,8 +38,7 @@ class RhapsodyBooleanExpressionAnalyser {
       final orExpression =
           RhapsodyOrOperator(result.expression, nextOrExpression.expression);
       return RhapsodyExpressionAnalyserResult(
-          expression: orExpression,
-          requiredRules: nextOrExpression.requiredRules);
+          expression: orExpression, gathering: nextOrExpression.gathering);
     }
     return result;
   }
@@ -52,8 +51,7 @@ class RhapsodyBooleanExpressionAnalyser {
       final andExpression =
           RhapsodyAndOperator(result.expression, nextAndExpression.expression);
       return RhapsodyExpressionAnalyserResult(
-          expression: andExpression,
-          requiredRules: nextAndExpression.requiredRules);
+          expression: andExpression, gathering: nextAndExpression.gathering);
     }
     return result;
   }
@@ -69,7 +67,7 @@ class RhapsodyBooleanExpressionAnalyser {
       final next = _parseFactor(tokens);
       final notExpression = RhapsodyNotOperator(next.expression);
       return RhapsodyExpressionAnalyserResult(
-          expression: notExpression, requiredRules: next.requiredRules);
+          expression: notExpression, gathering: next.gathering);
     } else if (tokens.matchType(TokenTypes.lparen)) {
       final expr = _parseOrExpression(tokens);
       if (!tokens.matchType(TokenTypes.rparen)) {
@@ -81,12 +79,11 @@ class RhapsodyBooleanExpressionAnalyser {
       final ruleRef =
           RhapsodyRuleReference(token.text.substring(2), this.ruleDefinitions);
       return RhapsodyExpressionAnalyserResult(
-          expression: ruleRef, requiredRules: []);
+          expression: ruleRef, gathering: RhapsodyExpressionResultGatherer());
     } else if (token.text.contains('(')) {
-      final funcCall = functionHelper.parseFunctionCall(token.text, tokens);
+      final funcCall = functionHelper.parseFunctionCall(tokens);
       return RhapsodyExpressionAnalyserResult(
-          expression: funcCall.expression,
-          requiredRules: funcCall.requiredRules);
+          expression: funcCall.expression, gathering: funcCall.gathering);
     }
 
     throw SemanticException("Unexpected token", token);
