@@ -115,12 +115,29 @@ void main() {
         t.token("env", TokenTypes.identifier),
         t.token(":", TokenTypes.colon),
         t.token("variable1", TokenTypes.identifier),
+        t.token("0", TokenTypes.number),
         // Missing ')'
       ];
       expect(
         () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens)),
         throwsA(isA<SemanticException>().having(
             (e) => e.message, 'message', contains('Expecting comma but got'))),
+      );
+    });
+
+    test('should throw if right parenthesis is missing and no more token', () {
+      final tokens = [
+        t.token("func1", TokenTypes.identifier),
+        t.token("(", TokenTypes.lparen),
+        t.token("env", TokenTypes.identifier),
+        t.token(":", TokenTypes.colon),
+        t.token("variable1", TokenTypes.identifier),
+        // Missing ')'
+      ];
+      expect(
+        () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens)),
+        throwsA(isA<SemanticException>().having((e) => e.message, 'message',
+            contains('Unexpected end of tokens.'))),
       );
     });
 
