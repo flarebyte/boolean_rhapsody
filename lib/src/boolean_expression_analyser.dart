@@ -15,7 +15,7 @@ class RhapsodyBooleanExpressionAnalyser {
   /// Instantiates the analyser with custom options.
   RhapsodyBooleanExpressionAnalyser(
       {required this.options, required this.ruleDefinitions}) {
-    functionHelper = RhapsodyAnalyserFunctionHelper(options: this.options);
+    functionHelper = RhapsodyAnalyserFunctionHelper(options: options);
   }
 
   /// Parses the tokens forming a boolean expression and extracts external rule references.
@@ -77,7 +77,7 @@ class RhapsodyBooleanExpressionAnalyser {
       return expr;
     } else if (token.text.startsWith('r:')) {
       final ruleRef =
-          RhapsodyRuleReference(token.text.substring(2), this.ruleDefinitions);
+          RhapsodyRuleReference(token.text.substring(2), ruleDefinitions);
       return RhapsodyExpressionAnalyserResult(
           expression: ruleRef, gathering: RhapsodyExpressionResultGatherer());
     } else if (token.text.contains('(')) {

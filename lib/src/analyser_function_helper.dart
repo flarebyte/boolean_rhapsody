@@ -82,7 +82,7 @@ class RhapsodyAnalyserFunctionHelper {
     final isSupportedVar = options.isVariable(varName);
     if (!isSupportedVar) {
       throw SemanticException(
-          "Expecting a valid variable format with a scope but got ${varName}",
+          "Expecting a valid variable format with a scope but got $varName",
           prefixToken);
     }
 

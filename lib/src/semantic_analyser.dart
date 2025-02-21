@@ -1,5 +1,6 @@
 import 'analysis_failure.dart';
 import 'boolean_expression_analyser.dart';
+import 'expression_analyzer_result.dart';
 import 'parser_options.dart';
 import 'rule_definition.dart';
 import 'rule_expession.dart';
@@ -129,7 +130,7 @@ class RhapsodySemanticAnalyser {
         final RhapsodyExpressionAnalyserResult parseResult =
             expressionAnalyser.analyse(exprTokens);
         final RhapsodyBooleanExpression expression = parseResult.expression;
-        final List<String> requiredRules = parseResult.requiredRules;
+        final RhapsodyExpressionResultGatherer gatherer = RhapsodyExpressionResultGatherer();
 
         // Reconstruct the rule’s source text by joining the tokens.
         // (A real analyser might use the original input text instead.)
@@ -140,7 +141,7 @@ class RhapsodySemanticAnalyser {
 
         final ruleDefinition = RhapsodyRuleDefintition(
           ruleName: ruleName,
-          requiredRules: requiredRules,
+          requiredRules: gatherer.requiredRules.toList(),
           expression: expression,
           startIndex: ruleStartIndex,
           endIndex: ruleEndIndex,

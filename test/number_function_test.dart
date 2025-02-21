@@ -5,7 +5,7 @@ void main() {
   group('NumberRhapsodyFunction', () {
     const defaultPrefixes = ["c", "v", "p", "d"];
 
-    RhapsodyEvaluationContext _buildContext(
+    RhapsodyEvaluationContext buildContext(
         {String? value1, String? threshold}) {
       final builder =
           RhapsodyEvaluationContextBuilder(prefixes: defaultPrefixes);
@@ -21,7 +21,7 @@ void main() {
     }
 
     test('Returns true for valid greater than comparison', () {
-      final context = _buildContext(value1: '10', threshold: '5');
+      final context = buildContext(value1: '10', threshold: '5');
 
       final function = NumberRhapsodyFunction(
         numberComparator: RhapsodyNumberComparators.greaterThan,
@@ -32,7 +32,7 @@ void main() {
     });
 
     test('Returns false for invalid greater than comparison', () {
-      final context = _buildContext(value1: '3', threshold: '5');
+      final context = buildContext(value1: '3', threshold: '5');
 
       final function = NumberRhapsodyFunction(
         numberComparator: RhapsodyNumberComparators.greaterThan,
@@ -43,7 +43,7 @@ void main() {
     });
 
     test('Returns true for valid equal comparison', () {
-      final context = _buildContext(value1: '7', threshold: '7');
+      final context = buildContext(value1: '7', threshold: '7');
 
       final function = NumberRhapsodyFunction(
         numberComparator: RhapsodyNumberComparators.equalTo,
@@ -54,7 +54,7 @@ void main() {
     });
 
     test('Returns untruthy when one reference is missing', () {
-      final context = _buildContext(value1: '10'); // No threshold value
+      final context = buildContext(value1: '10'); // No threshold value
 
       final function = NumberRhapsodyFunction(
         numberComparator: RhapsodyNumberComparators.lessThan,
@@ -65,7 +65,7 @@ void main() {
     });
 
     test('Returns untruthy when values are non-numeric', () {
-      final context = _buildContext(value1: 'abc', threshold: '10');
+      final context = buildContext(value1: 'abc', threshold: '10');
 
       final function = NumberRhapsodyFunction(
         numberComparator: RhapsodyNumberComparators.lessThan,
@@ -76,7 +76,7 @@ void main() {
     });
 
     test('Returns true for lessThanOrEqual with equal values', () {
-      final context = _buildContext(value1: '5', threshold: '5');
+      final context = buildContext(value1: '5', threshold: '5');
 
       final function = NumberRhapsodyFunction(
         numberComparator: RhapsodyNumberComparators.lessThanOrEqual,
@@ -87,7 +87,7 @@ void main() {
     });
 
     test('Returns true for notEqualTo when values differ', () {
-      final context = _buildContext(value1: '10', threshold: '20');
+      final context = buildContext(value1: '10', threshold: '20');
 
       final function = NumberRhapsodyFunction(
         numberComparator: RhapsodyNumberComparators.notEqualTo,
@@ -98,7 +98,7 @@ void main() {
     });
 
     test('Returns false for notEqualTo when values are same', () {
-      final context = _buildContext(value1: '10', threshold: '10');
+      final context = buildContext(value1: '10', threshold: '10');
 
       final function = NumberRhapsodyFunction(
         numberComparator: RhapsodyNumberComparators.notEqualTo,
@@ -109,7 +109,7 @@ void main() {
     });
 
     test('Returns untruthy when numeric values are null', () {
-      final context = _buildContext(value1: null, threshold: '10');
+      final context = buildContext(value1: null, threshold: '10');
 
       final function = NumberRhapsodyFunction(
         numberComparator: RhapsodyNumberComparators.greaterThan,
