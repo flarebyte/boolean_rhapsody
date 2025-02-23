@@ -102,7 +102,7 @@ class RhapsodyTokenStream {
   ///
   /// Throws:
   /// - [SemanticException] if either the type or text does not match the expected values.
-  RhapsodyToken consumeAndValidate(String type, String? text) {
+  RhapsodyToken consumeAndValidate(String type, [String? text]) {
     final token = consume();
     if (token.type != type) {
       throw SemanticException("Expected $type but got ${token.type}", token);

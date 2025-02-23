@@ -127,7 +127,7 @@ void main() {
       });
 
       test('should handle null text parameter (type-only validation)', () {
-        final token = stream.consumeAndValidate('IDENTIFIER', null);
+        final token = stream.consumeAndValidate('IDENTIFIER');
         expect(token, equals(tokens[0]));
       });
 
