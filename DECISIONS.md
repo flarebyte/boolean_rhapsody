@@ -309,6 +309,25 @@ control via parentheses.
 <identifier> ::= ... (Define the identifier syntax here)
 ```
 
+Abstracting away the internal details of functionCall and treat it as a single, indivisible token from the parser's perspective:
+
+```bnf
+<rule> ::= <expr>  // Example: func1(a) and rule2
+
+<expr> ::= <term> <expr_tail> // Example: func1(a) or rule2
+<expr_tail> ::= and <term> <expr_tail> | or <term> <expr_tail> | ε // Example: and not rule3, or func2(b), or nothing (ε)
+
+<term> ::= not <term> | ( <expr> ) | <functionCall> | <ruleRef> // Examples: not func1(a), (func1(a) or rule2), func1(a), rule2
+
+<functionCall> ::= (Predefined function call token) // Example: func1(a, b) (Tokenized as a single unit by the lexer)
+
+<ruleRef> ::= <ruleName> // Example: rule42
+
+<ruleName> ::= <identifier> // Example: rule42
+
+<identifier> ::= ... (Define the identifier syntax here) // Example: a, b, func1, rule42 (Depends on your specific identifier rules)
+```
+
 ### Evaluation Rules:
 
 1.  **Operator Precedence**:
