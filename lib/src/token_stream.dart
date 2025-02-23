@@ -16,7 +16,8 @@ class RhapsodyTokenStream {
   /// Returns `true` if all tokens have been consumed.
   bool get isAtEnd => _index >= _tokens.length;
 
-  bool nextIsAtEnd({int skip = 1}) => (_index + skip) >= _tokens.length;
+  bool isNextAtEnd({int lookahead = 1}) =>
+      (_index + lookahead) >= _tokens.length;
 
   /// Returns the current token without consuming it.
   ///
@@ -36,16 +37,18 @@ class RhapsodyTokenStream {
   /// Returns `true` if the current token's type matches the given [value].
   bool matchType(String value) => !isAtEnd && _tokens[_index].type == value;
 
-  bool nextMatchType(String value, {int skip = 1}) =>
-      !nextIsAtEnd(skip: skip) && _tokens[_index + skip].type == value;
+  bool peekMatchesType(String value, {int lookahead = 1}) =>
+      !isNextAtEnd(lookahead: lookahead) &&
+      _tokens[_index + lookahead].type == value;
 
   /// Checks if the current token matches the given [value] by text.
   ///
   /// Returns `true` if the current token's text matches the given [value].
   bool matchText(String value) => !isAtEnd && _tokens[_index].text == value;
 
-  bool nextMatchText(String value, {int skip = 1}) =>
-      !nextIsAtEnd(skip: skip) && _tokens[_index + skip].text == value;
+  bool peekMatchesText(String value, {int lookahead = 1}) =>
+      !isNextAtEnd(lookahead: lookahead) &&
+      _tokens[_index + lookahead].text == value;
 
   /// Consumes and returns the current token, advancing the stream.
   ///
@@ -57,15 +60,14 @@ class RhapsodyTokenStream {
     return _tokens[_index++];
   }
 
-  RhapsodyToken consumeTypeAndText(String type, String? text) {
+  RhapsodyToken consumeAndValidate(String type, String? text) {
     final token = consume();
-    if (token.type != type){
+    if (token.type != type) {
       throw SemanticException("Expected $type but got ${token.type}", token);
     }
-    if (text!= null && token.text != text){
+    if (text != null && token.text != text) {
       throw SemanticException("Expected $text but got ${token.text}", token);
     }
     return token;
-
   }
 }

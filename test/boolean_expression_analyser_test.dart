@@ -5,8 +5,7 @@ import 'code_fixtures.dart';
 
 void main() {
   group('RhapsodyBooleanExpressionAnalyser', () {
-        test('should evaluate func1(env:variable1) and rule42;',
-        () {
+    test('should evaluate func1(env:variable1) and rule42;', () {
       final Map<String, RhapsodyBooleanExpression> ruleDefinitions = {};
       // func1(env:variable1) and rule42;
       final t = MockTokenCreator();
@@ -25,15 +24,11 @@ void main() {
           RhapsodyBooleanExpressionAnalyser(
               options: fixtureMockOptions, ruleDefinitions: ruleDefinitions);
       final analyzed = analyser.analyse(tokens);
-      expect(
-          analyzed.expression.toString(),
-          equals(
-              ''));
+      expect(analyzed.expression.toString(), equals(''));
       expect(analyzed.gathering.requiredRules, hasLength(1));
       expect(analyzed.gathering.requiredRules, contains('rule42'));
       expect(analyzed.gathering.requiredVariables, hasLength(1));
       expect(analyzed.gathering.requiredVariables, contains('env:variable1'));
-
     });
     test('should evaluate as truthy when comparator condition is satisfied',
         () {
@@ -65,15 +60,11 @@ void main() {
           RhapsodyBooleanExpressionAnalyser(
               options: fixtureMockOptions, ruleDefinitions: ruleDefinitions);
       final analyzed = analyser.analyse(tokens);
-      expect(
-          analyzed.expression.toString(),
-          equals(
-              ''));
+      expect(analyzed.expression.toString(), equals(''));
       expect(analyzed.gathering.requiredRules, hasLength(1));
       expect(analyzed.gathering.requiredRules, contains('rule42'));
       expect(analyzed.gathering.requiredVariables, hasLength(1));
       expect(analyzed.gathering.requiredVariables, contains('env:variable1'));
-
     });
   });
 }

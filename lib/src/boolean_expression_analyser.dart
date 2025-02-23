@@ -24,7 +24,8 @@ class RhapsodyBooleanExpressionAnalyser {
     final ast = _parseOrExpression(tokenStream);
     if (!tokenStream.isAtEnd) {
       throw SemanticException(
-          "Unexpected ${tokenStream.remainingTokens.length} tokens after parsing: ", tokenStream.current);
+          "Unexpected ${tokenStream.remainingTokens.length} tokens after parsing: ",
+          tokenStream.current);
     }
     return ast;
   }
@@ -34,8 +35,8 @@ class RhapsodyBooleanExpressionAnalyser {
   RhapsodyExpressionAnalyserResult _parseOrExpression(
       RhapsodyTokenStream tokens) {
     final result = _parseAndTerm(tokens);
-    final isFollowedByOr = tokens.nextMatchType(TokenTypes.operatorType) &&
-        tokens.nextMatchText('or');
+    final isFollowedByOr = tokens.peekMatchesType(TokenTypes.operatorType) &&
+        tokens.peekMatchesText('or');
     if (isFollowedByOr) {
       tokens.consume(); //consume or
       final nextOrExpression = _parseOrExpression(tokens);
@@ -53,8 +54,8 @@ class RhapsodyBooleanExpressionAnalyser {
   /// AndTerm ::= Factor ( "and" AndTerm )*
   RhapsodyExpressionAnalyserResult _parseAndTerm(RhapsodyTokenStream tokens) {
     final result = _parseFactor(tokens);
-    final isFollowedByAnd = tokens.nextMatchType(TokenTypes.operatorType) &&
-        tokens.nextMatchText('and');
+    final isFollowedByAnd = tokens.peekMatchesType(TokenTypes.operatorType) &&
+        tokens.peekMatchesText('and');
     if (isFollowedByAnd) {
       tokens.consume(); //consume and
       final nextAndExpression = _parseAndTerm(tokens);
@@ -73,11 +74,14 @@ class RhapsodyBooleanExpressionAnalyser {
       throw Exception("Unexpected end of expression.");
     }
 
-    final isFollowedByNot = tokens.nextMatchType(TokenTypes.operatorType) &&
-        tokens.nextMatchText('not');
-    final isFollowedByLeftParenthesis = tokens.nextMatchType(TokenTypes.lparen);
-    final isFollowedByFunction = tokens.nextMatchType(TokenTypes.identifier) && tokens.nextMatchType(TokenTypes.lparen, skip: 2);
-    final isFollowedByRule = tokens.nextMatchType(TokenTypes.identifier);
+    final isFollowedByNot = tokens.peekMatchesType(TokenTypes.operatorType) &&
+        tokens.peekMatchesText('not');
+    final isFollowedByLeftParenthesis =
+        tokens.peekMatchesType(TokenTypes.lparen);
+    final isFollowedByFunction =
+        tokens.peekMatchesType(TokenTypes.identifier) &&
+            tokens.peekMatchesType(TokenTypes.lparen, lookahead: 2);
+    final isFollowedByRule = tokens.peekMatchesType(TokenTypes.identifier);
 
     if (isFollowedByNot) {
       tokens.consume(); //consume not
@@ -97,16 +101,14 @@ class RhapsodyBooleanExpressionAnalyser {
       final funcCall = functionHelper.parseFunctionCall(tokens);
       return RhapsodyExpressionAnalyserResult(
           expression: funcCall.expression, gathering: funcCall.gathering);
-    } 
-    else if (isFollowedByRule) {
+    } else if (isFollowedByRule) {
       final ruleIdToken = tokens.consume();
-      final ruleRef =
-          RhapsodyRuleReference(ruleIdToken.text, ruleDefinitions);
+      final ruleRef = RhapsodyRuleReference(ruleIdToken.text, ruleDefinitions);
       final gatherer = RhapsodyExpressionResultGatherer();
       gatherer.addRule(ruleIdToken.text);
       return RhapsodyExpressionAnalyserResult(
           expression: ruleRef, gathering: gatherer);
-    } 
+    }
 
     throw SemanticException("Unexpected token", tokens.consume());
   }
