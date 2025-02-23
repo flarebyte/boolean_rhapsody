@@ -16,7 +16,6 @@ class RhapsodyTokenStream {
   /// Returns `true` if all tokens have been consumed.
   bool get isAtEnd => _index >= _tokens.length;
 
-  /// Returns `true` if the next token is the last one
   bool nextIsAtEnd({int skip = 1}) => (_index + skip) >= _tokens.length;
 
   /// Returns the current token without consuming it.
@@ -37,9 +36,6 @@ class RhapsodyTokenStream {
   /// Returns `true` if the current token's type matches the given [value].
   bool matchType(String value) => !isAtEnd && _tokens[_index].type == value;
 
-  /// Checks if the current token matches the given [value] by type.
-  ///
-  /// Returns `true` if the current token's type matches the given [value].
   bool nextMatchType(String value, {int skip = 1}) =>
       !nextIsAtEnd(skip: skip) && _tokens[_index + skip].type == value;
 
@@ -48,9 +44,6 @@ class RhapsodyTokenStream {
   /// Returns `true` if the current token's text matches the given [value].
   bool matchText(String value) => !isAtEnd && _tokens[_index].text == value;
 
-  /// Checks if the current token matches the given [value] by text.
-  ///
-  /// Returns `true` if the current token's text matches the given [value].
   bool nextMatchText(String value, {int skip = 1}) =>
       !nextIsAtEnd(skip: skip) && _tokens[_index + skip].text == value;
 
@@ -62,5 +55,17 @@ class RhapsodyTokenStream {
       throw SemanticException("Unexpected end of tokens.", _tokens.last);
     }
     return _tokens[_index++];
+  }
+
+  RhapsodyToken consumeTypeAndText(String type, String? text) {
+    final token = consume();
+    if (token.type != type){
+      throw SemanticException("Expected $type but got ${token.type}", token);
+    }
+    if (text!= null && token.text != text){
+      throw SemanticException("Expected $text but got ${token.text}", token);
+    }
+    return token;
+
   }
 }
