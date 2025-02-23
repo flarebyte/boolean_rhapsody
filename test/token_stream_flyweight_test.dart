@@ -38,8 +38,9 @@ void main() {
       });
 
       test('returns true when next token is rparen', () {
+        final first = t.token("first", TokenTypes.identifier);
         final tokenStream =
-            RhapsodyTokenStream([t.token(")", TokenTypes.rparen)]);
+            RhapsodyTokenStream([first, t.token(")", TokenTypes.rparen)]);
 
         final result =
             RhapsodyTokenStreamFlyweight.peekIsRightParenthesis(tokenStream);
@@ -47,8 +48,9 @@ void main() {
       });
 
       test('returns false when next token is not rparen', () {
+        final first = t.token("first", TokenTypes.identifier);
         final tokenStream =
-            RhapsodyTokenStream([t.token("(", TokenTypes.lparen)]);
+            RhapsodyTokenStream([first, t.token("(", TokenTypes.lparen)]);
 
         final result =
             RhapsodyTokenStreamFlyweight.peekIsRightParenthesis(tokenStream);
@@ -115,8 +117,9 @@ void main() {
     });
 
     test('returns true when next token is "and" operator', () {
+      final first = t.token("first", TokenTypes.identifier);
       final tokenStream =
-          RhapsodyTokenStream([t.token("and", TokenTypes.operatorType)]);
+          RhapsodyTokenStream([first, t.token("and", TokenTypes.operatorType)]);
 
       final result =
           RhapsodyTokenStreamFlyweight.peekIsAndOperator(tokenStream);
@@ -124,8 +127,9 @@ void main() {
     });
 
     test('returns false when next token is not "and" operator', () {
+      final first = t.token("first", TokenTypes.identifier);
       final tokenStream =
-          RhapsodyTokenStream([t.token("or", TokenTypes.operatorType)]);
+          RhapsodyTokenStream([first, t.token("or", TokenTypes.operatorType)]);
 
       final result =
           RhapsodyTokenStreamFlyweight.peekIsAndOperator(tokenStream);
@@ -140,13 +144,17 @@ void main() {
     });
 
     test('peekIsLeftParenthesis returns true for lparen', () {
-      final tokens = RhapsodyTokenStream([t.token("(", TokenTypes.lparen)]);
+      final first = t.token("first", TokenTypes.identifier);
+      final tokens =
+          RhapsodyTokenStream([first, t.token("(", TokenTypes.lparen)]);
       expect(
           RhapsodyTokenStreamFlyweight.peekIsLeftParenthesis(tokens), isTrue);
     });
 
     test('peekIsLeftParenthesis returns false for non-lparen', () {
-      final tokens = RhapsodyTokenStream([t.token(")", TokenTypes.rparen)]);
+      final first = t.token("first", TokenTypes.identifier);
+      final tokens =
+          RhapsodyTokenStream([first, t.token(")", TokenTypes.rparen)]);
       expect(
           RhapsodyTokenStreamFlyweight.peekIsLeftParenthesis(tokens), isFalse);
     });
@@ -172,14 +180,16 @@ void main() {
     });
 
     test('peekIsNotOperator returns true for "not"', () {
+      final first = t.token("first", TokenTypes.identifier);
       final tokens =
-          RhapsodyTokenStream([t.token("not", TokenTypes.operatorType)]);
+          RhapsodyTokenStream([first, t.token("not", TokenTypes.operatorType)]);
       expect(RhapsodyTokenStreamFlyweight.peekIsNotOperator(tokens), isTrue);
     });
 
     test('peekIsNotOperator returns false for non-"not"', () {
+      final first = t.token("first", TokenTypes.identifier);
       final tokens =
-          RhapsodyTokenStream([t.token("and", TokenTypes.operatorType)]);
+          RhapsodyTokenStream([first, t.token("and", TokenTypes.operatorType)]);
       expect(RhapsodyTokenStreamFlyweight.peekIsNotOperator(tokens), isFalse);
     });
 
@@ -206,12 +216,16 @@ void main() {
     });
 
     test('peekIsEqual returns true for equal token', () {
-      final tokens = RhapsodyTokenStream([t.token("=", TokenTypes.equal)]);
+      final first = t.token("first", TokenTypes.identifier);
+      final tokens =
+          RhapsodyTokenStream([first, t.token("=", TokenTypes.equal)]);
       expect(RhapsodyTokenStreamFlyweight.peekIsEqual(tokens), isTrue);
     });
 
     test('peekIsEqual returns false for non-equal token', () {
-      final tokens = RhapsodyTokenStream([t.token("(", TokenTypes.lparen)]);
+      final first = t.token("first", TokenTypes.identifier);
+      final tokens =
+          RhapsodyTokenStream([first, t.token("(", TokenTypes.lparen)]);
       expect(RhapsodyTokenStreamFlyweight.peekIsEqual(tokens), isFalse);
     });
 
@@ -236,12 +250,16 @@ void main() {
     });
 
     test('peekIsComma returns true for comma', () {
-      final tokens = RhapsodyTokenStream([t.token(",", TokenTypes.comma)]);
+      final first = t.token("first", TokenTypes.identifier);
+      final tokens =
+          RhapsodyTokenStream([first, t.token(",", TokenTypes.comma)]);
       expect(RhapsodyTokenStreamFlyweight.peekIsComma(tokens), isTrue);
     });
 
     test('peekIsComma returns false for non-comma', () {
-      final tokens = RhapsodyTokenStream([t.token(";", TokenTypes.semicolon)]);
+      final first = t.token("first", TokenTypes.identifier);
+      final tokens =
+          RhapsodyTokenStream([first, t.token(";", TokenTypes.semicolon)]);
       expect(RhapsodyTokenStreamFlyweight.peekIsComma(tokens), isFalse);
     });
 
@@ -266,12 +284,16 @@ void main() {
     });
 
     test('peekIsSemicolon returns true for semicolon', () {
-      final tokens = RhapsodyTokenStream([t.token(";", TokenTypes.semicolon)]);
+      final first = t.token("first", TokenTypes.identifier);
+      final tokens =
+          RhapsodyTokenStream([first, t.token(";", TokenTypes.semicolon)]);
       expect(RhapsodyTokenStreamFlyweight.peekIsSemicolon(tokens), isTrue);
     });
 
     test('peekIsSemicolon returns false for non-semicolon', () {
-      final tokens = RhapsodyTokenStream([t.token(",", TokenTypes.comma)]);
+      final first = t.token("first", TokenTypes.identifier);
+      final tokens =
+          RhapsodyTokenStream([first, t.token(",", TokenTypes.comma)]);
       expect(RhapsodyTokenStreamFlyweight.peekIsSemicolon(tokens), isFalse);
     });
 
@@ -296,12 +318,16 @@ void main() {
     });
 
     test('peekIsColon returns true for colon', () {
-      final tokens = RhapsodyTokenStream([t.token(":", TokenTypes.colon)]);
+      final first = t.token("first", TokenTypes.identifier);
+      final tokens =
+          RhapsodyTokenStream([first, t.token(":", TokenTypes.colon)]);
       expect(RhapsodyTokenStreamFlyweight.peekIsColon(tokens), isTrue);
     });
 
     test('peekIsColon returns false for non-colon', () {
-      final tokens = RhapsodyTokenStream([t.token(";", TokenTypes.semicolon)]);
+      final first = t.token("first", TokenTypes.identifier);
+      final tokens =
+          RhapsodyTokenStream([first, t.token(";", TokenTypes.semicolon)]);
       expect(RhapsodyTokenStreamFlyweight.peekIsColon(tokens), isFalse);
     });
 
