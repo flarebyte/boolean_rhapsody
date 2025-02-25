@@ -1,9 +1,10 @@
+import 'package:boolean_rhapsody/src/token_stream_flyweight.dart';
+
 import 'expression_analyzer_result.dart';
 import 'parser_options.dart';
 import 'rule_expession.dart';
 import 'semantic_exception.dart';
 import 'token_stream.dart';
-import 'tokeniser.dart';
 
 class RhapsodyAnalyserFunctionHelper {
   final RhapsodyAnalyserOptions options;
@@ -40,24 +41,15 @@ class RhapsodyAnalyserFunctionHelper {
   /// and the gathered variables used within the function call.
   RhapsodyExpressionAnalyserResult parseFunctionCall(
       RhapsodyTokenStream tokens) {
-    final functionToken = tokens.consume();
-    if (functionToken.type != TokenTypes.identifier) {
-      throw SemanticException(
-          "Expecting call to function but got ${functionToken.type}",
-          functionToken);
-    }
+    final functionToken =
+        RhapsodyTokenStreamFlyweight.consumeIdentifier(tokens);
 
     final isKnownFunction = options.isFunction(functionToken.text);
     if (!isKnownFunction) {
       throw SemanticException("Call to unknown function", functionToken);
     }
 
-    final parenthesisStart = tokens.consume();
-    if (parenthesisStart.type != TokenTypes.lparen) {
-      throw SemanticException(
-          "Expecting left parenthesis but got ${parenthesisStart.type}",
-          parenthesisStart);
-    }
+    RhapsodyTokenStreamFlyweight.consumeLeftParenthesis(tokens);
     final params = <String>[];
     RhapsodyExpressionResultGatherer gatherer =
         RhapsodyExpressionResultGatherer();
@@ -65,16 +57,11 @@ class RhapsodyAnalyserFunctionHelper {
       final scopeVar = _parseScopeVariable(tokens);
       params.add(scopeVar);
       gatherer.addVariable(scopeVar);
-      final nextToken = tokens.consume();
-      if (nextToken.type == TokenTypes.rparen) {
+      if (RhapsodyTokenStreamFlyweight.matchesRightParenthesis(tokens)) {
+        RhapsodyTokenStreamFlyweight.consumeRightParenthesis(tokens);
         break;
-      }
-      if (nextToken.type != TokenTypes.comma) {
-        final paramPosition =
-            safetyCounter <= 1 ? "${safetyCounter}st" : "${safetyCounter}nd";
-        throw SemanticException(
-            "Expecting comma but got ${nextToken.type} after $paramPosition parameter",
-            nextToken);
+      } else {
+        RhapsodyTokenStreamFlyweight.consumeComma(tokens);
       }
     }
 
@@ -85,23 +72,9 @@ class RhapsodyAnalyserFunctionHelper {
   }
 
   String _parseScopeVariable(RhapsodyTokenStream tokens) {
-    final prefixToken = tokens.consume();
-    if (prefixToken.type != TokenTypes.identifier) {
-      throw SemanticException(
-          "Expecting a scope identifier but got ${prefixToken.type}",
-          prefixToken);
-    }
-    final columnToken = tokens.consume();
-    if (columnToken.type != TokenTypes.colon) {
-      throw SemanticException(
-          "Expecting a colon but got ${columnToken.type}", columnToken);
-    }
-
-    final varToken = tokens.consume();
-    if (varToken.type != TokenTypes.identifier) {
-      throw SemanticException(
-          "Expecting a variable identifier but got ${varToken.type}", varToken);
-    }
+    final prefixToken = RhapsodyTokenStreamFlyweight.consumeIdentifier(tokens);
+    RhapsodyTokenStreamFlyweight.consumeColon(tokens);
+    final varToken = RhapsodyTokenStreamFlyweight.consumeIdentifier(tokens);
 
     final varName = "${prefixToken.text}:${varToken.text}";
 

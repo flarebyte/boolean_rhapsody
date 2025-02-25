@@ -22,6 +22,10 @@ class RhapsodyTokenStreamFlyweight {
     return tokens.peekMatchesType(TokenTypes.rparen);
   }
 
+  static bool matchesRightParenthesis(RhapsodyTokenStream tokens) {
+    return tokens.matchType(TokenTypes.rparen);
+  }
+  
   /// Consumes the next token if it is a right parenthesis (`rparen`).
   ///
   /// Throws a [SemanticException] if the next token is not a right parenthesis.
