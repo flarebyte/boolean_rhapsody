@@ -92,33 +92,33 @@ class RhapsodyTokenStream {
   }
 
   String friendlyToken(String token) {
-  switch (token) {
-    case TokenTypes.lparen:
-      return 'left parenthesis "("';
-    case TokenTypes.rparen:
-      return 'right parenthesis ")"';
-    case TokenTypes.operatorType:
-      return 'operator (or, and, not)';
-    case TokenTypes.identifier:
-      return 'identifier';
-    case TokenTypes.number:
-      return 'number';
-    case TokenTypes.equal:
-      return 'equal "="';
-    case TokenTypes.comma:
-      return 'comma ","';
-    case TokenTypes.semicolon:
-      return 'semicolon ";"';
-    case TokenTypes.colon:
-      return 'colon ":"';
-    case TokenTypes.comment:
-      return 'comment "# ..."';
-    case TokenTypes.unknown:
-      return 'unknown';
-    default:
-      return token;
+    switch (token) {
+      case TokenTypes.lparen:
+        return 'left parenthesis "("';
+      case TokenTypes.rparen:
+        return 'right parenthesis ")"';
+      case TokenTypes.operatorType:
+        return 'operator (or, and, not)';
+      case TokenTypes.identifier:
+        return 'identifier';
+      case TokenTypes.number:
+        return 'number';
+      case TokenTypes.equal:
+        return 'equal "="';
+      case TokenTypes.comma:
+        return 'comma ","';
+      case TokenTypes.semicolon:
+        return 'semicolon ";"';
+      case TokenTypes.colon:
+        return 'colon ":"';
+      case TokenTypes.comment:
+        return 'comment "# ..."';
+      case TokenTypes.unknown:
+        return 'unknown';
+      default:
+        return token;
+    }
   }
-}
 
   /// Consumes the current token and validates its [type] and optionally its [text].
   ///
@@ -133,7 +133,9 @@ class RhapsodyTokenStream {
   RhapsodyToken consumeAndValidate(String type, [String? text]) {
     final token = consume();
     if (token.type != type) {
-      throw SemanticException("Expected ${friendlyToken(type)} but got ${friendlyToken(token.type)}", token);
+      throw SemanticException(
+          "Expected ${friendlyToken(type)} but got ${friendlyToken(token.type)}",
+          token);
     }
     if (text != null && token.text != text) {
       throw SemanticException("Expected $text but got ${token.text}", token);
