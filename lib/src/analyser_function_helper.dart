@@ -42,7 +42,7 @@ class RhapsodyAnalyserFunctionHelper {
   RhapsodyExpressionAnalyserResult parseFunctionCall(
       RhapsodyTokenStream tokens) {
     final functionToken = RhapsodyTokenStreamFlyweight.consumeIdentifier(tokens,
-        contextual: "function");
+        contextual: "function call");
 
     final isKnownFunction = options.isFunction(functionToken.text);
     if (!isKnownFunction) {
@@ -58,10 +58,12 @@ class RhapsodyAnalyserFunctionHelper {
       params.add(scopeVar);
       gatherer.addVariable(scopeVar);
       if (RhapsodyTokenStreamFlyweight.matchesRightParenthesis(tokens)) {
-        RhapsodyTokenStreamFlyweight.consumeRightParenthesis(tokens);
+        RhapsodyTokenStreamFlyweight.consumeRightParenthesis(tokens,
+            contextual: "function call");
         break;
       } else {
-        RhapsodyTokenStreamFlyweight.consumeComma(tokens);
+        RhapsodyTokenStreamFlyweight.consumeComma(tokens,
+            contextual: "function call");
       }
     }
 
@@ -74,7 +76,7 @@ class RhapsodyAnalyserFunctionHelper {
   String _parseScopeVariable(RhapsodyTokenStream tokens) {
     final prefixToken = RhapsodyTokenStreamFlyweight.consumeIdentifier(tokens,
         contextual: "scope of variable");
-    RhapsodyTokenStreamFlyweight.consumeColon(tokens);
+    RhapsodyTokenStreamFlyweight.consumeColon(tokens, contextual: "variable");
     final varToken = RhapsodyTokenStreamFlyweight.consumeIdentifier(tokens,
         contextual: "variable name");
 

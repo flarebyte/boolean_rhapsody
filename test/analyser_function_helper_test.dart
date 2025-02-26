@@ -73,7 +73,7 @@ void main() {
       expect(
         () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens)),
         throwsA(isA<SemanticException>().having((e) => e.message, 'message',
-            contains('Expected identifier in function but got'))),
+            contains('Expected identifier in function call but got'))),
       );
     });
 
@@ -121,7 +121,7 @@ void main() {
       expect(
         () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens)),
         throwsA(isA<SemanticException>().having((e) => e.message, 'message',
-            contains('Expected comma "," but got'))),
+            contains('Expected comma "," in function call but'))),
       );
     });
 
@@ -157,7 +157,7 @@ void main() {
       expect(
         () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens)),
         throwsA(isA<SemanticException>().having((e) => e.message, 'message',
-            contains('Expected comma "," but got'))),
+            contains('Expected comma "," in function call but got'))),
       );
     });
 
@@ -192,7 +192,7 @@ void main() {
       expect(
         () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens)),
         throwsA(isA<SemanticException>().having((e) => e.message, 'message',
-            contains('Expected colon ":" but got'))),
+            contains('Expected colon ":" in variable but got'))),
       );
     });
 

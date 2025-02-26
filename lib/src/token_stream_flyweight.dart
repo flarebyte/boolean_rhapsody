@@ -31,15 +31,17 @@ class RhapsodyTokenStreamFlyweight {
   /// Consumes the next token if it is a right parenthesis (`rparen`).
   ///
   /// Throws a [SemanticException] if the next token is not a right parenthesis.
-  static void consumeRightParenthesis(RhapsodyTokenStream tokens) {
-    tokens.consumeAndValidate(TokenTypes.rparen);
+  static void consumeRightParenthesis(RhapsodyTokenStream tokens,
+      {String? contextual}) {
+    tokens.consumeAndValidate(TokenTypes.rparen, contextual: contextual);
   }
 
   /// Consumes the next token if it is a left parenthesis (`lparen`).
   ///
   /// Throws a [SemanticException] if the next token is not a left parenthesis.
-  static void consumeLeftParenthesis(RhapsodyTokenStream tokens) {
-    tokens.consumeAndValidate(TokenTypes.lparen);
+  static void consumeLeftParenthesis(RhapsodyTokenStream tokens,
+      {String? contextual}) {
+    tokens.consumeAndValidate(TokenTypes.lparen, contextual: contextual);
   }
 
   /// Checks if the next token is a left parenthesis (`rparen`) without consuming it.
@@ -60,8 +62,10 @@ class RhapsodyTokenStreamFlyweight {
   /// Consumes the next token if it is the `or` operator.
   ///
   /// Throws a [SemanticException] if the next token is not the `or` operator.
-  static void consumeOrOperator(RhapsodyTokenStream tokens) {
-    tokens.consumeAndValidate(TokenTypes.operatorType, text: 'or');
+  static void consumeOrOperator(RhapsodyTokenStream tokens,
+      {String? contextual}) {
+    tokens.consumeAndValidate(TokenTypes.operatorType,
+        text: 'or', contextual: contextual);
   }
 
   /// Checks if the next token is an `and` operator without consuming it.
@@ -75,8 +79,10 @@ class RhapsodyTokenStreamFlyweight {
   /// Consumes the next token if it is the `and` operator.
   ///
   /// Throws a [SemanticException] if the next token is not the `and` operator.
-  static void consumeAndOperator(RhapsodyTokenStream tokens) {
-    tokens.consumeAndValidate(TokenTypes.operatorType, text: 'and');
+  static void consumeAndOperator(RhapsodyTokenStream tokens,
+      {String? contextual}) {
+    tokens.consumeAndValidate(TokenTypes.operatorType,
+        text: 'and', contextual: contextual);
   }
 
   /// Checks if the next token is a `not` operator without consuming it.
@@ -90,8 +96,10 @@ class RhapsodyTokenStreamFlyweight {
   /// Consumes the next token if it is the `not` operator.
   ///
   /// Throws a [SemanticException] if the next token is not the `not` operator.
-  static void consumeNotOperator(RhapsodyTokenStream tokens) {
-    tokens.consumeAndValidate(TokenTypes.operatorType, text: 'not');
+  static void consumeNotOperator(RhapsodyTokenStream tokens,
+      {String? contextual}) {
+    tokens.consumeAndValidate(TokenTypes.operatorType,
+        text: 'not', contextual: contextual);
   }
 
   /// Checks if the next token is an equal sign (`equal`) without consuming it.
@@ -104,8 +112,8 @@ class RhapsodyTokenStreamFlyweight {
   /// Consumes the next token if it is an equal sign (`equal`).
   ///
   /// Throws a [SemanticException] if the next token is not `equal`.
-  static void consumeEqual(RhapsodyTokenStream tokens) {
-    tokens.consumeAndValidate(TokenTypes.equal);
+  static void consumeEqual(RhapsodyTokenStream tokens, {String? contextual}) {
+    tokens.consumeAndValidate(TokenTypes.equal, contextual: contextual);
   }
 
   /// Checks if the next token is a comma (`comma`) without consuming it.
@@ -118,8 +126,8 @@ class RhapsodyTokenStreamFlyweight {
   /// Consumes the next token if it is a comma (`comma`).
   ///
   /// Throws a [SemanticException] if the next token is not a comma.
-  static void consumeComma(RhapsodyTokenStream tokens) {
-    tokens.consumeAndValidate(TokenTypes.comma);
+  static void consumeComma(RhapsodyTokenStream tokens, {String? contextual}) {
+    tokens.consumeAndValidate(TokenTypes.comma, contextual: contextual);
   }
 
   /// Checks if the next token is a semicolon (`semicolon`) without consuming it.
@@ -132,8 +140,9 @@ class RhapsodyTokenStreamFlyweight {
   /// Consumes the next token if it is a semicolon (`semicolon`).
   ///
   /// Throws a [SemanticException] if the next token is not a semicolon.
-  static void consumeSemicolon(RhapsodyTokenStream tokens) {
-    tokens.consumeAndValidate(TokenTypes.semicolon);
+  static void consumeSemicolon(RhapsodyTokenStream tokens,
+      {String? contextual}) {
+    tokens.consumeAndValidate(TokenTypes.semicolon, contextual: contextual);
   }
 
   /// Checks if the next token is a colon (`colon`) without consuming it.
@@ -146,7 +155,7 @@ class RhapsodyTokenStreamFlyweight {
   /// Consumes the next token if it is a colon (`colon`).
   ///
   /// Throws a [SemanticException] if the next token is not a colon.
-  static void consumeColon(RhapsodyTokenStream tokens) {
-    tokens.consumeAndValidate(TokenTypes.colon);
+  static void consumeColon(RhapsodyTokenStream tokens, {String? contextual}) {
+    tokens.consumeAndValidate(TokenTypes.colon, contextual: contextual);
   }
 }
