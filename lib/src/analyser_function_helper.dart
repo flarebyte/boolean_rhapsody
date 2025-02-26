@@ -41,8 +41,8 @@ class RhapsodyAnalyserFunctionHelper {
   /// and the gathered variables used within the function call.
   RhapsodyExpressionAnalyserResult parseFunctionCall(
       RhapsodyTokenStream tokens) {
-    final functionToken =
-        RhapsodyTokenStreamFlyweight.consumeIdentifier(tokens);
+    final functionToken = RhapsodyTokenStreamFlyweight.consumeIdentifier(tokens,
+        contextual: "function");
 
     final isKnownFunction = options.isFunction(functionToken.text);
     if (!isKnownFunction) {
@@ -72,9 +72,11 @@ class RhapsodyAnalyserFunctionHelper {
   }
 
   String _parseScopeVariable(RhapsodyTokenStream tokens) {
-    final prefixToken = RhapsodyTokenStreamFlyweight.consumeIdentifier(tokens);
+    final prefixToken = RhapsodyTokenStreamFlyweight.consumeIdentifier(tokens,
+        contextual: "scope of variable");
     RhapsodyTokenStreamFlyweight.consumeColon(tokens);
-    final varToken = RhapsodyTokenStreamFlyweight.consumeIdentifier(tokens);
+    final varToken = RhapsodyTokenStreamFlyweight.consumeIdentifier(tokens,
+        contextual: "variable name");
 
     final varName = "${prefixToken.text}:${varToken.text}";
 

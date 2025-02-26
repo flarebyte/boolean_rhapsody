@@ -11,8 +11,10 @@ class RhapsodyTokenStreamFlyweight {
   /// Consumes and returns the current token if it is an `identifier`.
   ///
   /// Throws a [SemanticException] if the current token is not an identifier.
-  static RhapsodyToken consumeIdentifier(RhapsodyTokenStream tokens) {
-    return tokens.consumeAndValidate(TokenTypes.identifier);
+  static RhapsodyToken consumeIdentifier(RhapsodyTokenStream tokens,
+      {String? contextual}) {
+    return tokens.consumeAndValidate(TokenTypes.identifier,
+        contextual: contextual);
   }
 
   /// Checks if the next token is a right parenthesis (`rparen`) without consuming it.

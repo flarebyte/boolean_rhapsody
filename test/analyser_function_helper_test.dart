@@ -73,7 +73,7 @@ void main() {
       expect(
         () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens)),
         throwsA(isA<SemanticException>().having((e) => e.message, 'message',
-            contains('Expected identifier but got unknown'))),
+            contains('Expected identifier in function but got'))),
       );
     });
 
@@ -172,8 +172,11 @@ void main() {
       ];
       expect(
         () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens)),
-        throwsA(isA<SemanticException>().having((e) => e.message, 'message',
-            contains('Expecting a scope identifier'))),
+        throwsA(isA<SemanticException>().having(
+            (e) => e.message,
+            'message',
+            contains(
+                'Expected identifier in scope of variable but got number'))),
       );
     });
 
@@ -205,7 +208,7 @@ void main() {
       expect(
         () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens)),
         throwsA(isA<SemanticException>().having((e) => e.message, 'message',
-            contains('Expecting a variable identifier'))),
+            contains('Expected identifier in variable name but got number'))),
       );
     });
 
