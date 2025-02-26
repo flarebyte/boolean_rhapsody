@@ -138,14 +138,20 @@ class RhapsodyTokenStream {
       final String message = [
         'Expected',
         friendlyToken(type),
+        contextual == null ? null : "in $contextual",
         'but got',
         friendlyToken(token.type)
-      ].join(' ');
+      ].nonNulls.join(' ');
       throw SemanticException(message, token);
     }
     if (text != null && token.text != text) {
-      final String message =
-          ['Expected', text, 'but got', token.text].join(' ');
+      final String message = [
+        'Expected',
+        text,
+        contextual == null ? null : "in $contextual",
+        'but got',
+        token.text
+      ].nonNulls.join(' ');
       throw SemanticException(message, token);
     }
     return token;
