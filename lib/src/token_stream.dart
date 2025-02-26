@@ -120,7 +120,8 @@ class RhapsodyTokenStream {
     }
   }
 
-  /// Consumes the current token and validates its [type] and optionally its [text].
+  /// Consumes the current token and validates its [type] and optionally its [text]
+  /// and [contextual] information.
   ///
   /// [type]: The expected type of the token. Throws [SemanticException] if it does not match.
   /// [text]: The expected text of the token. If provided, must match exactly,
@@ -130,15 +131,22 @@ class RhapsodyTokenStream {
   ///
   /// Throws:
   /// - [SemanticException] if either the type or text does not match the expected values.
-  RhapsodyToken consumeAndValidate(String type, [String? text]) {
+  RhapsodyToken consumeAndValidate(String type,
+      {String? text, String? contextual}) {
     final token = consume();
     if (token.type != type) {
-      throw SemanticException(
-          "Expected ${friendlyToken(type)} but got ${friendlyToken(token.type)}",
-          token);
+      final String message = [
+        'Expected',
+        friendlyToken(type),
+        'but got',
+        friendlyToken(token.type)
+      ].join(' ');
+      throw SemanticException(message, token);
     }
     if (text != null && token.text != text) {
-      throw SemanticException("Expected $text but got ${token.text}", token);
+      final String message =
+          ['Expected', text, 'but got', token.text].join(' ');
+      throw SemanticException(message, token);
     }
     return token;
   }

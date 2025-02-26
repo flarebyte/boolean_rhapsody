@@ -59,7 +59,7 @@ class RhapsodyTokenStreamFlyweight {
   ///
   /// Throws a [SemanticException] if the next token is not the `or` operator.
   static void consumeOrOperator(RhapsodyTokenStream tokens) {
-    tokens.consumeAndValidate(TokenTypes.operatorType, 'or');
+    tokens.consumeAndValidate(TokenTypes.operatorType, text: 'or');
   }
 
   /// Checks if the next token is an `and` operator without consuming it.
@@ -74,7 +74,7 @@ class RhapsodyTokenStreamFlyweight {
   ///
   /// Throws a [SemanticException] if the next token is not the `and` operator.
   static void consumeAndOperator(RhapsodyTokenStream tokens) {
-    tokens.consumeAndValidate(TokenTypes.operatorType, 'and');
+    tokens.consumeAndValidate(TokenTypes.operatorType, text: 'and');
   }
 
   /// Checks if the next token is a `not` operator without consuming it.
@@ -89,7 +89,7 @@ class RhapsodyTokenStreamFlyweight {
   ///
   /// Throws a [SemanticException] if the next token is not the `not` operator.
   static void consumeNotOperator(RhapsodyTokenStream tokens) {
-    tokens.consumeAndValidate(TokenTypes.operatorType, 'not');
+    tokens.consumeAndValidate(TokenTypes.operatorType, text: 'not');
   }
 
   /// Checks if the next token is an equal sign (`equal`) without consuming it.

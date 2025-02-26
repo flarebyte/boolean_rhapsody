@@ -112,17 +112,17 @@ void main() {
 
     group('consumeAndValidate', () {
       test('should consume and validate token type and text successfully', () {
-        final token = stream.consumeAndValidate('IDENTIFIER', 'foo');
+        final token = stream.consumeAndValidate('IDENTIFIER', text: 'foo');
         expect(token, equals(tokens[0]));
       });
 
       test('should throw if type does not match', () {
-        expect(() => stream.consumeAndValidate('OPERATOR', 'foo'),
+        expect(() => stream.consumeAndValidate('OPERATOR', text: 'foo'),
             throwsA(isA<SemanticException>()));
       });
 
       test('should throw if text does not match', () {
-        expect(() => stream.consumeAndValidate('IDENTIFIER', 'bar'),
+        expect(() => stream.consumeAndValidate('IDENTIFIER', text: 'bar'),
             throwsA(isA<SemanticException>()));
       });
 
@@ -132,11 +132,12 @@ void main() {
       });
 
       test('should consume and validate multiple tokens correctly', () {
-        expect(
-            stream.consumeAndValidate('IDENTIFIER', 'foo'), equals(tokens[0]));
-        expect(stream.consumeAndValidate('OPERATOR', 'and'), equals(tokens[1]));
-        expect(
-            stream.consumeAndValidate('IDENTIFIER', 'bar'), equals(tokens[2]));
+        expect(stream.consumeAndValidate('IDENTIFIER', text: 'foo'),
+            equals(tokens[0]));
+        expect(stream.consumeAndValidate('OPERATOR', text: 'and'),
+            equals(tokens[1]));
+        expect(stream.consumeAndValidate('IDENTIFIER', text: 'bar'),
+            equals(tokens[2]));
         expect(stream.isAtEnd, isTrue);
       });
 
@@ -144,7 +145,7 @@ void main() {
         stream.consume();
         stream.consume();
         stream.consume();
-        expect(() => stream.consumeAndValidate('IDENTIFIER', 'baz'),
+        expect(() => stream.consumeAndValidate('IDENTIFIER', text: 'baz'),
             throwsA(isA<SemanticException>()));
       });
     });
