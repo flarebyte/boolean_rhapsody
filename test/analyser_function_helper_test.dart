@@ -63,7 +63,7 @@ void main() {
 
     test('should throw if function name is not an identifier', () {
       final tokens = [
-        t.token("123func", TokenTypes.number), // Invalid function name
+        t.token("@here", TokenTypes.unknown), // Invalid function name
         t.token("(", TokenTypes.lparen),
         t.token("env", TokenTypes.identifier),
         t.token(":", TokenTypes.colon),
@@ -73,7 +73,7 @@ void main() {
       expect(
         () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens)),
         throwsA(isA<SemanticException>().having((e) => e.message, 'message',
-            contains('Expecting call to function'))),
+            contains('Expected identifier but got unknown'))),
       );
     });
 
@@ -104,7 +104,7 @@ void main() {
       expect(
         () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens)),
         throwsA(isA<SemanticException>().having((e) => e.message, 'message',
-            contains('Expecting left parenthesis'))),
+            contains('Expected left parenthesis "(" but got identifier'))),
       );
     });
 
@@ -121,7 +121,7 @@ void main() {
       expect(
         () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens)),
         throwsA(isA<SemanticException>().having(
-            (e) => e.message, 'message', contains('Expecting comma but got'))),
+            (e) => e.message, 'message', contains('Expected comma "," but got'))),
       );
     });
 
@@ -157,7 +157,7 @@ void main() {
       expect(
         () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens)),
         throwsA(isA<SemanticException>().having(
-            (e) => e.message, 'message', contains('Expecting comma but got'))),
+            (e) => e.message, 'message', contains('Expected comma "," but got'))),
       );
     });
 
@@ -189,7 +189,7 @@ void main() {
       expect(
         () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens)),
         throwsA(isA<SemanticException>().having(
-            (e) => e.message, 'message', contains('Expecting a colon'))),
+            (e) => e.message, 'message', contains('Expected colon ":" but got'))),
       );
     });
 
