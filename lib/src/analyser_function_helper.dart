@@ -57,7 +57,7 @@ class RhapsodyAnalyserFunctionHelper {
       final scopeVar = _parseScopeVariable(tokens);
       params.add(scopeVar);
       gatherer.addVariable(scopeVar);
-      if (RhapsodyTokenStreamFlyweight.matchesRightParenthesis(tokens)) {
+      if (RhapsodyTokenStreamFlyweight.isRightParenthesis(tokens)) {
         RhapsodyTokenStreamFlyweight.consumeRightParenthesis(tokens,
             contextual: "function call");
         break;
