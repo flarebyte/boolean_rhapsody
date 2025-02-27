@@ -59,6 +59,32 @@ void main() {
     });
   });
 
+  group('RhapsodyTokenStreamFlyweight.isRightParenthesis', () {
+    late MockTokenCreator t;
+
+    setUp(() {
+      t = MockTokenCreator();
+    });
+
+    test('returns true when current token is rparen', () {
+      final tokenStream =
+          RhapsodyTokenStream([t.token(")", TokenTypes.rparen)]);
+
+      final result =
+          RhapsodyTokenStreamFlyweight.isRightParenthesis(tokenStream);
+      expect(result, isTrue);
+    });
+
+    test('returns false when current token is not rparen', () {
+      final tokenStream =
+          RhapsodyTokenStream([t.token("(", TokenTypes.lparen)]);
+
+      final result =
+          RhapsodyTokenStreamFlyweight.isRightParenthesis(tokenStream);
+      expect(result, isFalse);
+    });
+  });
+
   group('RhapsodyTokenStreamFlyweight.consumeLeftParenthesis', () {
     late MockTokenCreator t;
 
