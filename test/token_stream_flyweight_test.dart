@@ -369,4 +369,193 @@ void main() {
           throwsA(isA<SemanticException>()));
     });
   });
+
+  group('RhapsodyTokenStreamFlyweight.isLeftParenthesis', () {
+    late MockTokenCreator t;
+
+    setUp(() {
+      t = MockTokenCreator();
+    });
+
+    test('returns true when current token is lparen', () {
+      final tokenStream =
+          RhapsodyTokenStream([t.token("(", TokenTypes.lparen)]);
+
+      final result =
+          RhapsodyTokenStreamFlyweight.isLeftParenthesis(tokenStream);
+      expect(result, isTrue);
+    });
+
+    test('returns false when current token is not lparen', () {
+      final tokenStream =
+          RhapsodyTokenStream([t.token(")", TokenTypes.rparen)]);
+
+      final result =
+          RhapsodyTokenStreamFlyweight.isLeftParenthesis(tokenStream);
+      expect(result, isFalse);
+    });
+  });
+
+  group('RhapsodyTokenStreamFlyweight.isOrOperator', () {
+    late MockTokenCreator t;
+
+    setUp(() {
+      t = MockTokenCreator();
+    });
+
+    test('returns true when current token is "or" operator', () {
+      final tokenStream =
+          RhapsodyTokenStream([t.token("or", TokenTypes.operatorType)]);
+
+      final result = RhapsodyTokenStreamFlyweight.isOrOperator(tokenStream);
+      expect(result, isTrue);
+    });
+
+    test('returns false when current token is not "or" operator', () {
+      final tokenStream =
+          RhapsodyTokenStream([t.token("and", TokenTypes.operatorType)]);
+
+      final result = RhapsodyTokenStreamFlyweight.isOrOperator(tokenStream);
+      expect(result, isFalse);
+    });
+  });
+
+  group('RhapsodyTokenStreamFlyweight.isAndOperator', () {
+    late MockTokenCreator t;
+
+    setUp(() {
+      t = MockTokenCreator();
+    });
+
+    test('returns true when current token is "and" operator', () {
+      final tokenStream =
+          RhapsodyTokenStream([t.token("and", TokenTypes.operatorType)]);
+
+      final result = RhapsodyTokenStreamFlyweight.isAndOperator(tokenStream);
+      expect(result, isTrue);
+    });
+
+    test('returns false when current token is not "and" operator', () {
+      final tokenStream =
+          RhapsodyTokenStream([t.token("or", TokenTypes.operatorType)]);
+
+      final result = RhapsodyTokenStreamFlyweight.isAndOperator(tokenStream);
+      expect(result, isFalse);
+    });
+  });
+
+  group('RhapsodyTokenStreamFlyweight.isNotOperator', () {
+    late MockTokenCreator t;
+
+    setUp(() {
+      t = MockTokenCreator();
+    });
+
+    test('returns true when current token is "not" operator', () {
+      final tokenStream =
+          RhapsodyTokenStream([t.token("not", TokenTypes.operatorType)]);
+
+      final result = RhapsodyTokenStreamFlyweight.isNotOperator(tokenStream);
+      expect(result, isTrue);
+    });
+
+    test('returns false when current token is not "not" operator', () {
+      final tokenStream =
+          RhapsodyTokenStream([t.token("and", TokenTypes.operatorType)]);
+
+      final result = RhapsodyTokenStreamFlyweight.isNotOperator(tokenStream);
+      expect(result, isFalse);
+    });
+  });
+
+  group('RhapsodyTokenStreamFlyweight.isEqual', () {
+    late MockTokenCreator t;
+
+    setUp(() {
+      t = MockTokenCreator();
+    });
+
+    test('returns true when current token is equal', () {
+      final tokenStream = RhapsodyTokenStream([t.token("=", TokenTypes.equal)]);
+
+      final result = RhapsodyTokenStreamFlyweight.isEqual(tokenStream);
+      expect(result, isTrue);
+    });
+
+    test('returns false when current token is not equal', () {
+      final tokenStream = RhapsodyTokenStream([t.token(",", TokenTypes.comma)]);
+
+      final result = RhapsodyTokenStreamFlyweight.isEqual(tokenStream);
+      expect(result, isFalse);
+    });
+  });
+
+  group('RhapsodyTokenStreamFlyweight.isComma', () {
+    late MockTokenCreator t;
+
+    setUp(() {
+      t = MockTokenCreator();
+    });
+
+    test('returns true when current token is comma', () {
+      final tokenStream = RhapsodyTokenStream([t.token(",", TokenTypes.comma)]);
+
+      final result = RhapsodyTokenStreamFlyweight.isComma(tokenStream);
+      expect(result, isTrue);
+    });
+
+    test('returns false when current token is not comma', () {
+      final tokenStream =
+          RhapsodyTokenStream([t.token(";", TokenTypes.semicolon)]);
+
+      final result = RhapsodyTokenStreamFlyweight.isComma(tokenStream);
+      expect(result, isFalse);
+    });
+  });
+
+  group('RhapsodyTokenStreamFlyweight.isSemicolon', () {
+    late MockTokenCreator t;
+
+    setUp(() {
+      t = MockTokenCreator();
+    });
+
+    test('returns true when current token is semicolon', () {
+      final tokenStream =
+          RhapsodyTokenStream([t.token(";", TokenTypes.semicolon)]);
+
+      final result = RhapsodyTokenStreamFlyweight.isSemicolon(tokenStream);
+      expect(result, isTrue);
+    });
+
+    test('returns false when current token is not semicolon', () {
+      final tokenStream = RhapsodyTokenStream([t.token(":", TokenTypes.colon)]);
+
+      final result = RhapsodyTokenStreamFlyweight.isSemicolon(tokenStream);
+      expect(result, isFalse);
+    });
+  });
+
+  group('RhapsodyTokenStreamFlyweight.isColon', () {
+    late MockTokenCreator t;
+
+    setUp(() {
+      t = MockTokenCreator();
+    });
+
+    test('returns true when current token is colon', () {
+      final tokenStream = RhapsodyTokenStream([t.token(":", TokenTypes.colon)]);
+
+      final result = RhapsodyTokenStreamFlyweight.isColon(tokenStream);
+      expect(result, isTrue);
+    });
+
+    test('returns false when current token is not colon', () {
+      final tokenStream =
+          RhapsodyTokenStream([t.token(";", TokenTypes.semicolon)]);
+
+      final result = RhapsodyTokenStreamFlyweight.isColon(tokenStream);
+      expect(result, isFalse);
+    });
+  });
 }
