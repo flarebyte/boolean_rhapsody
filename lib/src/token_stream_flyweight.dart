@@ -24,6 +24,9 @@ class RhapsodyTokenStreamFlyweight {
     return tokens.peekMatchesType(TokenTypes.rparen);
   }
 
+  /// Checks if the current token is a right parenthesis (`rparen`).
+  ///
+  /// Returns `true` if the current token is a right parenthesis; otherwise, `false`.
   static bool isRightParenthesis(RhapsodyTokenStream tokens) {
     return tokens.matchType(TokenTypes.rparen);
   }
@@ -49,6 +52,13 @@ class RhapsodyTokenStreamFlyweight {
   /// Returns `true` if the next token is a left parenthesis; otherwise, `false`.
   static bool peekIsLeftParenthesis(RhapsodyTokenStream tokens) {
     return tokens.peekMatchesType(TokenTypes.lparen);
+  }
+
+// Checks if the current token is a left parenthesis (`lparen`).
+  ///
+  /// Returns `true` if the current token is a left parenthesis; otherwise, `false`.
+  static bool isLeftParenthesis(RhapsodyTokenStream tokens) {
+    return tokens.matchType(TokenTypes.lparen);
   }
 
   /// Checks if the next token is an `or` operator without consuming it.
@@ -100,6 +110,27 @@ class RhapsodyTokenStreamFlyweight {
       {String? contextual}) {
     tokens.consumeAndValidate(TokenTypes.operatorType,
         text: 'not', contextual: contextual);
+  }
+
+  /// Checks if the current token is the `or` operator.
+  ///
+  /// Returns `true` if the current token is the `or` operator; otherwise, `false`.
+  static bool isOrOperator(RhapsodyTokenStream tokens) {
+    return tokens.matchType(TokenTypes.operatorType) && tokens.matchText('or');
+  }
+
+  /// Checks if the current token is the `and` operator.
+  ///
+  /// Returns `true` if the current token is the `and` operator; otherwise, `false`.
+  static bool isAndOperator(RhapsodyTokenStream tokens) {
+    return tokens.matchType(TokenTypes.operatorType) && tokens.matchText('and');
+  }
+
+  /// Checks if the current token is the `not` operator.
+  ///
+  /// Returns `true` if the current token is the `not` operator; otherwise, `false`.
+  static bool isNotOperator(RhapsodyTokenStream tokens) {
+    return tokens.matchType(TokenTypes.operatorType) && tokens.matchText('not');
   }
 
   /// Checks if the next token is an equal sign (`equal`) without consuming it.
@@ -157,5 +188,33 @@ class RhapsodyTokenStreamFlyweight {
   /// Throws a [SemanticException] if the next token is not a colon.
   static void consumeColon(RhapsodyTokenStream tokens, {String? contextual}) {
     tokens.consumeAndValidate(TokenTypes.colon, contextual: contextual);
+  }
+
+  /// Checks if the current token is an equal sign (`equal`).
+  ///
+  /// Returns `true` if the current token is `equal`; otherwise, `false`.
+  static bool isEqual(RhapsodyTokenStream tokens) {
+    return tokens.matchType(TokenTypes.equal);
+  }
+
+  /// Checks if the current token is a comma (`comma`).
+  ///
+  /// Returns `true` if the current token is a comma; otherwise, `false`.
+  static bool isComma(RhapsodyTokenStream tokens) {
+    return tokens.matchType(TokenTypes.comma);
+  }
+
+  /// Checks if the current token is a semicolon (`semicolon`).
+  ///
+  /// Returns `true` if the current token is a semicolon; otherwise, `false`.
+  static bool isSemicolon(RhapsodyTokenStream tokens) {
+    return tokens.matchType(TokenTypes.semicolon);
+  }
+
+  /// Checks if the current token is a colon (`colon`).
+  ///
+  /// Returns `true` if the current token is a colon; otherwise, `false`.
+  static bool isColon(RhapsodyTokenStream tokens) {
+    return tokens.matchType(TokenTypes.colon);
   }
 }
