@@ -27,7 +27,7 @@ void main() {
       expect(
           analyzed.expression.toString(),
           equals(
-              'AND {left: RhapsodyFunctionExpression{function: MockFunction(name: func1, params: [env:variable1])}, right: RULE_REF {ruleName: rule42, ruleDefinitions: {}}}'));
+              'AND {left: FUNC {function: MockFunction(name: func1, params: [env:variable1])}, right: RULE_REF {ruleName: rule42, ruleDefinitions: {}}}'));
       expect(analyzed.gathering.requiredRules, hasLength(1));
       expect(analyzed.gathering.requiredRules, contains('rule42'));
       expect(analyzed.gathering.requiredVariables, hasLength(1));
@@ -66,7 +66,7 @@ void main() {
       expect(
           analyzed.expression.toString(),
           equals(
-              'AND {left: OR {left: RhapsodyFunctionExpression{function: MockFunction(name: func1, params: [env:variable1])}, right: RhapsodyFunctionExpression{function: MockFunction(name: func2, params: [config:variable2])}}, right: NOT {operand: RULE_REF {ruleName: rule42, ruleDefinitions: {}}}}'));
+              'AND {left: OR {left: FUNC {function: MockFunction(name: func1, params: [env:variable1])}, right: FUNC {function: MockFunction(name: func2, params: [config:variable2])}}, right: NOT {operand: RULE_REF {ruleName: rule42, ruleDefinitions: {}}}}'));
       expect(analyzed.gathering.requiredRules, hasLength(1));
       expect(analyzed.gathering.requiredRules, contains('rule42'));
       expect(analyzed.gathering.requiredVariables, hasLength(1));

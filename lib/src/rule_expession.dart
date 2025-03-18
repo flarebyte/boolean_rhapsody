@@ -234,7 +234,7 @@ class RhapsodyFunctionExpression extends RhapsodyBooleanExpression {
 
   @override
   String toString() {
-    return 'RhapsodyFunctionExpression{function: $function}';
+    return 'FUNC {function: $function}';
   }
 
   /// Evaluates the function within the given context.
