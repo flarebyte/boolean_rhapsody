@@ -54,11 +54,11 @@ class RhapsodyBooleanExpressionAnalyser {
     RhapsodyExpressionResultGatherer gatherer,
   ) {
     while (!tokens.isAtEnd) {
-      if (RhapsodyTokenStreamFlyweight.peekIsAndOperator(tokens)) {
+      if (RhapsodyTokenStreamFlyweight.isAndOperator(tokens)) {
         RhapsodyTokenStreamFlyweight.consumeAndOperator(tokens);
         final right = _parseTerm(tokens, gatherer);
         left = RhapsodyBooleanExpressionFactory.and(left, right);
-      } else if (RhapsodyTokenStreamFlyweight.peekIsOrOperator(tokens)) {
+      } else if (RhapsodyTokenStreamFlyweight.isOrOperator(tokens)) {
         RhapsodyTokenStreamFlyweight.consumeOrOperator(tokens);
         final right = _parseTerm(tokens, gatherer);
         left = RhapsodyBooleanExpressionFactory.or(left, right);
@@ -74,13 +74,13 @@ class RhapsodyBooleanExpressionAnalyser {
     RhapsodyTokenStream tokens,
     RhapsodyExpressionResultGatherer gatherer,
   ) {
-    if (RhapsodyTokenStreamFlyweight.peekIsNotOperator(tokens)) {
+    if (RhapsodyTokenStreamFlyweight.isNotOperator(tokens)) {
       RhapsodyTokenStreamFlyweight.consumeNotOperator(tokens);
       final operand = _parseTerm(tokens, gatherer);
       return RhapsodyBooleanExpressionFactory.not(operand);
     }
 
-    if (RhapsodyTokenStreamFlyweight.peekIsLeftParenthesis(tokens)) {
+    if (RhapsodyTokenStreamFlyweight.isLeftParenthesis(tokens)) {
       RhapsodyTokenStreamFlyweight.consumeLeftParenthesis(tokens,
           contextual: 'group');
       final expr = _parseExpression(tokens, gatherer);
