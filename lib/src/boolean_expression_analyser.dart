@@ -27,6 +27,11 @@ class RhapsodyBooleanExpressionAnalyser {
 
     final expression = _parseExpression(tokenStream, gatherer);
 
+    // Consume the final semi-colon if any
+    if (RhapsodyTokenStreamFlyweight.isSemicolon(tokenStream)) {
+      RhapsodyTokenStreamFlyweight.consumeSemicolon(tokenStream);
+    }
+
     if (!tokenStream.isAtEnd) {
       throw SemanticException(
         'Unexpected token after end of expression',
