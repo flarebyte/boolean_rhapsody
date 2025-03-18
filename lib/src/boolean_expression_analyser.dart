@@ -107,10 +107,6 @@ class RhapsodyBooleanExpressionAnalyser {
         contextual: 'rule reference');
     gatherer.addRule(token.text);
 
-    if (!ruleDefinitions.containsKey(token.text)) {
-      throw SemanticException('Undefined rule reference: ${token.text}', token);
-    }
-
     return RhapsodyBooleanExpressionFactory.ruleReference(
         token.text, ruleDefinitions);
   }
