@@ -292,3 +292,44 @@ class RhapsodyRuleReference extends RhapsodyBooleanExpression {
     return rule.evaluate(context);
   }
 }
+
+/// Factory for creating instances of `RhapsodyBooleanExpression`.
+class RhapsodyBooleanExpressionFactory {
+  /// Creates an AND operator combining two boolean expressions.
+  static RhapsodyBooleanExpression and(
+    RhapsodyBooleanExpression left,
+    RhapsodyBooleanExpression right,
+  ) {
+    return RhapsodyAndOperator(left, right);
+  }
+
+  /// Creates an OR operator combining two boolean expressions.
+  static RhapsodyBooleanExpression or(
+    RhapsodyBooleanExpression left,
+    RhapsodyBooleanExpression right,
+  ) {
+    return RhapsodyOrOperator(left, right);
+  }
+
+  /// Creates a NOT operator inverting a boolean expression.
+  static RhapsodyBooleanExpression not(
+    RhapsodyBooleanExpression operand,
+  ) {
+    return RhapsodyNotOperator(operand);
+  }
+
+  /// Creates a function-based boolean expression.
+  static RhapsodyBooleanExpression function(
+    BooleanRhapsodyFunction function,
+  ) {
+    return RhapsodyFunctionExpression(function);
+  }
+
+  /// Creates a rule reference to another boolean expression by name.
+  static RhapsodyBooleanExpression ruleReference(
+    String ruleName,
+    Map<String, RhapsodyBooleanExpression> ruleDefinitions,
+  ) {
+    return RhapsodyRuleReference(ruleName, ruleDefinitions);
+  }
+}
