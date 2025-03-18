@@ -92,7 +92,7 @@ class RhapsodyAndOperator extends RhapsodyBooleanExpression {
 
   @override
   String toString() {
-    return 'RhapsodyAndOperator{left: $left, right: $right}';
+    return 'AND {left: $left, right: $right}';
   }
 }
 
@@ -170,7 +170,7 @@ class RhapsodyOrOperator extends RhapsodyBooleanExpression {
 
   @override
   String toString() {
-    return 'RhapsodyOrOperator{left: $left, right: $right}';
+    return 'OR {left: $left, right: $right}';
   }
 }
 
@@ -189,7 +189,7 @@ class RhapsodyNotOperator extends RhapsodyBooleanExpression {
 
   @override
   String toString() {
-    return 'RhapsodyNotOperator{operand: $operand}';
+    return 'NOT {operand: $operand}';
   }
 
   /// Evaluates the logical NOT of the operand expression.
@@ -270,7 +270,7 @@ class RhapsodyRuleReference extends RhapsodyBooleanExpression {
 
   @override
   String toString() {
-    return 'RhapsodyRuleReference{ruleName: $ruleName, ruleDefinitions: $ruleDefinitions}';
+    return 'RULE_REF {ruleName: $ruleName, ruleDefinitions: $ruleDefinitions}';
   }
 
   /// Evaluates the referenced rule within the given context.
