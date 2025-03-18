@@ -89,19 +89,13 @@ class RhapsodyBooleanExpressionAnalyser {
       return expr;
     }
 
-    if (_isFunctionCall(tokens)) {
+    if (RhapsodyTokenStreamFlyweight.isFunctionCall(tokens)) {
       /// Parses `<functionCall> ::= (Predefined function call token)`
       final reaResult = functionHelper.parseFunctionCall(tokens);
       return reaResult.expression;
     }
 
     return _parseRuleReference(tokens, gatherer);
-  }
-
-  /// Determines if the next token is a function call.
-  bool _isFunctionCall(RhapsodyTokenStream tokens) {
-    return tokens.matchType(
-        'FUNCTION_CALL'); // Assumes function calls are a distinct token type
   }
 
   /// Parses `<ruleRef> ::= <ruleName>`

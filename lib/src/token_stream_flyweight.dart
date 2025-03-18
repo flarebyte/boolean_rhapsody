@@ -217,4 +217,13 @@ class RhapsodyTokenStreamFlyweight {
   static bool isColon(RhapsodyTokenStream tokens) {
     return tokens.matchType(TokenTypes.colon);
   }
+
+  /// Checks if the current token is a function call.
+  /// We are looking for an identifier followed by left parenthesis
+  /// This break the LL(1) concept but we may get away with it
+  /// Returns `true` if the current token a function call; otherwise, `false`.
+  static bool isFunctionCall(RhapsodyTokenStream tokens) {
+    return tokens.matchType(TokenTypes.identifier) &&
+        tokens.peekMatchesType(TokenTypes.lparen);
+  }
 }
