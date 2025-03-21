@@ -26,7 +26,7 @@ void main() {
       expect(
           analyzed.expression.toString(),
           equals(
-              'RhapsodyFunctionExpression{function: MockFunction(name: func1, params: [env:variable1])}'));
+              'FUNC {function: MockFunction(name: func1, params: [env:variable1])}'));
       expect(analyzed.gathering.requiredRules, isEmpty);
       expect(analyzed.gathering.requiredVariables, hasLength(1));
       expect(analyzed.gathering.requiredVariables, contains('env:variable1'));
@@ -53,7 +53,7 @@ void main() {
       expect(
           analyzed.expression.toString(),
           equals(
-              'RhapsodyFunctionExpression{function: MockFunction(name: func1, params: [env:variable1, config:variable2])}'));
+              'FUNC {function: MockFunction(name: func1, params: [env:variable1, config:variable2])}'));
       expect(analyzed.gathering.requiredRules, isEmpty);
       expect(analyzed.gathering.requiredVariables, hasLength(2));
       expect(analyzed.gathering.requiredVariables, contains('env:variable1'));

@@ -57,6 +57,8 @@ void main() {
         t.token(")", TokenTypes.rparen),
         t.token(")", TokenTypes.rparen),
         t.token("and", TokenTypes.operatorType),
+        t.token("rule41", TokenTypes.identifier),
+        t.token("and", TokenTypes.operatorType),
         t.token("not", TokenTypes.operatorType),
         t.token("rule42", TokenTypes.identifier),
         t.token(";", TokenTypes.semicolon),
@@ -68,11 +70,14 @@ void main() {
       expect(
           analyzed.expression.toString(),
           equals(
-              'AND {left: OR {left: FUNC {function: MockFunction(name: func1, params: [env:variable1])}, right: FUNC {function: MockFunction(name: func2, params: [config:variable2])}}, right: NOT {operand: RULE_REF {ruleName: rule42, ruleDefinitions: {}}}}'));
-      expect(analyzed.gathering.requiredRules, hasLength(1));
+              'AND {left: AND {left: OR {left: FUNC {function: MockFunction(name: func1, params: [env:variable1])}, right: FUNC {function: MockFunction(name: func2, params: [config:variable2])}}, right: RULE_REF {ruleName: rule41, ruleDefinitions: {}}}, right: NOT {operand: RULE_REF {ruleName: rule42, ruleDefinitions: {}}}}'));
+      expect(analyzed.gathering.requiredRules, hasLength(2));
+      expect(analyzed.gathering.requiredRules, contains('rule41'));
       expect(analyzed.gathering.requiredRules, contains('rule42'));
-      expect(analyzed.gathering.requiredVariables, hasLength(1));
+      expect(analyzed.gathering.requiredVariables, hasLength(2));
       expect(analyzed.gathering.requiredVariables, contains('env:variable1'));
+      expect(
+          analyzed.gathering.requiredVariables, contains('config:variable2'));
     });
   });
 }
