@@ -558,4 +558,32 @@ void main() {
       expect(result, isFalse);
     });
   });
+
+  group('RhapsodyTokenStreamFlyweight.isFunctionCall', () {
+    late MockTokenCreator t;
+
+    setUp(() {
+      t = MockTokenCreator();
+    });
+
+    test('returns true when current token is a function call', () {
+      final tokenStream = RhapsodyTokenStream([
+        t.token("fun1", TokenTypes.identifier),
+        t.token("(", TokenTypes.lparen)
+      ]);
+
+      final result = RhapsodyTokenStreamFlyweight.isFunctionCall(tokenStream);
+      expect(result, isTrue);
+    });
+
+    test('returns false when current token is not a function call', () {
+      final tokenStream = RhapsodyTokenStream([
+        t.token("fun1", TokenTypes.identifier),
+        t.token(":", TokenTypes.colon)
+      ]);
+
+      final result = RhapsodyTokenStreamFlyweight.isFunctionCall(tokenStream);
+      expect(result, isFalse);
+    });
+  });
 }
