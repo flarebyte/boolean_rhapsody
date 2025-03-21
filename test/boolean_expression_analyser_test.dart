@@ -28,9 +28,11 @@ void main() {
           analyzed.expression.toString(),
           equals(
               'AND {left: FUNC {function: MockFunction(name: func1, params: [env:variable1])}, right: RULE_REF {ruleName: rule42, ruleDefinitions: {}}}'));
-      expect(analyzed.gathering.requiredRules, hasLength(1), reason: 'requiredRules');
+      expect(analyzed.gathering.requiredRules, hasLength(1),
+          reason: 'requiredRules');
       expect(analyzed.gathering.requiredRules, contains('rule42'));
-      expect(analyzed.gathering.requiredVariables, hasLength(1), reason: 'requiredVariables');
+      expect(analyzed.gathering.requiredVariables, hasLength(1),
+          reason: 'requiredVariables');
       expect(analyzed.gathering.requiredVariables, contains('env:variable1'));
     });
     test('should evaluate as truthy when comparator condition is satisfied',

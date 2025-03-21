@@ -40,7 +40,7 @@ class RhapsodyAnalyserFunctionHelper {
   /// A [RhapsodyExpressionAnalyserResult] containing the parsed [RhapsodyFunctionExpression]
   /// and the gathered variables used within the function call.
   RhapsodyExpressionAnalyserResult parseFunctionCall(
-      RhapsodyTokenStream tokens) {
+      RhapsodyTokenStream tokens, RhapsodyExpressionResultGatherer gatherer) {
     final functionToken = RhapsodyTokenStreamFlyweight.consumeIdentifier(tokens,
         contextual: "function call");
 
@@ -51,10 +51,8 @@ class RhapsodyAnalyserFunctionHelper {
 
     RhapsodyTokenStreamFlyweight.consumeLeftParenthesis(tokens);
     final params = <String>[];
-    RhapsodyExpressionResultGatherer gatherer =
-        RhapsodyExpressionResultGatherer();
     for (var safetyCounter = 1; safetyCounter < 100; safetyCounter++) {
-      final scopeVar = _parseScopeVariable(tokens);
+      final scopeVar = _parseScopeVariable(tokens, gatherer);
       params.add(scopeVar);
       gatherer.addVariable(scopeVar);
       if (RhapsodyTokenStreamFlyweight.isRightParenthesis(tokens)) {
@@ -73,7 +71,8 @@ class RhapsodyAnalyserFunctionHelper {
         expression: fnExpression, gathering: gatherer);
   }
 
-  String _parseScopeVariable(RhapsodyTokenStream tokens) {
+  String _parseScopeVariable(
+      RhapsodyTokenStream tokens, RhapsodyExpressionResultGatherer gatherer) {
     final prefixToken = RhapsodyTokenStreamFlyweight.consumeIdentifier(tokens,
         contextual: "scope of variable");
     RhapsodyTokenStreamFlyweight.consumeColon(tokens, contextual: "variable");

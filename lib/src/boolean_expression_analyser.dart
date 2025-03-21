@@ -96,7 +96,7 @@ class RhapsodyBooleanExpressionAnalyser {
 
     if (RhapsodyTokenStreamFlyweight.isFunctionCall(tokens)) {
       /// Parses `<functionCall> ::= (Predefined function call token)`
-      final reaResult = functionHelper.parseFunctionCall(tokens);
+      final reaResult = functionHelper.parseFunctionCall(tokens, gatherer);
       return reaResult.expression;
     }
 

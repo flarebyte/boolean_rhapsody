@@ -1,5 +1,6 @@
 import 'package:boolean_rhapsody/boolean_rhapsody.dart';
 import 'package:boolean_rhapsody/src/analyser_function_helper.dart';
+import 'package:boolean_rhapsody/src/expression_analyzer_result.dart';
 import 'package:test/test.dart';
 
 import 'code_fixtures.dart';
@@ -19,7 +20,9 @@ void main() {
         t.token("variable1", TokenTypes.identifier),
         t.token(")", TokenTypes.rparen),
       ];
-      final analyzed = analyser.parseFunctionCall(RhapsodyTokenStream(func));
+      final gatherer = RhapsodyExpressionResultGatherer();
+      final analyzed =
+          analyser.parseFunctionCall(RhapsodyTokenStream(func), gatherer);
       expect(
           analyzed.expression.toString(),
           equals(
@@ -44,7 +47,9 @@ void main() {
         t.token("variable2", TokenTypes.identifier),
         t.token(")", TokenTypes.rparen),
       ];
-      final analyzed = analyser.parseFunctionCall(RhapsodyTokenStream(func));
+      final gatherer = RhapsodyExpressionResultGatherer();
+      final analyzed =
+          analyser.parseFunctionCall(RhapsodyTokenStream(func), gatherer);
       expect(
           analyzed.expression.toString(),
           equals(
@@ -70,8 +75,9 @@ void main() {
         t.token("variable1", TokenTypes.identifier),
         t.token(")", TokenTypes.rparen),
       ];
+      final gatherer = RhapsodyExpressionResultGatherer();
       expect(
-        () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens)),
+        () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens), gatherer),
         throwsA(isA<SemanticException>().having((e) => e.message, 'message',
             contains('Expected identifier in function call but got'))),
       );
@@ -86,8 +92,9 @@ void main() {
         t.token("variable1", TokenTypes.identifier),
         t.token(")", TokenTypes.rparen),
       ];
+      final gatherer = RhapsodyExpressionResultGatherer();
       expect(
-        () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens)),
+        () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens), gatherer),
         throwsA(isA<SemanticException>().having(
             (e) => e.message, 'message', contains('Call to unknown function'))),
       );
@@ -101,8 +108,9 @@ void main() {
         t.token(":", TokenTypes.colon),
         t.token("variable1", TokenTypes.identifier),
       ];
+      final gatherer = RhapsodyExpressionResultGatherer();
       expect(
-        () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens)),
+        () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens), gatherer),
         throwsA(isA<SemanticException>().having((e) => e.message, 'message',
             contains('Expected left parenthesis "(" but got identifier'))),
       );
@@ -118,8 +126,9 @@ void main() {
         t.token("0", TokenTypes.number),
         // Missing ')'
       ];
+      final gatherer = RhapsodyExpressionResultGatherer();
       expect(
-        () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens)),
+        () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens), gatherer),
         throwsA(isA<SemanticException>().having((e) => e.message, 'message',
             contains('Expected comma "," in function call but'))),
       );
@@ -134,8 +143,9 @@ void main() {
         t.token("variable1", TokenTypes.identifier),
         // Missing ')'
       ];
+      final gatherer = RhapsodyExpressionResultGatherer();
       expect(
-        () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens)),
+        () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens), gatherer),
         throwsA(isA<SemanticException>().having((e) => e.message, 'message',
             contains('Unexpected end of tokens.'))),
       );
@@ -154,8 +164,9 @@ void main() {
         t.token("variable2", TokenTypes.identifier),
         t.token(")", TokenTypes.rparen),
       ];
+      final gatherer = RhapsodyExpressionResultGatherer();
       expect(
-        () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens)),
+        () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens), gatherer),
         throwsA(isA<SemanticException>().having((e) => e.message, 'message',
             contains('Expected comma "," in function call but got'))),
       );
@@ -170,8 +181,9 @@ void main() {
         t.token("variable1", TokenTypes.identifier),
         t.token(")", TokenTypes.rparen),
       ];
+      final gatherer = RhapsodyExpressionResultGatherer();
       expect(
-        () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens)),
+        () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens), gatherer),
         throwsA(isA<SemanticException>().having(
             (e) => e.message,
             'message',
@@ -189,8 +201,9 @@ void main() {
         t.token("variable1", TokenTypes.identifier),
         t.token(")", TokenTypes.rparen),
       ];
+      final gatherer = RhapsodyExpressionResultGatherer();
       expect(
-        () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens)),
+        () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens), gatherer),
         throwsA(isA<SemanticException>().having((e) => e.message, 'message',
             contains('Expected colon ":" in variable but got'))),
       );
@@ -205,8 +218,9 @@ void main() {
         t.token("123variable", TokenTypes.number), // Invalid variable
         t.token(")", TokenTypes.rparen),
       ];
+      final gatherer = RhapsodyExpressionResultGatherer();
       expect(
-        () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens)),
+        () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens), gatherer),
         throwsA(isA<SemanticException>().having((e) => e.message, 'message',
             contains('Expected identifier in variable name but got number'))),
       );
@@ -221,8 +235,9 @@ void main() {
         t.token("unknownVar", TokenTypes.identifier), // Unregistered variable
         t.token(")", TokenTypes.rparen),
       ];
+      final gatherer = RhapsodyExpressionResultGatherer();
       expect(
-        () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens)),
+        () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens), gatherer),
         throwsA(isA<SemanticException>().having((e) => e.message, 'message',
             contains('Expecting a valid variable format with a scope'))),
       );
