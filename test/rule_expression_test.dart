@@ -1,5 +1,6 @@
 import 'package:boolean_rhapsody/boolean_rhapsody.dart';
 import 'package:boolean_rhapsody/src/rule_function.dart';
+import 'package:boolean_rhapsody/src/single_rule_evaluator.dart';
 import 'package:test/test.dart';
 
 class MockBooleanFunction implements BooleanRhapsodyFunction {
@@ -169,29 +170,36 @@ void main() {
     });
 
     test('RhapsodyRuleReference evaluates defined rules correctly', () {
-      final ruleDefinitions = {
-        'rule1': RhapsodyFunctionExpression(
-            MockBooleanFunction(RhapsodicBool.truth())),
-        'rule2': RhapsodyFunctionExpression(
-            MockBooleanFunction(RhapsodicBool.untruth())),
-      };
+      RhapsodySingleRuleEvaluator singleRuleEvaluator =
+          RhapsodySingleRuleEvaluator();
+      singleRuleEvaluator.addRuleDefinition(
+          'rule1',
+          RhapsodyFunctionExpression(
+              MockBooleanFunction(RhapsodicBool.truth())));
+      singleRuleEvaluator.addRuleDefinition(
+          'rule2',
+          RhapsodyFunctionExpression(
+              MockBooleanFunction(RhapsodicBool.untruth())));
 
-      final ruleReferenceTrue = RhapsodyRuleReference('rule1', ruleDefinitions);
+      final ruleReferenceTrue =
+          RhapsodyRuleReference('rule1', singleRuleEvaluator);
       expect(ruleReferenceTrue.evaluate(context), RhapsodicBool.truth());
 
       final ruleReferenceFalse =
-          RhapsodyRuleReference('rule2', ruleDefinitions);
+          RhapsodyRuleReference('rule2', singleRuleEvaluator);
       expect(ruleReferenceFalse.evaluate(context), RhapsodicBool.untruth());
     });
 
     test('RhapsodyRuleReference throws exception for undefined rules', () {
-      final ruleDefinitions = {
-        'rule1': RhapsodyFunctionExpression(
-            MockBooleanFunction(RhapsodicBool.truth())),
-      };
+      RhapsodySingleRuleEvaluator singleRuleEvaluator =
+          RhapsodySingleRuleEvaluator();
+      singleRuleEvaluator.addRuleDefinition(
+          'rule1',
+          RhapsodyFunctionExpression(
+              MockBooleanFunction(RhapsodicBool.truth())));
 
       final ruleReference =
-          RhapsodyRuleReference('undefinedRule', ruleDefinitions);
+          RhapsodyRuleReference('undefinedRule', singleRuleEvaluator);
 
       expect(() => ruleReference.evaluate(context), throwsA(isA<Exception>()));
     });

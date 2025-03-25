@@ -1,4 +1,5 @@
 import 'package:boolean_rhapsody/boolean_rhapsody.dart';
+import 'package:boolean_rhapsody/src/single_rule_evaluator.dart';
 import 'package:test/test.dart';
 
 import 'code_fixtures.dart';
@@ -6,7 +7,8 @@ import 'code_fixtures.dart';
 void main() {
   group('RhapsodyBooleanExpressionAnalyser', () {
     test('should evaluate func1(env:variable1) and rule42;', () {
-      final Map<String, RhapsodyBooleanExpression> ruleDefinitions = {};
+      RhapsodySingleRuleEvaluator singleRuleEvaluator =
+          RhapsodySingleRuleEvaluator();
       // func1(env:variable1) and rule42;
       final t = MockTokenCreator();
       final List<RhapsodyToken> tokens = [
@@ -22,12 +24,12 @@ void main() {
       ];
       final RhapsodyBooleanExpressionAnalyser analyser =
           RhapsodyBooleanExpressionAnalyser(
-              options: fixtureMockOptions, ruleDefinitions: ruleDefinitions);
+              options: fixtureMockOptions, singleRuleEval: singleRuleEvaluator);
       final analyzed = analyser.analyse(tokens);
       expect(
           analyzed.expression.toString(),
           equals(
-              'AND {left: FUNC {function: MockFunction(name: func1, params: [env:variable1])}, right: RULE_REF {ruleName: rule42, ruleDefinitions: {}}}'));
+              'AND {left: FUNC {function: MockFunction(name: func1, params: [env:variable1])}, right: RULE_REF {ruleName: rule42}}'));
       expect(analyzed.gathering.requiredRules, hasLength(1),
           reason: 'requiredRules');
       expect(analyzed.gathering.requiredRules, contains('rule42'));
@@ -37,7 +39,8 @@ void main() {
     });
     test('should evaluate as truthy when comparator condition is satisfied',
         () {
-      final Map<String, RhapsodyBooleanExpression> ruleDefinitions = {};
+      RhapsodySingleRuleEvaluator singleRuleEvaluator =
+          RhapsodySingleRuleEvaluator();
       // (func1(env:variable1) or func2(config:variable2)) and not rule42;
       final t = MockTokenCreator();
       final List<RhapsodyToken> tokens = [
@@ -65,12 +68,12 @@ void main() {
       ];
       final RhapsodyBooleanExpressionAnalyser analyser =
           RhapsodyBooleanExpressionAnalyser(
-              options: fixtureMockOptions, ruleDefinitions: ruleDefinitions);
+              options: fixtureMockOptions, singleRuleEval: singleRuleEvaluator);
       final analyzed = analyser.analyse(tokens);
       expect(
           analyzed.expression.toString(),
           equals(
-              'AND {left: AND {left: OR {left: FUNC {function: MockFunction(name: func1, params: [env:variable1])}, right: FUNC {function: MockFunction(name: func2, params: [config:variable2])}}, right: RULE_REF {ruleName: rule41, ruleDefinitions: {}}}, right: NOT {operand: RULE_REF {ruleName: rule42, ruleDefinitions: {}}}}'));
+              'AND {left: AND {left: OR {left: FUNC {function: MockFunction(name: func1, params: [env:variable1])}, right: FUNC {function: MockFunction(name: func2, params: [config:variable2])}}, right: RULE_REF {ruleName: rule41}}, right: NOT {operand: RULE_REF {ruleName: rule42}}}'));
       expect(analyzed.gathering.requiredRules, hasLength(2));
       expect(analyzed.gathering.requiredRules, contains('rule41'));
       expect(analyzed.gathering.requiredRules, contains('rule42'));

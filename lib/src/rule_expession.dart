@@ -1,7 +1,9 @@
 import 'package:boolean_rhapsody/src/evaluation_context.dart';
+import 'package:boolean_rhapsody/src/single_rule_evaluator.dart';
 
 import 'fuzzy_boolean.dart';
 import 'rule_function.dart';
+import 'single_rule_evaluator.dart';
 
 /// **Abstract Class: RhapsodyBooleanExpression**
 ///
@@ -259,18 +261,18 @@ class RhapsodyRuleReference extends RhapsodyBooleanExpression {
   final String ruleName;
 
   /// A map containing all available rule definitions.
-  final Map<String, RhapsodyBooleanExpression> ruleDefinitions;
+  final RhapsodySingleRuleEvaluator singleRuleEval;
 
   /// Creates an instance of `RhapsodyRuleReference`.
   ///
   /// **Parameters:**
   /// - `ruleName`: The name of the rule to reference.
-  /// - `ruleDefinitions`: A map of rule definitions to resolve the rule.
-  RhapsodyRuleReference(this.ruleName, this.ruleDefinitions);
+  /// - `singleRuleEval`: A map of rule definitions to resolve the rule.
+  RhapsodyRuleReference(this.ruleName, this.singleRuleEval);
 
   @override
   String toString() {
-    return 'RULE_REF {ruleName: $ruleName, ruleDefinitions: $ruleDefinitions}';
+    return 'RULE_REF {ruleName: $ruleName}';
   }
 
   /// Evaluates the referenced rule within the given context.
@@ -282,14 +284,10 @@ class RhapsodyRuleReference extends RhapsodyBooleanExpression {
   ///
   /// **Returns:** The result of evaluating the referenced rule.
   ///
-  /// **Throws:** `Exception` if the rule is not found in `ruleDefinitions`.
+  /// **Throws:** `Exception` if the rule is not found`.
   @override
   RhapsodicBool evaluate(RhapsodyEvaluationContext context) {
-    final rule = ruleDefinitions[ruleName];
-    if (rule == null) {
-      throw Exception("Rule $ruleName is not defined");
-    }
-    return rule.evaluate(context);
+    return singleRuleEval.evaluate(context, ruleName);
   }
 }
 
@@ -328,8 +326,8 @@ class RhapsodyBooleanExpressionFactory {
   /// Creates a rule reference to another boolean expression by name.
   static RhapsodyBooleanExpression ruleReference(
     String ruleName,
-    Map<String, RhapsodyBooleanExpression> ruleDefinitions,
+    RhapsodySingleRuleEvaluator singleRuleEval,
   ) {
-    return RhapsodyRuleReference(ruleName, ruleDefinitions);
+    return RhapsodyRuleReference(ruleName, singleRuleEval);
   }
 }
