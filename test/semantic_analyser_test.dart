@@ -84,5 +84,28 @@ void main() {
       expect(analyzed.ruleDefinitions['rule12']?.requiredVariables,
           contains('env:variable4'));
     });
+
+    test('should return a failure if missing the keyword rule', () {
+      // func1(env:variable1) and rule42;
+      final t = MockTokenCreator();
+      final List<RhapsodyToken> tokens = [
+        t.token("rule11", TokenTypes.identifier),
+        t.token("=", TokenTypes.equal),
+        t.token("func1", TokenTypes.identifier),
+        t.token("(", TokenTypes.lparen),
+        t.token("env", TokenTypes.identifier),
+        t.token(":", TokenTypes.colon),
+        t.token("variable1", TokenTypes.identifier),
+        t.token(")", TokenTypes.rparen),
+        t.token("and", TokenTypes.operatorType),
+        t.token("rule42", TokenTypes.identifier),
+        t.token(";", TokenTypes.semicolon),
+      ];
+      final RhapsodySemanticAnalyser analyser =
+          RhapsodySemanticAnalyser(fixtureMockOptions);
+      final analyzed = analyser.analyse(tokens);
+      expect(analyzed.failure, isNotNull);
+      expect(analyzed.failure?.message, equals('Expected \'rule\' keyword'));
+    });
   });
 }
