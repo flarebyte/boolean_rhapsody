@@ -17,6 +17,11 @@ class RhapsodyPosition {
     required this.row,
     required this.column,
   });
+
+  @override
+  String toString() {
+    return 'Position{row: $row, column: $column}';
+  }
 }
 
 /// Encapsulates the details of a token extracted from source code.

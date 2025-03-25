@@ -80,3 +80,4 @@ export 'src/tokeniser_helper.dart';
 export 'src/token_stream.dart';
 export 'src/semantic_exception.dart';
 export 'src/boolean_expression_analyser.dart';
+export 'src/semantic_analyser.dart';

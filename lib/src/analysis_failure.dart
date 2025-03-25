@@ -56,4 +56,9 @@ class RhapsodyAnalysisFailure {
     required this.expected,
     required this.suggestion,
   });
+
+  @override
+  String toString() {
+    return 'AnalysisFailure{position: $position, message: $message}';
+  }
 }
