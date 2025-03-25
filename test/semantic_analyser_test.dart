@@ -28,6 +28,11 @@ void main() {
       expect(analyzed.failure, null);
       expect(analyzed.ruleDefinitions, hasLength(1));
       expect(analyzed.ruleDefinitions.keys, contains('rule11'));
+      expect(analyzed.ruleDefinitions['rule11']?.expression, isNotNull);
+      expect(analyzed.ruleDefinitions['rule11']?.startIndex, isPositive);
+      expect(analyzed.ruleDefinitions['rule11']?.endIndex, isPositive);
+      expect(analyzed.ruleDefinitions['rule11']?.requiredRules,
+          contains('rule42'));
     });
     test('should evaluate two rules', () {
       // func1(env:variable1) and rule42;
