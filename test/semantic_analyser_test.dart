@@ -1,4 +1,6 @@
 import 'package:boolean_rhapsody/boolean_rhapsody.dart';
+import 'package:boolean_rhapsody/src/analyser_function_helper.dart';
+import 'package:boolean_rhapsody/src/expression_analyzer_result.dart';
 import 'package:test/test.dart';
 
 import 'code_fixtures.dart';
@@ -191,5 +193,46 @@ void main() {
       expect(result.failure?.message,
           equals("Expected ';' at the end of the rule definition"));
     });
+
+    test(
+        'should return a failure for unexpected exception during expression analysis',
+        () {
+      final t = MockTokenCreator();
+
+      final analyser = RhapsodySemanticAnalyser(fixtureMockOptions);
+      analyser.expressionAnalyser = _FailingExpressionAnalyser();
+
+      final tokens = [
+        t.token("rule", TokenTypes.identifier),
+        t.token("rule11", TokenTypes.identifier),
+        t.token("=", TokenTypes.equal),
+        t.token("func1", TokenTypes.identifier),
+        t.token("(", TokenTypes.lparen),
+        t.token("env", TokenTypes.identifier),
+        t.token(":", TokenTypes.colon),
+        t.token("variable1", TokenTypes.identifier),
+        t.token(")", TokenTypes.rparen),
+        t.token(";", TokenTypes.semicolon),
+      ];
+
+      final result = analyser.analyse(tokens);
+      expect(result.failure, isNotNull);
+      expect(result.failure?.errorType, equals("Unknown Error"));
+      expect(result.failure?.message, contains("Expression analysis failure"));
+    });
   });
+}
+
+class _FailingExpressionAnalyser implements RhapsodyBooleanExpressionAnalyser {
+  @override
+  final RhapsodyAnalyserOptions options = fixtureMockOptions;
+  RhapsodyAnalyserFunctionHelper functionHelper =
+      RhapsodyAnalyserFunctionHelper(options: fixtureMockOptions);
+
+  _FailingExpressionAnalyser();
+
+  @override
+  RhapsodyExpressionAnalyserResult analyse(List<RhapsodyToken> tokens) {
+    throw Exception("Expression analysis failure");
+  }
 }
