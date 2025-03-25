@@ -1,3 +1,4 @@
+import 'rule_state.dart';
 import 'supported_prefixes.dart';
 
 /// **Class: RhapsodyEvaluationContext**
@@ -7,6 +8,8 @@ import 'supported_prefixes.dart';
 class RhapsodyEvaluationContext {
   /// Map containing references and their associated string values.
   final Map<String, String> variables;
+
+  final RhapsodyRuleState ruleState = RhapsodyRuleState();
 
   /// Validates and manages supported prefixes for references.
   late final RhapsodySupportedPrefixes supportedPrefixes;
@@ -89,6 +92,10 @@ class RhapsodyEvaluationContext {
     final value = getRefValue(ref);
     return value?.split(separator).map((field) => field.trim()).toList() ??
         defaultValue;
+  }
+
+  void clearRuleState() {
+    ruleState.clear();
   }
 }
 
