@@ -1,5 +1,4 @@
 import 'package:boolean_rhapsody/boolean_rhapsody.dart';
-import 'package:boolean_rhapsody/src/single_rule_evaluator.dart';
 import 'package:test/test.dart';
 
 import 'code_fixtures.dart';
@@ -7,8 +6,6 @@ import 'code_fixtures.dart';
 void main() {
   group('RhapsodyBooleanExpressionAnalyser', () {
     test('should evaluate func1(env:variable1) and rule42;', () {
-      RhapsodySingleRuleEvaluator singleRuleEvaluator =
-          RhapsodySingleRuleEvaluator();
       // func1(env:variable1) and rule42;
       final t = MockTokenCreator();
       final List<RhapsodyToken> tokens = [
@@ -23,8 +20,7 @@ void main() {
         t.token(";", TokenTypes.semicolon),
       ];
       final RhapsodyBooleanExpressionAnalyser analyser =
-          RhapsodyBooleanExpressionAnalyser(
-              options: fixtureMockOptions, singleRuleEval: singleRuleEvaluator);
+          RhapsodyBooleanExpressionAnalyser(options: fixtureMockOptions);
       final analyzed = analyser.analyse(tokens);
       expect(
           analyzed.expression.toString(),
@@ -39,8 +35,6 @@ void main() {
     });
     test('should evaluate as truthy when comparator condition is satisfied',
         () {
-      RhapsodySingleRuleEvaluator singleRuleEvaluator =
-          RhapsodySingleRuleEvaluator();
       // (func1(env:variable1) or func2(config:variable2)) and not rule42;
       final t = MockTokenCreator();
       final List<RhapsodyToken> tokens = [
@@ -67,8 +61,7 @@ void main() {
         t.token(";", TokenTypes.semicolon),
       ];
       final RhapsodyBooleanExpressionAnalyser analyser =
-          RhapsodyBooleanExpressionAnalyser(
-              options: fixtureMockOptions, singleRuleEval: singleRuleEvaluator);
+          RhapsodyBooleanExpressionAnalyser(options: fixtureMockOptions);
       final analyzed = analyser.analyse(tokens);
       expect(
           analyzed.expression.toString(),

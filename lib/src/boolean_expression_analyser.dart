@@ -3,20 +3,17 @@ import 'expression_analyzer_result.dart';
 import 'parser_options.dart';
 import 'rule_expession.dart';
 import 'semantic_exception.dart';
-import 'single_rule_evaluator.dart';
 import 'token.dart';
 import 'token_stream.dart';
 import 'token_stream_flyweight.dart';
 
 class RhapsodyBooleanExpressionAnalyser {
   final RhapsodyAnalyserOptions options;
-  final RhapsodySingleRuleEvaluator singleRuleEval;
   late RhapsodyAnalyserFunctionHelper functionHelper;
 
   /// Instantiates the analyser with custom options.
   RhapsodyBooleanExpressionAnalyser({
     required this.options,
-    required this.singleRuleEval,
   }) {
     functionHelper = RhapsodyAnalyserFunctionHelper(options: options);
   }
@@ -113,7 +110,6 @@ class RhapsodyBooleanExpressionAnalyser {
         contextual: 'rule reference');
     gatherer.addRule(token.text);
 
-    return RhapsodyBooleanExpressionFactory.ruleReference(
-        token.text, singleRuleEval);
+    return RhapsodyBooleanExpressionFactory.ruleReference(token.text);
   }
 }

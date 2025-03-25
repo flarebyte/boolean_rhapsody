@@ -5,7 +5,6 @@ import 'parser_options.dart';
 import 'rule_definition.dart';
 import 'rule_expession.dart';
 import 'semantic_exception.dart';
-import 'single_rule_evaluator.dart';
 import 'token.dart';
 import 'tokeniser.dart';
 
@@ -53,14 +52,11 @@ class RhapsodySemanticAnalyser {
   /// Provides domain‐specific details (such as valid prefixes and functions)
   /// used during the analysis phase.
   final RhapsodyAnalyserOptions options;
-  final RhapsodySingleRuleEvaluator singleRuleEval =
-      RhapsodySingleRuleEvaluator();
   late RhapsodyBooleanExpressionAnalyser expressionAnalyser;
 
   /// Instantiates the analyser with custom options.
   RhapsodySemanticAnalyser(this.options) {
-    expressionAnalyser = RhapsodyBooleanExpressionAnalyser(
-        options: options, singleRuleEval: singleRuleEval);
+    expressionAnalyser = RhapsodyBooleanExpressionAnalyser(options: options);
   }
 
   /// Analyzes a stream of tokens, returning either a set of valid rule definitions
@@ -154,10 +150,6 @@ class RhapsodySemanticAnalyser {
           text: ruleText,
         );
         ruleDefinitions[ruleName] = ruleDefinition;
-      }
-      // Adding all the rules for rule ref
-      for (var ruleDef in ruleDefinitions.entries) {
-        singleRuleEval.addRuleExpression(ruleDef.key, ruleDef.value.expression);
       }
       return RhapsodySemanticAnalysisResult(ruleDefinitions: ruleDefinitions);
     } on SemanticException catch (e) {

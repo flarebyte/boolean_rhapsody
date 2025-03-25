@@ -2,7 +2,6 @@ import 'package:boolean_rhapsody/src/evaluation_context.dart';
 
 import 'fuzzy_boolean.dart';
 import 'rule_function.dart';
-import 'single_rule_evaluator.dart';
 
 /// **Abstract Class: RhapsodyBooleanExpression**
 ///
@@ -259,15 +258,11 @@ class RhapsodyRuleReference extends RhapsodyBooleanExpression {
   /// The name of the rule being referenced.
   final String ruleName;
 
-  /// A map containing all available rule definitions.
-  final RhapsodySingleRuleEvaluator singleRuleEval;
-
   /// Creates an instance of `RhapsodyRuleReference`.
   ///
   /// **Parameters:**
   /// - `ruleName`: The name of the rule to reference.
-  /// - `singleRuleEval`: A map of rule definitions to resolve the rule.
-  RhapsodyRuleReference(this.ruleName, this.singleRuleEval);
+  RhapsodyRuleReference(this.ruleName);
 
   @override
   String toString() {
@@ -286,7 +281,7 @@ class RhapsodyRuleReference extends RhapsodyBooleanExpression {
   /// **Throws:** `Exception` if the rule is not found`.
   @override
   RhapsodicBool evaluate(RhapsodyEvaluationContext context) {
-    return singleRuleEval.evaluate(context, ruleName);
+    return context.ruleState.get(ruleName) ?? RhapsodicBool.untruthy();
   }
 }
 
@@ -323,10 +318,7 @@ class RhapsodyBooleanExpressionFactory {
   }
 
   /// Creates a rule reference to another boolean expression by name.
-  static RhapsodyBooleanExpression ruleReference(
-    String ruleName,
-    RhapsodySingleRuleEvaluator singleRuleEval,
-  ) {
-    return RhapsodyRuleReference(ruleName, singleRuleEval);
+  static RhapsodyBooleanExpression ruleReference(String ruleName) {
+    return RhapsodyRuleReference(ruleName);
   }
 }

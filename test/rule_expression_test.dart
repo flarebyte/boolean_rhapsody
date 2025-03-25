@@ -1,6 +1,5 @@
 import 'package:boolean_rhapsody/boolean_rhapsody.dart';
 import 'package:boolean_rhapsody/src/rule_function.dart';
-import 'package:boolean_rhapsody/src/single_rule_evaluator.dart';
 import 'package:test/test.dart';
 
 class MockBooleanFunction implements BooleanRhapsodyFunction {
@@ -170,38 +169,19 @@ void main() {
     });
 
     test('RhapsodyRuleReference evaluates defined rules correctly', () {
-      RhapsodySingleRuleEvaluator singleRuleEvaluator =
-          RhapsodySingleRuleEvaluator();
-      singleRuleEvaluator.addRuleExpression(
-          'rule1',
-          RhapsodyFunctionExpression(
-              MockBooleanFunction(RhapsodicBool.truth())));
-      singleRuleEvaluator.addRuleExpression(
-          'rule2',
-          RhapsodyFunctionExpression(
-              MockBooleanFunction(RhapsodicBool.untruth())));
-
-      final ruleReferenceTrue =
-          RhapsodyRuleReference('rule1', singleRuleEvaluator);
+      context.ruleState.set('rule1', RhapsodicBool.truth());
+      context.ruleState.set('rule2', RhapsodicBool.untruth());
+      final ruleReferenceTrue = RhapsodyRuleReference('rule1');
       expect(ruleReferenceTrue.evaluate(context), RhapsodicBool.truth());
 
-      final ruleReferenceFalse =
-          RhapsodyRuleReference('rule2', singleRuleEvaluator);
+      final ruleReferenceFalse = RhapsodyRuleReference('rule2');
       expect(ruleReferenceFalse.evaluate(context), RhapsodicBool.untruth());
     });
 
     test('RhapsodyRuleReference throws exception for undefined rules', () {
-      RhapsodySingleRuleEvaluator singleRuleEvaluator =
-          RhapsodySingleRuleEvaluator();
-      singleRuleEvaluator.addRuleExpression(
-          'rule1',
-          RhapsodyFunctionExpression(
-              MockBooleanFunction(RhapsodicBool.truth())));
+      final ruleReference = RhapsodyRuleReference('undefinedRule');
 
-      final ruleReference =
-          RhapsodyRuleReference('undefinedRule', singleRuleEvaluator);
-
-      expect(() => ruleReference.evaluate(context), throwsA(isA<Exception>()));
+      expect(ruleReference.evaluate(context), RhapsodicBool.untruthy());
     });
 
     test('Complex expressions evaluate correctly', () {
