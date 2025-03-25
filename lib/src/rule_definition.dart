@@ -7,7 +7,7 @@ import 'token.dart';
 /// relationships, but also the expression that defines when the rule applies.
 /// It includes precise source locations (both as offsets and as positions)
 /// to support accurate error reporting and debugging.
-class RhapsodyRuleDefintition {
+class RhapsodyRuleDefinition {
   /// The unique identifier used to reference the rule within the grammar.
   final String ruleName;
 
@@ -54,7 +54,7 @@ class RhapsodyRuleDefintition {
   ///
   /// Every field is required to ensure that the analysis phase has access to
   /// complete information for dependency tracking and precise diagnostics.
-  RhapsodyRuleDefintition({
+  RhapsodyRuleDefinition({
     required this.ruleName,
     required this.requiredRules,
     required this.expression,

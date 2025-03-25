@@ -25,7 +25,7 @@ class RhapsodySemanticAnalysisResult {
   ///
   /// This collection serves as the primary reference for downstream processes, such as
   /// code generation or further validation, once the analysis phase completes successfully.
-  final Map<String, RhapsodyRuleDefintition> ruleDefinitions;
+  final Map<String, RhapsodyRuleDefinition> ruleDefinitions;
 
   /// Creates a result object that encapsulates either an analysis error or a valid set of rule definitions.
   ///
@@ -73,7 +73,7 @@ class RhapsodySemanticAnalyser {
   /// The boolean expression is scanned for identifiers that (by the current semantic rules)
   /// represent dependencies on other rules.
   RhapsodySemanticAnalysisResult analyse(List<RhapsodyToken> tokens) {
-    final Map<String, RhapsodyRuleDefintition> ruleDefinitions = {};
+    final Map<String, RhapsodyRuleDefinition> ruleDefinitions = {};
     int index = 0;
 
     try {
@@ -143,7 +143,7 @@ class RhapsodySemanticAnalyser {
         final String ruleText =
             tokens.sublist(start, index).map((t) => t.text).join(' ');
 
-        final ruleDefinition = RhapsodyRuleDefintition(
+        final ruleDefinition = RhapsodyRuleDefinition(
           ruleName: ruleName,
           requiredRules: gatherer.requiredRules.toList(),
           expression: expression,
