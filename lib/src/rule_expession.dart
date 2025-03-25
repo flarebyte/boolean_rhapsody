@@ -1,5 +1,4 @@
 import 'package:boolean_rhapsody/src/evaluation_context.dart';
-import 'package:boolean_rhapsody/src/single_rule_evaluator.dart';
 
 import 'fuzzy_boolean.dart';
 import 'rule_function.dart';
