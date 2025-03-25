@@ -9,20 +9,20 @@ class RhapsodySingleRuleEvaluator {
   /// The name of the rule being referenced.
 
   /// A map containing all available rule definitions.
-  final Map<String, RhapsodyBooleanExpression> ruleDefinitions = {};
+  final Map<String, RhapsodyBooleanExpression> ruleExpressions = {};
 
   /// Creates an instance of `RhapsodyRuleReference`.
   ///
   /// **Parameters:**
   RhapsodySingleRuleEvaluator();
 
-  addRuleDefinition(String name, RhapsodyBooleanExpression expression) {
-    ruleDefinitions.putIfAbsent(name, () => expression);
+  addRuleExpression(String name, RhapsodyBooleanExpression expression) {
+    ruleExpressions.putIfAbsent(name, () => expression);
   }
 
   @override
   String toString() {
-    return 'Evaluator {ruleDefinitions: ${ruleDefinitions.keys}}';
+    return 'Evaluator {ruleExpressions: ${ruleExpressions.keys}}';
   }
 
   /// Evaluates the referenced rule within the given context.
@@ -36,7 +36,7 @@ class RhapsodySingleRuleEvaluator {
   ///
   /// **Throws:** `Exception` if the rule is not found in `ruleDefinitions`.
   RhapsodicBool evaluate(RhapsodyEvaluationContext context, String ruleName) {
-    final rule = ruleDefinitions[ruleName];
+    final rule = ruleExpressions[ruleName];
     if (rule == null) {
       throw Exception("Rule $ruleName is not defined");
     }

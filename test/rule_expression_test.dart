@@ -172,11 +172,11 @@ void main() {
     test('RhapsodyRuleReference evaluates defined rules correctly', () {
       RhapsodySingleRuleEvaluator singleRuleEvaluator =
           RhapsodySingleRuleEvaluator();
-      singleRuleEvaluator.addRuleDefinition(
+      singleRuleEvaluator.addRuleExpression(
           'rule1',
           RhapsodyFunctionExpression(
               MockBooleanFunction(RhapsodicBool.truth())));
-      singleRuleEvaluator.addRuleDefinition(
+      singleRuleEvaluator.addRuleExpression(
           'rule2',
           RhapsodyFunctionExpression(
               MockBooleanFunction(RhapsodicBool.untruth())));
@@ -193,7 +193,7 @@ void main() {
     test('RhapsodyRuleReference throws exception for undefined rules', () {
       RhapsodySingleRuleEvaluator singleRuleEvaluator =
           RhapsodySingleRuleEvaluator();
-      singleRuleEvaluator.addRuleDefinition(
+      singleRuleEvaluator.addRuleExpression(
           'rule1',
           RhapsodyFunctionExpression(
               MockBooleanFunction(RhapsodicBool.truth())));

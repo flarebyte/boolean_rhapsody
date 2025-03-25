@@ -157,7 +157,7 @@ class RhapsodySemanticAnalyser {
       }
       // Adding all the rules for rule ref
       for (var ruleDef in ruleDefinitions.entries) {
-        singleRuleEval.addRuleDefinition(ruleDef.key, ruleDef.value.expression);
+        singleRuleEval.addRuleExpression(ruleDef.key, ruleDef.value.expression);
       }
       return RhapsodySemanticAnalysisResult(ruleDefinitions: ruleDefinitions);
     } on SemanticException catch (e) {

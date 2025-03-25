@@ -28,7 +28,7 @@ void main() {
       expect(analyzed.failure, null);
       expect(analyzed.ruleDefinitions, hasLength(1));
       expect(analyzed.ruleDefinitions.keys, contains('rule11'));
-      expect(analyser.singleRuleEval.ruleDefinitions.keys, contains('rule11'));
+      expect(analyser.singleRuleEval.ruleExpressions.keys, contains('rule11'));
     });
     test('should evaluate two rules', () {
       // func1(env:variable1) and rule42;
@@ -67,8 +67,8 @@ void main() {
       expect(analyzed.ruleDefinitions, hasLength(2));
       expect(analyzed.ruleDefinitions.keys, contains('rule11'));
       expect(analyzed.ruleDefinitions.keys, contains('rule12'));
-      expect(analyser.singleRuleEval.ruleDefinitions.keys, contains('rule11'));
-      expect(analyser.singleRuleEval.ruleDefinitions.keys, contains('rule12'));
+      expect(analyser.singleRuleEval.ruleExpressions.keys, contains('rule11'));
+      expect(analyser.singleRuleEval.ruleExpressions.keys, contains('rule12'));
     });
   });
 }
