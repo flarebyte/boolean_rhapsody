@@ -129,8 +129,6 @@ class RhapsodySemanticAnalyser {
         final RhapsodyExpressionAnalyserResult parseResult =
             expressionAnalyser.analyse(exprTokens);
         final RhapsodyBooleanExpression expression = parseResult.expression;
-        final RhapsodyExpressionResultGatherer gatherer =
-            RhapsodyExpressionResultGatherer();
 
         // Reconstruct the rule’s source text by joining the tokens.
         // (A real analyser might use the original input text instead.)
@@ -141,7 +139,7 @@ class RhapsodySemanticAnalyser {
 
         final ruleDefinition = RhapsodyRuleDefinition(
           ruleName: ruleName,
-          requiredRules: gatherer.requiredRules.toList(),
+          requiredRules: parseResult.gathering.requiredRules.toList(),
           expression: expression,
           startIndex: ruleStartIndex,
           endIndex: ruleEndIndex,
