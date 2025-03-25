@@ -15,7 +15,10 @@ class RhapsodyRuleDefinition {
   ///
   /// These dependencies are key during semantic analysis to verify that
   /// prerequisites are met.
-  final List<String> requiredRules;
+  final Set<String> requiredRules;
+
+  /// The set of unique required variables.
+  final Set<String> requiredVariables;
 
   /// A logical condition that encapsulates the rule’s semantic constraints.
   ///
@@ -57,6 +60,7 @@ class RhapsodyRuleDefinition {
   RhapsodyRuleDefinition({
     required this.ruleName,
     required this.requiredRules,
+    required this.requiredVariables,
     required this.expression,
     required this.startIndex,
     required this.endIndex,

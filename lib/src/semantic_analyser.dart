@@ -139,7 +139,8 @@ class RhapsodySemanticAnalyser {
 
         final ruleDefinition = RhapsodyRuleDefinition(
           ruleName: ruleName,
-          requiredRules: parseResult.gathering.requiredRules.toList(),
+          requiredRules: parseResult.gathering.requiredRules,
+          requiredVariables: parseResult.gathering.requiredVariables,
           expression: expression,
           startIndex: ruleStartIndex,
           endIndex: ruleEndIndex,

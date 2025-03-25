@@ -33,6 +33,8 @@ void main() {
       expect(analyzed.ruleDefinitions['rule11']?.endIndex, isPositive);
       expect(analyzed.ruleDefinitions['rule11']?.requiredRules,
           contains('rule42'));
+      expect(analyzed.ruleDefinitions['rule11']?.requiredVariables,
+          contains('env:variable1'));
     });
     test('should evaluate two rules', () {
       // func1(env:variable1) and rule42;
@@ -71,6 +73,16 @@ void main() {
       expect(analyzed.ruleDefinitions, hasLength(2));
       expect(analyzed.ruleDefinitions.keys, contains('rule11'));
       expect(analyzed.ruleDefinitions.keys, contains('rule12'));
+      expect(analyzed.ruleDefinitions['rule11']?.expression, isNotNull);
+      expect(analyzed.ruleDefinitions['rule11']?.requiredRules,
+          contains('rule42'));
+      expect(analyzed.ruleDefinitions['rule11']?.requiredVariables,
+          contains('env:variable1'));
+      expect(analyzed.ruleDefinitions['rule12']?.expression, isNotNull);
+      expect(analyzed.ruleDefinitions['rule12']?.requiredRules,
+          contains('rule43'));
+      expect(analyzed.ruleDefinitions['rule12']?.requiredVariables,
+          contains('env:variable4'));
     });
   });
 }
