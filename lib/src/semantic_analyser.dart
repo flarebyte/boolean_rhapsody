@@ -4,6 +4,7 @@ import 'expression_analyzer_result.dart';
 import 'parser_options.dart';
 import 'rule_definition.dart';
 import 'rule_expession.dart';
+import 'rule_orchestrator.dart';
 import 'semantic_exception.dart';
 import 'token.dart';
 import 'tokeniser.dart';
@@ -26,6 +27,8 @@ class RhapsodySemanticAnalysisResult {
   /// code generation or further validation, once the analysis phase completes successfully.
   final Map<String, RhapsodyRuleDefinition> ruleDefinitions;
 
+  final BooleanRhapsodyRuleOrchestrator? orchestrator;
+
   /// Creates a result object that encapsulates either an analysis error or a valid set of rule definitions.
   ///
   /// The [ruleDefinitions] map must be provided to ensure that all semantic constructs are accessible,
@@ -33,6 +36,7 @@ class RhapsodySemanticAnalysisResult {
   RhapsodySemanticAnalysisResult({
     this.failure,
     required this.ruleDefinitions,
+    this.orchestrator,
   });
 }
 
@@ -150,7 +154,9 @@ class RhapsodySemanticAnalyser {
         );
         ruleDefinitions[ruleName] = ruleDefinition;
       }
-      return RhapsodySemanticAnalysisResult(ruleDefinitions: ruleDefinitions);
+      final orchestrator = _ruleDefsToOrchestrator(ruleDefinitions);
+      return RhapsodySemanticAnalysisResult(
+          ruleDefinitions: ruleDefinitions, orchestrator: orchestrator);
     } on SemanticException catch (e) {
       // Package the diagnostic details into a failure object.
       final RhapsodyToken errorToken = e.token;
@@ -185,5 +191,17 @@ class RhapsodySemanticAnalyser {
         ruleDefinitions: ruleDefinitions,
       );
     }
+  }
+
+  BooleanRhapsodyRuleOrchestrator _ruleDefsToOrchestrator(
+      Map<String, RhapsodyRuleDefinition> ruleDefinitions) {
+    Map<String, List<String>> rules = {};
+    ruleDefinitions.forEach((ruleName, ruleDef) {
+      final requiredRules = ruleDef.requiredRules.toList();
+      requiredRules.sort();
+      rules[ruleName] = requiredRules;
+    });
+
+    return BooleanRhapsodyRuleOrchestrator(rules);
   }
 }
