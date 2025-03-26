@@ -29,7 +29,10 @@ void main() {
       final analyzed = analyser.analyse(tokens);
       expect(analyzed.failure, null);
       expect(analyzed.ruleDefinitions, hasLength(1));
+      expect(analyzed.orchestrator, isNotNull);
       expect(analyzed.ruleDefinitions.keys, contains('rule11'));
+      expect(analyzed.orchestrator?.sequentialEval, contains('rule11'));
+      expect(analyzed.orchestrator?.sequentialEval, contains('rule42'));
       expect(analyzed.ruleDefinitions['rule11']?.expression, isNotNull);
       expect(analyzed.ruleDefinitions['rule11']?.startIndex, isPositive);
       expect(analyzed.ruleDefinitions['rule11']?.endIndex, isPositive);
@@ -65,7 +68,7 @@ void main() {
         t.token("variable4", TokenTypes.identifier),
         t.token(")", TokenTypes.rparen),
         t.token("and", TokenTypes.operatorType),
-        t.token("rule43", TokenTypes.identifier),
+        t.token("rule11", TokenTypes.identifier),
         t.token(";", TokenTypes.semicolon),
       ];
       final RhapsodySemanticAnalyser analyser =
@@ -73,16 +76,20 @@ void main() {
       final analyzed = analyser.analyse(tokens);
       expect(analyzed.failure, null);
       expect(analyzed.ruleDefinitions, hasLength(2));
+      expect(analyzed.orchestrator, isNotNull);
       expect(analyzed.ruleDefinitions.keys, contains('rule11'));
       expect(analyzed.ruleDefinitions.keys, contains('rule12'));
       expect(analyzed.ruleDefinitions['rule11']?.expression, isNotNull);
       expect(analyzed.ruleDefinitions['rule11']?.requiredRules,
           contains('rule42'));
+      expect(analyzed.orchestrator?.sequentialEval, contains('rule11'));
+      expect(analyzed.orchestrator?.sequentialEval, contains('rule42'));
+      expect(analyzed.orchestrator?.sequentialEval, contains('rule12'));
       expect(analyzed.ruleDefinitions['rule11']?.requiredVariables,
           contains('env:variable1'));
       expect(analyzed.ruleDefinitions['rule12']?.expression, isNotNull);
       expect(analyzed.ruleDefinitions['rule12']?.requiredRules,
-          contains('rule43'));
+          contains('rule11'));
       expect(analyzed.ruleDefinitions['rule12']?.requiredVariables,
           contains('env:variable4'));
     });
