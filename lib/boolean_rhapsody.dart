@@ -58,7 +58,7 @@
 /// This module allows for expressive and modular boolean logic that integrates with a dynamic context.
 library;
 
-export 'src/rule_evaluator.dart';
+export 'src/rule_orchestrator.dart';
 export 'src/evaluation_context.dart';
 export 'src/rule_expession.dart';
 export 'src/string_function.dart';
