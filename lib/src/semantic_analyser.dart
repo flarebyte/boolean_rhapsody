@@ -14,7 +14,7 @@ import 'tokeniser.dart';
 /// This result distinguishes between a successful analysis—where a full set of rule
 /// definitions is available—and a failure state that provides detailed diagnostic
 /// information for error recovery or reporting.
-class RhapsodySemanticAnalysisResult {
+class RhapsodySemanticAnalysis {
   /// When present, details the error that prevented successful analysis.
   ///
   /// A non-null value indicates that an error was encountered during the semantic
@@ -33,7 +33,7 @@ class RhapsodySemanticAnalysisResult {
   ///
   /// The [ruleDefinitions] map must be provided to ensure that all semantic constructs are accessible,
   /// regardless of whether an error was detected.
-  RhapsodySemanticAnalysisResult({
+  RhapsodySemanticAnalysis({
     this.failure,
     required this.ruleDefinitions,
     this.orchestrator,
@@ -72,7 +72,7 @@ class RhapsodySemanticAnalyser {
   ///
   /// The boolean expression is scanned for identifiers that (by the current semantic rules)
   /// represent dependencies on other rules.
-  RhapsodySemanticAnalysisResult analyse(List<RhapsodyToken> tokens) {
+  RhapsodySemanticAnalysis analyse(List<RhapsodyToken> tokens) {
     final Map<String, RhapsodyRuleDefinition> ruleDefinitions = {};
     int index = 0;
 
@@ -155,7 +155,7 @@ class RhapsodySemanticAnalyser {
         ruleDefinitions[ruleName] = ruleDefinition;
       }
       final orchestrator = _ruleDefsToOrchestrator(ruleDefinitions);
-      return RhapsodySemanticAnalysisResult(
+      return RhapsodySemanticAnalysis(
           ruleDefinitions: ruleDefinitions, orchestrator: orchestrator);
     } on SemanticException catch (e) {
       // Package the diagnostic details into a failure object.
@@ -169,7 +169,7 @@ class RhapsodySemanticAnalyser {
         expected: "",
         suggestion: "Check rule definition syntax near '${errorToken.text}'.",
       );
-      return RhapsodySemanticAnalysisResult(
+      return RhapsodySemanticAnalysis(
         failure: failure,
         ruleDefinitions: ruleDefinitions,
       );
@@ -186,7 +186,7 @@ class RhapsodySemanticAnalyser {
         expected: "",
         suggestion: "Review the input.",
       );
-      return RhapsodySemanticAnalysisResult(
+      return RhapsodySemanticAnalysis(
         failure: failure,
         ruleDefinitions: ruleDefinitions,
       );
