@@ -81,3 +81,4 @@ export 'src/token_stream.dart';
 export 'src/semantic_exception.dart';
 export 'src/boolean_expression_analyser.dart';
 export 'src/semantic_analyser.dart';
+export 'src/boolean_interpreter.dart';
