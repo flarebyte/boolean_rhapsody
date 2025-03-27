@@ -164,9 +164,6 @@ class MockBooleanRhapsodyFunction implements BooleanRhapsodyFunction {
 
   MockBooleanRhapsodyFunction(this.name, this.params);
 
-  /// Simulates execution: returns `true` for 'func1' and 'log'; otherwise `false`.
-  bool execute() => (name == 'func1' || name == 'log');
-
   @override
   String toString() => 'MockFunction(name: $name, params: $params)';
 
@@ -179,7 +176,12 @@ class MockBooleanRhapsodyFunction implements BooleanRhapsodyFunction {
 
   @override
   RhapsodicBool isTrue(RhapsodyEvaluationContext context) {
-    return RhapsodicBool.truth();
+    final firstParam = params[0];
+    final firstValue = context.variables[firstParam];
+    if (firstValue == null) return RhapsodicBool.untruthy();
+    return (firstValue == name)
+        ? RhapsodicBool.truth()
+        : RhapsodicBool.untruth();
   }
 }
 

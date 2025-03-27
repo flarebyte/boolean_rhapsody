@@ -4,11 +4,7 @@ import 'semantic_analyser.dart';
 class RhapsodyInterpreter {
   RhapsodySemanticAnalysis analysis;
   RhapsodyInterpreter(this.analysis) {
-    final invalid = analysis.failure != null ||
-        analysis.ruleDefinitions.isEmpty ||
-        analysis.orchestrator == null ||
-        analysis.orchestrator?.hasCycle == true;
-    if (invalid) {
+    if (!analysis.isValid()) {
       throw Exception('The boolean rhapsody script is not valid');
     }
   }

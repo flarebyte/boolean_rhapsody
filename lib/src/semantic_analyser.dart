@@ -38,6 +38,14 @@ class RhapsodySemanticAnalysis {
     required this.ruleDefinitions,
     this.orchestrator,
   });
+
+  bool isValid() {
+    final invalid = failure != null ||
+        ruleDefinitions.isEmpty ||
+        orchestrator == null ||
+        orchestrator?.hasCycle == true;
+    return !invalid;
+  }
 }
 
 /// Analyser for a boolean query language that produces semantic rule definitions.
