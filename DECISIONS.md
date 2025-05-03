@@ -622,3 +622,32 @@ rule3 = Set(rule1, var2)
   to manage rule relationships.
 - For larger or more complex graphs, algorithms like Kahn’s or DFS are
   more efficient and scalable.
+
+## Problem Specification: Prioritized Enum Dispatch in Boolean Logic Language
+
+**Problem Description:**  
+Extend a Boolean logic language to support a `case`-style construct that enables mapping boolean conditions to enumeration (enum) values. The structure should evaluate conditions in order and return the first matching result. This approach introduces a way to declaratively associate complex boolean expressions with named outcomes (enums), enhancing the expressiveness of the language without introducing full logic programming semantics.
+
+**Use Cases:**
+
+- Rule engines for decision systems (e.g., if object has certain attributes, return corresponding category).
+- Declarative mappings from sensor inputs to system states (e.g., determine machine state based on input flags).
+- Categorization of user input or event types based on multiple field values.
+- Mapping combinations of flags to UI display modes.
+- Prioritized fallbacks where specific conditions override general ones.
+
+**Edge Cases:**
+
+- All conditions evaluate to false: `else` must return a default enum.
+- Multiple `when` clauses evaluate to true: only the first true clause should be considered.
+- `else` is optional but recommended; if missing and no `when` matches, behavior must be defined (e.g., return null or error).
+- Conditions may include undefined or null values; behavior must be specified for these.
+- Enums must be predefined and valid; returning an undefined enum should raise an error or fail validation.
+
+**Limitations and Non-Goals:**
+
+- The construct should not support nested `case` expressions.
+- It should not include function definitions or side effects within the `when` conditions or return clauses.
+- It should not allow procedural control flow (e.g., loops, breaks).
+- It should not infer or evaluate enum values dynamically; all values must be explicitly named.
+- The structure is not a replacement for full pattern matching or logic programming paradigms.
