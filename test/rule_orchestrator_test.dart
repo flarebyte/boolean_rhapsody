@@ -1,4 +1,4 @@
-import 'package:boolean_rhapsody/boolean_rhapsody.dart';
+import 'package:boolean_rhapsody/src/rule_orchestrator.dart';
 import 'package:test/test.dart';
 
 void main() {

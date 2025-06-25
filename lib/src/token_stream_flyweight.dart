@@ -1,4 +1,6 @@
-import '../boolean_rhapsody.dart';
+import 'token.dart';
+import 'token_stream.dart';
+import 'tokeniser.dart';
 
 /// Provides flyweight static methods for common token consumption and peeking
 /// operations on [RhapsodyTokenStream].

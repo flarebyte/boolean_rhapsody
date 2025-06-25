@@ -1,5 +1,7 @@
-import '../boolean_rhapsody.dart';
+import 'evaluation_context.dart';
+import 'fuzzy_boolean.dart';
 import 'rule_function.dart';
+import 'set_comparator.dart';
 
 /// A function that evaluates a boolean condition based on set operations.
 ///

@@ -233,6 +233,7 @@ void main() {
 class _FailingExpressionAnalyser implements RhapsodyBooleanExpressionAnalyser {
   @override
   final RhapsodyAnalyserOptions options = fixtureMockOptions;
+  @override
   RhapsodyAnalyserFunctionHelper functionHelper =
       RhapsodyAnalyserFunctionHelper(options: fixtureMockOptions);
 

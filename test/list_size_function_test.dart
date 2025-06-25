@@ -1,4 +1,6 @@
 import 'package:boolean_rhapsody/boolean_rhapsody.dart';
+import 'package:boolean_rhapsody/src/list_size_function.dart';
+import 'package:boolean_rhapsody/src/number_comparator.dart';
 import 'package:test/test.dart';
 
 const defaultPrefixes = ["c", "v", "p", "d"];

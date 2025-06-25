@@ -1,4 +1,5 @@
 import 'package:boolean_rhapsody/boolean_rhapsody.dart';
+import 'package:boolean_rhapsody/src/rule_expession.dart';
 import 'package:boolean_rhapsody/src/rule_function.dart';
 import 'package:test/test.dart';
 

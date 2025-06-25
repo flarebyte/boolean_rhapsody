@@ -1,6 +1,7 @@
 import 'package:boolean_rhapsody/boolean_rhapsody.dart';
 import 'package:boolean_rhapsody/src/analyser_function_helper.dart';
 import 'package:boolean_rhapsody/src/expression_analyzer_result.dart';
+import 'package:boolean_rhapsody/src/token_stream.dart';
 import 'package:test/test.dart';
 
 import 'code_fixtures.dart';

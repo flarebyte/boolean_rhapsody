@@ -1,4 +1,5 @@
 import 'package:boolean_rhapsody/boolean_rhapsody.dart';
+import 'package:boolean_rhapsody/src/tokeniser_helper.dart';
 import 'package:test/test.dart';
 
 void main() {

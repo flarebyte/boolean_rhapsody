@@ -1,4 +1,6 @@
-import '../boolean_rhapsody.dart';
+import 'semantic_exception.dart';
+import 'token.dart';
+import 'tokeniser.dart';
 
 /// A stream-based iterator for traversing a list of [RhapsodyToken]s
 /// without modifying the original list.

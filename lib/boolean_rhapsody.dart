@@ -58,26 +58,13 @@
 /// This module allows for expressive and modular boolean logic that integrates with a dynamic context.
 library;
 
-export 'src/rule_orchestrator.dart';
 export 'src/evaluation_context.dart';
-export 'src/rule_expession.dart';
-export 'src/string_function.dart';
-export 'src/string_comparator.dart';
 export 'src/function_factory.dart';
 export 'src/fuzzy_boolean.dart';
-export 'src/date_time_function.dart';
-export 'src/date_time_comparator.dart';
-export 'src/number_function.dart';
-export 'src/number_comparator.dart';
-export 'src/set_comparator.dart';
-export 'src/set_function.dart';
-export 'src/list_size_function.dart';
 export 'src/parser_options.dart';
 export 'src/supported_prefixes.dart';
 export 'src/token.dart';
 export 'src/tokeniser.dart';
-export 'src/tokeniser_helper.dart';
-export 'src/token_stream.dart';
 export 'src/semantic_exception.dart';
 export 'src/boolean_expression_analyser.dart';
 export 'src/semantic_analyser.dart';

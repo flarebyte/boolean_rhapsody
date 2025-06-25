@@ -1,4 +1,4 @@
-import '../boolean_rhapsody.dart';
+import 'fuzzy_boolean.dart';
 
 class RhapsodyRuleState {
   final Map<String, RhapsodicBool> states = {};

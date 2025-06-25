@@ -1,4 +1,4 @@
-import 'package:boolean_rhapsody/boolean_rhapsody.dart';
+import 'package:boolean_rhapsody/src/date_time_comparator.dart';
 import 'package:test/test.dart';
 
 void main() {
