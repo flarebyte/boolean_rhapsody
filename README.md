@@ -140,6 +140,7 @@ print(context.ruleState.states);
 -   [Overview of Flarebyte.com ecosystem
     :factory:](https://github.com/flarebyte/overview)
 -   [Dart dependencies](DEPENDENCIES.md)
+-   [Internal dependencies](INTERNAL-DEPENDENCIES.md)
 -   [Usage](USAGE.md)
 -   [Example](example/example.dart)
 

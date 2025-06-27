@@ -18,6 +18,7 @@ model:
       - Clear and well-defined grammar prioritizing expressiveness and error prevention.
     links:
       - "[Dart dependencies](DEPENDENCIES.md)"
+      - "[Internal dependencies](INTERNAL-DEPENDENCIES.md)"
       - "[Usage](USAGE.md)"
       - "[Example](example/example.dart)"
     related:
