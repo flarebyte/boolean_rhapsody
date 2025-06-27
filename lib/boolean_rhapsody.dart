@@ -59,7 +59,7 @@
 library;
 
 export 'src/evaluation_context.dart';
-export 'src/function_factory.dart';
+export 'src/function/function_factory.dart';
 export 'src/fuzzy_boolean.dart';
 export 'src/parser_options.dart';
 export 'src/supported_prefixes.dart';

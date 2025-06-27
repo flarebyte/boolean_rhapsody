@@ -1,7 +1,7 @@
-import 'evaluation_context.dart';
-import 'fuzzy_boolean.dart';
+import '../evaluation_context.dart';
+import '../fuzzy_boolean.dart';
 import 'rule_function.dart';
-import 'string_comparator.dart';
+import '../string_comparator.dart';
 
 /// A boolean function that checks if a specified reference is absent (null)
 /// in the given [RhapsodyEvaluationContext].
@@ -283,7 +283,7 @@ class IsAllowedCharsFunction extends BooleanRhapsodyFunction {
     }
     final allowedChars = context.getRefValueAsString(refs[1], '''
     ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789
-    `~!@#\$%^&*()-_=+[{]}\\|;:'",<.>/?\t\n\r 
+    `~!@#\$%^&*()-_=+[{]}\\|;:'",<.>/?\t\n\r
   '''); //default to qwerty
 
     for (var char in value.runes) {

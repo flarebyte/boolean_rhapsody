@@ -1,6 +1,6 @@
-import 'evaluation_context.dart';
-import 'fuzzy_boolean.dart';
-import 'number_comparator.dart';
+import '../evaluation_context.dart';
+import '../fuzzy_boolean.dart';
+import '../number_comparator.dart';
 import 'rule_function.dart';
 
 /// A Boolean function that compares two numeric references within a given context.

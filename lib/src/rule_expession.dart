@@ -1,7 +1,7 @@
 import 'package:boolean_rhapsody/src/evaluation_context.dart';
 
 import 'fuzzy_boolean.dart';
-import 'rule_function.dart';
+import 'function/rule_function.dart';
 
 /// **Abstract Class: RhapsodyBooleanExpression**
 ///

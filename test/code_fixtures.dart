@@ -1,6 +1,6 @@
 // Example: mock options for RhapsodyParserOptions.
 import 'package:boolean_rhapsody/boolean_rhapsody.dart';
-import 'package:boolean_rhapsody/src/rule_function.dart';
+import 'package:boolean_rhapsody/src/function/rule_function.dart';
 
 final RhapsodyAnalyserOptions fixtureMockOptions = RhapsodyAnalyserOptions(
   prefixes: ['env', 'config'],
@@ -21,7 +21,7 @@ final List<String> codeSamples = [
 
   // Valid: A rule expression with extra grouping spanning multiple lines.
   """
-  rule1 = func1(env:var) and 
+  rule1 = func1(env:var) and
        (func2(config:var2) or not func1(env:otherVar));
   """,
 

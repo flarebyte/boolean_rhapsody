@@ -1,6 +1,6 @@
 import 'package:boolean_rhapsody/src/date_time_comparator.dart';
-import 'evaluation_context.dart';
-import 'fuzzy_boolean.dart';
+import '../evaluation_context.dart';
+import '../fuzzy_boolean.dart';
 import 'rule_function.dart';
 
 /// A specialized [BooleanRhapsodyFunction] that evaluates whether a condition

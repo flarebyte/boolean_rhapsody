@@ -1,4 +1,4 @@
-import 'function_factory.dart';
+import 'function/function_factory.dart';
 import 'supported_prefixes.dart';
 
 /// Provides parsing options for Rhapsodic expressions, including variable and function validation.
