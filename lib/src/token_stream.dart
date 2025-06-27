@@ -1,5 +1,5 @@
 import 'semantic_exception.dart';
-import 'token.dart';
+import 'model/token.dart';
 import 'tokeniser.dart';
 
 /// A stream-based iterator for traversing a list of [RhapsodyToken]s

@@ -1,6 +1,6 @@
 import 'package:boolean_rhapsody/boolean_rhapsody.dart';
 import 'package:boolean_rhapsody/src/analyser_function_helper.dart';
-import 'package:boolean_rhapsody/src/expression_analyzer_result.dart';
+import 'package:boolean_rhapsody/src/model/expression_analyzer_result.dart';
 import 'package:test/test.dart';
 
 import 'code_fixtures.dart';

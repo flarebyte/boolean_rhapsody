@@ -1,6 +1,6 @@
 import 'package:boolean_rhapsody/src/evaluation_context.dart';
 
-import 'fuzzy_boolean.dart';
+import 'model/fuzzy_boolean.dart';
 import 'function/rule_function.dart';
 
 /// **Abstract Class: RhapsodyBooleanExpression**

@@ -1,5 +1,5 @@
 import '../evaluation_context.dart';
-import '../fuzzy_boolean.dart';
+import '../model/fuzzy_boolean.dart';
 
 /// An abstract class that defines a boolean function in the Rhapsody framework.
 /// Implementing classes are expected to evaluate whether a condition is true

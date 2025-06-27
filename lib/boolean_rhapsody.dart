@@ -60,10 +60,10 @@ library;
 
 export 'src/evaluation_context.dart';
 export 'src/function/function_factory.dart';
-export 'src/fuzzy_boolean.dart';
-export 'src/parser_options.dart';
-export 'src/supported_prefixes.dart';
-export 'src/token.dart';
+export 'src/model/fuzzy_boolean.dart';
+export 'src/model/parser_options.dart';
+export 'src/model/supported_prefixes.dart';
+export 'src/model/token.dart';
 export 'src/tokeniser.dart';
 export 'src/semantic_exception.dart';
 export 'src/boolean_expression_analyser.dart';

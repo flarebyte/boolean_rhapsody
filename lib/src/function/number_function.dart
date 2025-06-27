@@ -1,5 +1,5 @@
 import '../evaluation_context.dart';
-import '../fuzzy_boolean.dart';
+import '../model/fuzzy_boolean.dart';
 import '../comparator/number_comparator.dart';
 import 'rule_function.dart';
 

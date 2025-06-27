@@ -1,4 +1,4 @@
-import 'token.dart';
+import 'model/token.dart';
 import 'tokeniser_helper.dart';
 
 /// Defines all supported token types for the Rhapsody language.

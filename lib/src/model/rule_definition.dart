@@ -1,4 +1,4 @@
-import 'rule_expession.dart';
+import '../rule_expression.dart';
 import 'token.dart';
 
 /// Models the semantic structure of a grammar rule for the analysis phase.

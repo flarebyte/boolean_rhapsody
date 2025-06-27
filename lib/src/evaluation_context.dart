@@ -1,5 +1,5 @@
-import 'rule_state.dart';
-import 'supported_prefixes.dart';
+import 'model/rule_state.dart';
+import 'model/supported_prefixes.dart';
 
 /// **Class: RhapsodyEvaluationContext**
 ///

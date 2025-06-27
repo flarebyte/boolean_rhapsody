@@ -1,9 +1,9 @@
 import 'analyser_function_helper.dart';
-import 'expression_analyzer_result.dart';
-import 'parser_options.dart';
-import 'rule_expession.dart';
+import 'model/expression_analyzer_result.dart';
+import 'model/parser_options.dart';
+import 'rule_expression.dart';
 import 'semantic_exception.dart';
-import 'token.dart';
+import 'model/token.dart';
 import 'token_stream.dart';
 import 'token_stream_flyweight.dart';
 

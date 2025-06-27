@@ -1,4 +1,4 @@
-import 'rule_expession.dart';
+import '../rule_expression.dart';
 
 /// Helper class to encapsulate the result of parsing a boolean expression.
 class RhapsodyExpressionAnalyserResult {

@@ -1,4 +1,4 @@
-import 'token.dart';
+import 'model/token.dart';
 
 /// Thrown when the semantic analyser encounters an unexpected token.
 class SemanticException implements Exception {

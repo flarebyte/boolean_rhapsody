@@ -1,4 +1,4 @@
-import 'token.dart';
+import 'model/token.dart';
 
 /// Returns `true` if [char] is a whitespace character.
 bool isWhitespace(String char) =>

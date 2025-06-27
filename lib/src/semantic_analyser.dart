@@ -1,12 +1,12 @@
-import 'analysis_failure.dart';
+import 'model/analysis_failure.dart';
 import 'boolean_expression_analyser.dart';
-import 'expression_analyzer_result.dart';
-import 'parser_options.dart';
-import 'rule_definition.dart';
-import 'rule_expession.dart';
+import 'model/expression_analyzer_result.dart';
+import 'model/parser_options.dart';
+import 'model/rule_definition.dart';
+import 'rule_expression.dart';
 import 'rule_orchestrator.dart';
 import 'semantic_exception.dart';
-import 'token.dart';
+import 'model/token.dart';
 import 'tokeniser.dart';
 
 /// Consolidates the result of the semantic analysis phase for a grammar.

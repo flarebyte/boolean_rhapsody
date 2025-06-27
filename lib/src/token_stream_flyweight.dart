@@ -1,4 +1,4 @@
-import 'token.dart';
+import 'model/token.dart';
 import 'token_stream.dart';
 import 'tokeniser.dart';
 
