@@ -87,7 +87,7 @@ class RhapsodyTokeniser {
 
       // Identify identifiers and keywords.
       if (isLetter(currentChar)) {
-        while (index < code.length && isLetterOrDigit(code[index])) {
+        while (index < code.length && isLetterOrDigitOr_(code[index])) {
           index++;
           column++;
         }

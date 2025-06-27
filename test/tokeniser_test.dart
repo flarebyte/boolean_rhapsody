@@ -27,17 +27,17 @@ void main() {
     final tokeniser = RhapsodyTokeniser();
 
     test('parses a simple function call with a prefixed variable', () {
-      final code = 'func1(prefix:a)';
+      final code = 'func1_a(prefix:a)';
       final tokens = tokeniser.parse(code);
       expect(tokens, isNotEmpty);
 
       // Expected tokens:
-      //   Identifier "func1", ParenOpen "(",
+      //   Identifier "func1_a", ParenOpen "(",
       //   Identifier "prefix", Colon ":", Identifier "a",
       //   ParenClose ")"
       expect(tokens.length, equals(6));
 
-      expect(tokens[0].text, equals('func1'));
+      expect(tokens[0].text, equals('func1_a'));
       expect(tokens[0].type, equals(TokenTypes.identifier));
 
       expect(tokens[1].text, equals('('));

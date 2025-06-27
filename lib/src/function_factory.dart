@@ -316,3 +316,57 @@ class BooleanRhapsodyFunctionRegistry {
     return _factory.create(name, params);
   }
 }
+
+const List<String> rhapsodyFunctionNames = [
+  // Basic checks
+  'is_absent',
+  'is_present',
+  'is_empty_string',
+  'is_trimmable_string',
+  'is_complex_unicode',
+  'is_simple_unicode',
+  'is_allowed_chars',
+  'is_multiple_lines',
+  'is_single_line',
+  'is_numeric',
+  'is_integer',
+  'is_date_time',
+  'is_url',
+
+  // String comparison functions
+  'contains_substring',
+  'starts_with_prefix',
+  'ends_with_suffix',
+  'string_equals',
+
+  // Number comparison functions
+  'number_equals',
+  'number_not_equals',
+  'number_greater_than',
+  'number_greater_than_equals',
+  'number_less_than',
+  'number_less_than_equals',
+
+  // Date-time comparison functions
+  'date_time_equals',
+  'date_time_not_equals',
+  'date_time_greater_than',
+  'date_time_greater_than_equals',
+  'date_time_less_than',
+  'date_time_less_than_equals',
+
+  // List size comparison functions
+  'list_size_equals',
+  'list_size_not_equals',
+  'list_size_greater_than',
+  'list_size_greater_than_equals',
+  'list_size_less_than',
+  'list_size_less_than_equals',
+
+  // Set comparison functions
+  'set_equals',
+  'is_subset_of',
+  'is_superset_of',
+  'is_disjoint',
+];
+

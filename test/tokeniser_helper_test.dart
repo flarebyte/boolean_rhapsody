@@ -44,18 +44,19 @@ void main() {
     });
   });
 
-  group('isLetterOrDigit', () {
+  group('isLetterOrDigitOr_', () {
     test('returns true for letters and digits', () {
-      expect(isLetterOrDigit('a'), isTrue);
-      expect(isLetterOrDigit('Z'), isTrue);
-      expect(isLetterOrDigit('0'), isTrue);
-      expect(isLetterOrDigit('9'), isTrue);
+      expect(isLetterOrDigitOr_('a'), isTrue);
+      expect(isLetterOrDigitOr_('Z'), isTrue);
+      expect(isLetterOrDigitOr_('0'), isTrue);
+      expect(isLetterOrDigitOr_('9'), isTrue);
+      expect(isLetterOrDigitOr_('_'), isTrue);
     });
 
     test('returns false for non-alphanumeric characters', () {
-      expect(isLetterOrDigit(' '), isFalse);
-      expect(isLetterOrDigit('@'), isFalse);
-      expect(isLetterOrDigit(','), isFalse);
+      expect(isLetterOrDigitOr_(' '), isFalse);
+      expect(isLetterOrDigitOr_('@'), isFalse);
+      expect(isLetterOrDigitOr_(','), isFalse);
     });
   });
 

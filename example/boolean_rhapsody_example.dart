@@ -1,13 +1,11 @@
 import 'package:boolean_rhapsody/boolean_rhapsody.dart';
 
 void main() {
-  // TODO ...wip..make sure it is configure and work
   final functionRegistry = BooleanRhapsodyFunctionRegistry();
   final RhapsodyAnalyserOptions analyserOptions = RhapsodyAnalyserOptions(
       prefixes: ['env', 'config'],
-      functions: ['func1', 'func2', 'log', 'calc'],
+      functions: rhapsodyFunctionNames,
       variableValidator: (String variableName) {
-        // A valid variable name must start with a letter and may contain letters and digits.
         return RegExp(r'^[a-zA-Z][a-zA-Z0-9]*$').hasMatch(variableName);
       },
       functionRegistry: functionRegistry);
@@ -15,11 +13,17 @@ void main() {
   final tokeniser = RhapsodyTokeniser();
   final RhapsodySemanticAnalyser analyser =
       RhapsodySemanticAnalyser(analyserOptions);
-  final tokens = tokeniser.parse('func1(prefix:a)');
+  final tokens = tokeniser.parse([
+    'rule stop = string_equals(env:state, config:red) or is_present(env:alert);',
+    'rule orange = string_equals(env:state, config:orange);'
+  ].join(''));
   final analysis = analyser.analyse(tokens);
   final interpreter = RhapsodyInterpreter(analysis);
+
   RhapsodyEvaluationContext context = RhapsodyEvaluationContext(
       prefixes: ['env', 'config'],
-      variables: {'env:variable1': 'func1', 'env:variable4': 'func2'});
+      variables: {'env:state': 'green', 'env:alert': 'panic'});
   interpreter.interpret(context);
+  print(context.ruleState.states);
+  // {stop: RhapsodicBool{value: true, certain: true}, orange: RhapsodicBool{value: false, certain: false}}
 }
