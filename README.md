@@ -24,10 +24,68 @@ Highlights:
 
 A few examples:
 
-todo:
+Instantiate function registry containing boolean functions like
+string\_equals:
 
 ```dart
-todo dart code here
+final functionRegistry = BooleanRhapsodyFunctionRegistry();
+```
+
+Configure analyser options with allowed prefixes, functions, and a variable
+validator:
+
+```dart
+final options = RhapsodyAnalyserOptions(
+  prefixes: ['env', 'config'],
+  functions: rhapsodyFunctionNames,
+  variableValidator: (name) => RegExp(r'^[a-zA-Z][a-zA-Z0-9]*$').hasMatch(name),
+  functionRegistry: functionRegistry,
+);
+
+```
+
+Tokenise rule strings into a list of tokens:
+
+```dart
+final tokeniser = RhapsodyTokeniser();
+final tokens = tokeniser.parse('rule example = is_present(env:flag);');
+
+```
+
+Perform semantic analysis on parsed tokens:
+
+```dart
+final analyser = RhapsodySemanticAnalyser(options);
+final analysis = analyser.analyse(tokens);
+
+```
+
+Instantiate interpreter with analysed rule structure:
+
+```dart
+final interpreter = RhapsodyInterpreter(analysis);
+```
+
+Create evaluation context with variable bindings:
+
+```dart
+final context = RhapsodyEvaluationContext(
+  prefixes: ['env', 'config'],
+  variables: {'env:state': 'green', 'env:alert': 'panic'},
+);
+
+```
+
+Interpret rules against the provided evaluation context:
+
+```dart
+interpreter.interpret(context);
+```
+
+Print or inspect rule evaluation results:
+
+```dart
+print(context.ruleState.states);
 ```
 
 ## Documentation and links
