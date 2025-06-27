@@ -139,6 +139,18 @@ workflows:
             - name: deps
               title: Document the dart dependencies
               run: npx zx https://raw.githubusercontent.com/flarebyte/baldrick-reserve/main/script/dart-dependencies.mjs
+            - name: lakos
+              links:
+                - title: Visualize internal Dart library dependencies in Graphviz 
+                  url: https://github.com/OlegAlexander/lakos
+              title: Generate a dot file using lakos
+              run: lakos -o doc/internal_dependencies.dot lib
+            - name: dot
+              links:
+                - title: Graph visualization software 
+                  url: https://graphviz.org/
+              title: Generate an image from dot file
+              run: dot -Tpng doc/internal_dependencies.dot -o doc/internal_dependencies.png
             - name: fix
               title: Fix all the markdown files
               run: npx baldrick-dev-ts@latest markdown fix
