@@ -1,7 +1,7 @@
 import '../evaluation_context.dart';
 import '../fuzzy_boolean.dart';
 import 'rule_function.dart';
-import '../string_comparator.dart';
+import '../comparator/string_comparator.dart';
 
 /// A boolean function that checks if a specified reference is absent (null)
 /// in the given [RhapsodyEvaluationContext].

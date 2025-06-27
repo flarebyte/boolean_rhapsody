@@ -1,11 +1,11 @@
-import 'package:boolean_rhapsody/src/set_comparator.dart';
+import 'package:boolean_rhapsody/src/comparator/set_comparator.dart';
 import 'package:boolean_rhapsody/src/function/set_function.dart';
-import 'package:boolean_rhapsody/src/string_comparator.dart';
+import 'package:boolean_rhapsody/src/comparator/string_comparator.dart';
 
-import '../date_time_comparator.dart';
+import '../comparator/date_time_comparator.dart';
 import 'date_time_function.dart';
 import 'list_size_function.dart';
-import '../number_comparator.dart';
+import '../comparator/number_comparator.dart';
 import 'number_function.dart';
 import 'rule_function.dart';
 import 'string_function.dart';

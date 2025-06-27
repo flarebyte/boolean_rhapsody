@@ -1,6 +1,6 @@
 import '../evaluation_context.dart';
 import '../fuzzy_boolean.dart';
-import '../number_comparator.dart';
+import '../comparator/number_comparator.dart';
 import 'rule_function.dart';
 
 /// A function that evaluates whether the size of a list derived from a string

@@ -1,5 +1,5 @@
 import 'package:boolean_rhapsody/boolean_rhapsody.dart';
-import 'package:boolean_rhapsody/src/number_comparator.dart';
+import 'package:boolean_rhapsody/src/comparator/number_comparator.dart';
 import 'package:boolean_rhapsody/src/function/number_function.dart';
 import 'package:test/test.dart';
 

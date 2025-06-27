@@ -1,4 +1,4 @@
-import 'package:boolean_rhapsody/src/number_comparator.dart';
+import 'package:boolean_rhapsody/src/comparator/number_comparator.dart';
 import 'package:test/test.dart';
 
 void main() {

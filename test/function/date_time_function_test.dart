@@ -1,5 +1,5 @@
 import 'package:boolean_rhapsody/boolean_rhapsody.dart';
-import 'package:boolean_rhapsody/src/date_time_comparator.dart';
+import 'package:boolean_rhapsody/src/comparator/date_time_comparator.dart';
 import 'package:boolean_rhapsody/src/function/date_time_function.dart';
 import 'package:test/test.dart';
 
