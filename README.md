@@ -24,6 +24,42 @@ Highlights:
 
 A few examples:
 
+Check if a required environment variable is present:
+
+```dart
+is_present(env:flag);
+```
+
+Validate that a numeric score exceeds a threshold:
+
+```dart
+number_greater_than(env:score, config:passing_score);
+```
+
+Compare string values for exact match:
+
+```dart
+string_equals(env:mode, config:expected_mode);
+```
+
+Confirm that a timestamp is before a configured deadline:
+
+```dart
+date_time_less_than(env:submission_time, config:deadline);
+```
+
+Ensure a minimum number of items in a list:
+
+```dart
+list_size_greater_than_equals(env:cart_items, config:min_required);
+```
+
+Check if a user's roles include all required permissions:
+
+```dart
+is_superset_of(env:user_roles, config:required_roles);
+```
+
 Instantiate function registry containing boolean functions like
 string\_equals:
 

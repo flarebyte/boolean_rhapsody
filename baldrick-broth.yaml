@@ -26,6 +26,18 @@ model:
       - image-hero
     cheatsheetFormat: dart
     cheatsheet:
+      - title: Check if a required environment variable is present
+        example: is_present(env:flag);
+      - title: Validate that a numeric score exceeds a threshold
+        example: number_greater_than(env:score, config:passing_score);
+      - title: Compare string values for exact match
+        example: string_equals(env:mode, config:expected_mode);
+      - title: Confirm that a timestamp is before a configured deadline
+        example: date_time_less_than(env:submission_time, config:deadline);
+      - title: Ensure a minimum number of items in a list
+        example: list_size_greater_than_equals(env:cart_items, config:min_required);
+      - title: Check if a user's roles include all required permissions
+        example: is_superset_of(env:user_roles, config:required_roles);
       - title: Instantiate function registry containing boolean functions like string_equals
         example: final functionRegistry = BooleanRhapsodyFunctionRegistry();
       - title: Configure analyser options with allowed prefixes, functions, and a variable validator
