@@ -1,29 +1,47 @@
 import 'package:boolean_rhapsody/boolean_rhapsody.dart';
 
 void main() {
+  // Instantiate function registry containing boolean functions like string_equals
   final functionRegistry = BooleanRhapsodyFunctionRegistry();
-  final RhapsodyAnalyserOptions analyserOptions = RhapsodyAnalyserOptions(
-      prefixes: ['env', 'config'],
-      functions: rhapsodyFunctionNames,
-      variableValidator: (String variableName) {
-        return RegExp(r'^[a-zA-Z][a-zA-Z0-9]*$').hasMatch(variableName);
-      },
-      functionRegistry: functionRegistry);
 
+// Configure semantic analyser options
+  final RhapsodyAnalyserOptions analyserOptions = RhapsodyAnalyserOptions(
+    prefixes: ['env', 'config'], // Allowed variable prefixes
+    functions: rhapsodyFunctionNames, // List of allowed function names
+    variableValidator: (String variableName) {
+      // Validate variable naming: must start with letter, then alphanumerics
+      return RegExp(r'^[a-zA-Z][a-zA-Z0-9]*$').hasMatch(variableName);
+    },
+    functionRegistry: functionRegistry, // Attach function registry
+  );
+
+// Create tokeniser and parse input rule strings into tokens
   final tokeniser = RhapsodyTokeniser();
-  final RhapsodySemanticAnalyser analyser =
-      RhapsodySemanticAnalyser(analyserOptions);
   final tokens = tokeniser.parse([
     'rule stop = string_equals(env:state, config:red) or is_present(env:alert);',
     'rule orange = string_equals(env:state, config:orange);'
   ].join(''));
+
+// Create analyser and perform semantic analysis on tokens
+  final RhapsodySemanticAnalyser analyser =
+      RhapsodySemanticAnalyser(analyserOptions);
   final analysis = analyser.analyse(tokens);
+
+// Interpret analysed rules
   final interpreter = RhapsodyInterpreter(analysis);
 
+// Define context with variable values at runtime
   RhapsodyEvaluationContext context = RhapsodyEvaluationContext(
-      prefixes: ['env', 'config'],
-      variables: {'env:state': 'green', 'env:alert': 'panic'});
+    prefixes: ['env', 'config'],
+    variables: {'env:state': 'green', 'env:alert': 'panic'},
+  );
+
+// Evaluate rules using the interpreter
   interpreter.interpret(context);
+
+// Print final rule evaluation results
   print(context.ruleState.states);
-  // {stop: RhapsodicBool{value: true, certain: true}, orange: RhapsodicBool{value: false, certain: false}}
+// Output:
+// {stop: RhapsodicBool{value: true, certain: true},
+//  orange: RhapsodicBool{value: false, certain: false}}
 }
