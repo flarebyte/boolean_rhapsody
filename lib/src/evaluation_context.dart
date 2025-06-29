@@ -8,7 +8,7 @@ import 'model/supported_prefixes.dart';
 /// Provides support for retrieving values and enforcing prefix constraints.
 class RhapsodyEvaluationContext {
   /// Map containing references and their associated string values.
-  final KiwiWatermelonDataStore variables;
+  final RhapsodyBaseDataStore variables;
 
   late RhapsodyRuleState ruleState;
 
@@ -115,7 +115,7 @@ class RhapsodyEvaluationContextBuilder {
   final Map<String, String> variables = {};
 
   /// Key value store
-  late final KiwiWatermelonDataStore keyValueStore;
+  late final RhapsodyBaseDataStore keyValueStore;
 
   /// **Constructor:**
   ///
@@ -125,7 +125,7 @@ class RhapsodyEvaluationContextBuilder {
   /// - `prefixes`: A list of allowed prefixes for the references.
   RhapsodyEvaluationContextBuilder({
     required List<String> prefixes,
-    KiwiWatermelonDataStore? store,
+    RhapsodyBaseDataStore? store,
   }) {
     supportedPrefixes = RhapsodySupportedPrefixes(prefixes);
     keyValueStore = store ?? RhapsodyDataStore();

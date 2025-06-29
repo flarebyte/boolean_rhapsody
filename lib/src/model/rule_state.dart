@@ -2,7 +2,7 @@ import 'data_store.dart';
 import 'fuzzy_boolean.dart';
 
 class RhapsodyRuleState {
-  final KiwiWatermelonDataStore states;
+  final RhapsodyBaseDataStore states;
   final String prefix;
   RhapsodyRuleState({required this.states, this.prefix = "rule"});
 
