@@ -61,10 +61,11 @@ model:
         example: final interpreter = RhapsodyInterpreter(analysis);
       - title: Create evaluation context with variable bindings
         example: |
-          final context = RhapsodyEvaluationContext(
-            prefixes: ['env', 'config'],
-            variables: {'env:state': 'green', 'env:alert': 'panic'},
-          );
+           RhapsodyEvaluationContextBuilder builder =
+            RhapsodyEvaluationContextBuilder(prefixes: ['env', 'config']);
+            builder.setRefValue('env:state', 'green');
+            builder.setRefValue('env:alert', 'panic');
+            RhapsodyEvaluationContext context = builder.build();
       - title: Interpret rules against the provided evaluation context
         example: interpreter.interpret(context);
       - title: Print or inspect rule evaluation results

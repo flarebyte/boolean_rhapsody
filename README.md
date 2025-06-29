@@ -105,10 +105,11 @@ final interpreter = RhapsodyInterpreter(analysis);
 Create evaluation context with variable bindings:
 
 ```dart
-final context = RhapsodyEvaluationContext(
-  prefixes: ['env', 'config'],
-  variables: {'env:state': 'green', 'env:alert': 'panic'},
-);
+RhapsodyEvaluationContextBuilder builder =
+ RhapsodyEvaluationContextBuilder(prefixes: ['env', 'config']);
+ builder.setRefValue('env:state', 'green');
+ builder.setRefValue('env:alert', 'panic');
+ RhapsodyEvaluationContext context = builder.build();
 
 ```
 
