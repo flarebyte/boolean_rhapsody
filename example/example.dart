@@ -31,10 +31,12 @@ void main() {
   final interpreter = RhapsodyInterpreter(analysis);
 
 // Define context with variable values at runtime
-  RhapsodyEvaluationContext context = RhapsodyEvaluationContext(
-    prefixes: ['env', 'config'],
-    variables: {'env:state': 'green', 'env:alert': 'panic'},
-  );
+  RhapsodyEvaluationContextBuilder builder =
+      RhapsodyEvaluationContextBuilder(prefixes: ['env', 'config']);
+  builder.setRefValue('env:state', 'green');
+  builder.setRefValue('env:alert', 'panic');
+
+  RhapsodyEvaluationContext context = builder.build();
 
 // Evaluate rules using the interpreter
   interpreter.interpret(context);

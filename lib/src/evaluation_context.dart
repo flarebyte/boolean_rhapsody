@@ -1,3 +1,4 @@
+import 'model/data_store.dart';
 import 'model/rule_state.dart';
 import 'model/supported_prefixes.dart';
 
@@ -7,9 +8,10 @@ import 'model/supported_prefixes.dart';
 /// Provides support for retrieving values and enforcing prefix constraints.
 class RhapsodyEvaluationContext {
   /// Map containing references and their associated string values.
-  final Map<String, String> variables;
+  final KiwiWatermelonDataStore variables;
 
-  final RhapsodyRuleState ruleState = RhapsodyRuleState();
+
+  late RhapsodyRuleState ruleState;
 
   /// Validates and manages supported prefixes for references.
   late final RhapsodySupportedPrefixes supportedPrefixes;
@@ -26,6 +28,7 @@ class RhapsodyEvaluationContext {
     required List<String> prefixes,
   }) {
     supportedPrefixes = RhapsodySupportedPrefixes(prefixes);
+    ruleState = RhapsodyRuleState(states: variables);
   }
 
   /// Retrieves the value associated with a reference if it has a supported prefix.
@@ -40,7 +43,7 @@ class RhapsodyEvaluationContext {
   /// - `Exception` if the reference does not have a supported prefix.
   String? getRefValue(String ref) {
     supportedPrefixes.assertPrefix(ref);
-    return variables[ref];
+    return variables.get(ref);
   }
 
   /// Retrieves the value of a reference as a boolean.
@@ -185,8 +188,10 @@ class RhapsodyEvaluationContextBuilder {
   /// **Returns:**
   /// - A new `RhapsodyEvaluationContext` instance.
   RhapsodyEvaluationContext build() {
+    final store = RhapsodyDataStore();
+    store.addAll(variables);
     return RhapsodyEvaluationContext(
-      variables: variables,
+      variables: store,
       prefixes: supportedPrefixes.prefixes,
     );
   }

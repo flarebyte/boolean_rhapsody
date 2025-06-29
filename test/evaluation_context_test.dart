@@ -1,4 +1,5 @@
 import 'package:boolean_rhapsody/boolean_rhapsody.dart';
+import 'package:boolean_rhapsody/src/model/data_store.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -107,7 +108,7 @@ void main() {
 
     test('Should handle an empty context without errors', () {
       final emptyContext =
-          RhapsodyEvaluationContext(variables: {}, prefixes: ["v"]);
+          RhapsodyEvaluationContext(variables: RhapsodyDataStore(), prefixes: ["v"]);
 
       expect(emptyContext.getRefValue('v:var1'), isNull);
       expect(() => emptyContext.getRefValue('x:invalid'),

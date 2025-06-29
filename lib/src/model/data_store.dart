@@ -4,6 +4,9 @@ abstract class KiwiWatermelonDataStore {
   /// Retrieves the string value associated with [key], or `null` if not found.
   String? get(String key);
 
+  ///The value for the given key, or null if key is not in the map.
+  String? operator [](String key);
+
   /// Associates the [value] with the given [key], replacing any existing value.
   void set(String key, String value);
 
@@ -12,6 +15,9 @@ abstract class KiwiWatermelonDataStore {
 
   /// Clear the data store
   void clear();
+
+  /// Add multiple values at once
+  void addAll(Map<String, String> other);
 }
 
 /// A simple in-memory implementation of [KiwiWatermelonDataStore] using [Map].
@@ -21,6 +27,10 @@ class RhapsodyDataStore implements KiwiWatermelonDataStore {
   /// {@macro KiwiWatermelonDataStore.get}
   @override
   String? get(String key) => _store[key];
+
+  /// {@macro KiwiWatermelonDataStore.[]}
+  @override
+  String? operator [](String key) => _store[key];
 
   /// {@macro KiwiWatermelonDataStore.set}
   @override
@@ -39,6 +49,15 @@ class RhapsodyDataStore implements KiwiWatermelonDataStore {
   void clear() {
     _store.clear();
   }
+
+  /// {@macro KiwiWatermelonDataStore.addAll}
+  @override
+  void addAll(Map<String, String> other) {
+    _store.addAll(other);
+  }
+
+  @override
+  String toString() {
+    return 'RhapsodyDataStore{_store: $_store}';
+  }
 }
-
-

@@ -37,14 +37,16 @@ void main() {
       final analysis = analyser.analyse(tokens);
       expect(analysis.isValid(), isTrue);
       final interpreter = RhapsodyInterpreter(analysis);
-      RhapsodyEvaluationContext context = RhapsodyEvaluationContext(
-          prefixes: ['env', 'config'],
-          variables: {'env:variable1': 'func1', 'env:variable4': 'func2'});
+      RhapsodyEvaluationContextBuilder builder =
+          RhapsodyEvaluationContextBuilder(prefixes: ['env', 'config']);
+      builder.setRefValue('env:variable1', 'func1');
+      builder.setRefValue('env:variable4', 'func2');
+      RhapsodyEvaluationContext context = builder.build();
       interpreter.interpret(context);
       expect(context.ruleState.states['rule1'], equals(RhapsodicBool.truth()));
       expect(context.ruleState.states['rule2'], equals(RhapsodicBool.truth()));
       // ---
-      context.variables['env:variable4'] = 'other';
+      context.variables.set('env:variable4', 'other');
       interpreter.interpret(context);
       expect(
           context.ruleState.states['rule1'], equals(RhapsodicBool.untruth()));

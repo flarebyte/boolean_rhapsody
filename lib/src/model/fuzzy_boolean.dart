@@ -93,4 +93,20 @@ class RhapsodicBool {
   static String asPairOfChars(RhapsodicBool a, RhapsodicBool b) {
     return "${a.toChar()}${b.toChar()}";
   }
+
+ ///Return a RhapsodicBool from a char: T,F,t,t
+  static RhapsodicBool fromChar(String value) {
+    switch (value) {
+      case "T":
+        return RhapsodicBool.truth();
+      case "F":
+        return RhapsodicBool.untruth();
+      case "t":
+        return RhapsodicBool.truthy();
+      case "f":
+        return RhapsodicBool.untruthy();
+      default:
+        throw Exception("Invalid RhapsodicBool: [$value]");
+    }
+  }
 }
