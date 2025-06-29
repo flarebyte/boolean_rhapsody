@@ -114,6 +114,9 @@ class RhapsodyEvaluationContextBuilder {
   /// Map for accumulating references and their associated string values.
   final Map<String, String> variables = {};
 
+  /// Key value store
+  late final KiwiWatermelonDataStore keyValueStore;
+
   /// **Constructor:**
   ///
   /// Creates a new `RhapsodyEvaluationContextBuilder` instance.
@@ -122,8 +125,10 @@ class RhapsodyEvaluationContextBuilder {
   /// - `prefixes`: A list of allowed prefixes for the references.
   RhapsodyEvaluationContextBuilder({
     required List<String> prefixes,
+    KiwiWatermelonDataStore? store,
   }) {
     supportedPrefixes = RhapsodySupportedPrefixes(prefixes);
+    keyValueStore = store ?? RhapsodyDataStore();
   }
 
   /// Adds or updates a reference and its value in the builder.
@@ -187,10 +192,9 @@ class RhapsodyEvaluationContextBuilder {
   /// **Returns:**
   /// - A new `RhapsodyEvaluationContext` instance.
   RhapsodyEvaluationContext build() {
-    final store = RhapsodyDataStore();
-    store.addAll(variables);
+    keyValueStore.addAll(variables);
     return RhapsodyEvaluationContext(
-      variables: store,
+      variables: keyValueStore,
       prefixes: supportedPrefixes.prefixes,
     );
   }
