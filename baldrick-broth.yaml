@@ -1,15 +1,24 @@
 model:
   project:
-    title: todo
-    description: todo
+    title: Tune into the truth with Boolean Rhapsody in Dart
+    description: A module for evaluating boolean expressions using predefined functions, logical operators, and references to previously defined rules.
     version: 0.3.0
     keywords:
-      - todo
+      - boolean logic
+      - rule evaluation
+      - dynamic expressions
+      - logical operators
+      - modular evaluation
   readme:
     highlights:
-      - todo
+      - Combine predefined boolean functions, logical operators (`and`, `or`, `not`), and parentheses to create complex expressions.
+      - Supports referencing previously defined rules for modular and reusable logic.
+      - Ensures strict validation of syntax, variable existence, and type compatibility for robust execution.
+      - Functions evaluate conditions based on a dynamic context and return boolean results.
+      - Clear and well-defined grammar prioritizing expressiveness and error prevention.
     links:
       - "[Dart dependencies](DEPENDENCIES.md)"
+      - "[Internal dependencies](INTERNAL-DEPENDENCIES.md)"
       - "[Usage](USAGE.md)"
       - "[Example](example/example.dart)"
     related:
@@ -18,8 +27,50 @@ model:
       - image-hero
     cheatsheetFormat: dart
     cheatsheet:
-      - title: todo
-        example: "todo dart code here"
+      - title: Check if a required environment variable is present
+        example: is_present(env:flag);
+      - title: Validate that a numeric score exceeds a threshold
+        example: number_greater_than(env:score, config:passing_score);
+      - title: Compare string values for exact match
+        example: string_equals(env:mode, config:expected_mode);
+      - title: Confirm that a timestamp is before a configured deadline
+        example: date_time_less_than(env:submission_time, config:deadline);
+      - title: Ensure a minimum number of items in a list
+        example: list_size_greater_than_equals(env:cart_items, config:min_required);
+      - title: Check if a user's roles include all required permissions
+        example: is_superset_of(env:user_roles, config:required_roles);
+      - title: Instantiate function registry containing boolean functions like string_equals
+        example: final functionRegistry = BooleanRhapsodyFunctionRegistry();
+      - title: Configure analyser options with allowed prefixes, functions, and a variable validator
+        example: |
+          final options = RhapsodyAnalyserOptions(
+            prefixes: ['env', 'config'],
+            functions: rhapsodyFunctionNames,
+            variableValidator: (name) => RegExp(r'^[a-zA-Z][a-zA-Z0-9]*$').hasMatch(name),
+            functionRegistry: functionRegistry,
+          );
+      - title: Tokenise rule strings into a list of tokens
+        example: |
+          final tokeniser = RhapsodyTokeniser();
+          final tokens = tokeniser.parse('rule example = is_present(env:flag);');
+      - title: Perform semantic analysis on parsed tokens
+        example: |
+          final analyser = RhapsodySemanticAnalyser(options);
+          final analysis = analyser.analyse(tokens);
+      - title: Instantiate interpreter with analysed rule structure
+        example: final interpreter = RhapsodyInterpreter(analysis);
+      - title: Create evaluation context with variable bindings
+        example: |
+           RhapsodyEvaluationContextBuilder builder =
+            RhapsodyEvaluationContextBuilder(prefixes: ['env', 'config']);
+            builder.setRefValue('env:state', 'green');
+            builder.setRefValue('env:alert', 'panic');
+            RhapsodyEvaluationContext context = builder.build();
+      - title: Interpret rules against the provided evaluation context
+        example: interpreter.interpret(context);
+      - title: Print or inspect rule evaluation results
+        example: print(context.ruleState.states);
+
   github:
     account: flarebyte
     name: boolean_rhapsody
@@ -62,7 +113,6 @@ workflows:
             - title: run the example
               run: dart run example/example.dart
 
-
   deps:
     title: Library dependencies
     description: Npm dependencies
@@ -90,6 +140,18 @@ workflows:
             - name: deps
               title: Document the dart dependencies
               run: npx zx https://raw.githubusercontent.com/flarebyte/baldrick-reserve/main/script/dart-dependencies.mjs
+            - name: lakos
+              links:
+                - title: Visualize internal Dart library dependencies in Graphviz 
+                  url: https://github.com/OlegAlexander/lakos
+              title: Generate a dot file using lakos
+              run: lakos -o doc/internal_dependencies.dot lib
+            - name: dot
+              links:
+                - title: Graph visualization software 
+                  url: https://graphviz.org/
+              title: Generate an image from dot file
+              run: dot -Tpng doc/internal_dependencies.dot -o doc/internal_dependencies.png
             - name: fix
               title: Fix all the markdown files
               run: npx baldrick-dev-ts@latest markdown fix
