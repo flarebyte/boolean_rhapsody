@@ -10,7 +10,6 @@ class RhapsodyEvaluationContext {
   /// Map containing references and their associated string values.
   final KiwiWatermelonDataStore variables;
 
-
   late RhapsodyRuleState ruleState;
 
   /// Validates and manages supported prefixes for references.

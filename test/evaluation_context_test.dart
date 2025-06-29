@@ -107,8 +107,8 @@ void main() {
     });
 
     test('Should handle an empty context without errors', () {
-      final emptyContext =
-          RhapsodyEvaluationContext(variables: RhapsodyDataStore(), prefixes: ["v"]);
+      final emptyContext = RhapsodyEvaluationContext(
+          variables: RhapsodyDataStore(), prefixes: ["v"]);
 
       expect(emptyContext.getRefValue('v:var1'), isNull);
       expect(() => emptyContext.getRefValue('x:invalid'),

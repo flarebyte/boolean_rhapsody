@@ -43,15 +43,17 @@ void main() {
       builder.setRefValue('env:variable4', 'func2');
       RhapsodyEvaluationContext context = builder.build();
       interpreter.interpret(context);
-      expect(context.ruleState.states['rule1'], equals(RhapsodicBool.truth()));
-      expect(context.ruleState.states['rule2'], equals(RhapsodicBool.truth()));
+      expect(context.ruleState.states['rule:rule1'],
+          equals(RhapsodicBool.truth().toChar()));
+      expect(context.ruleState.states['rule:rule2'],
+          equals(RhapsodicBool.truth().toChar()));
       // ---
       context.variables.set('env:variable4', 'other');
       interpreter.interpret(context);
-      expect(
-          context.ruleState.states['rule1'], equals(RhapsodicBool.untruth()));
-      expect(
-          context.ruleState.states['rule2'], equals(RhapsodicBool.untruth()));
+      expect(context.ruleState.states['rule:rule1'],
+          equals(RhapsodicBool.untruth().toChar()));
+      expect(context.ruleState.states['rule:rule2'],
+          equals(RhapsodicBool.untruth().toChar()));
     });
   });
 }

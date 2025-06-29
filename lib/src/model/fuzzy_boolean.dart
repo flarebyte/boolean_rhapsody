@@ -94,7 +94,7 @@ class RhapsodicBool {
     return "${a.toChar()}${b.toChar()}";
   }
 
- ///Return a RhapsodicBool from a char: T,F,t,t
+  ///Return a RhapsodicBool from a char: T,F,t,t
   static RhapsodicBool fromChar(String value) {
     switch (value) {
       case "T":

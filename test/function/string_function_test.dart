@@ -3,7 +3,8 @@ import 'package:test/test.dart';
 
 const defaultPrefixes = ["c", "v", "p", "d"];
 void main() {
-  final emptyContext =  RhapsodyEvaluationContextBuilder(prefixes: defaultPrefixes).build();
+  final emptyContext =
+      RhapsodyEvaluationContextBuilder(prefixes: defaultPrefixes).build();
 
   group('BooleanRhapsodyFunctionFactory Tests', () {
     test('is_absent function works correctly', () {
