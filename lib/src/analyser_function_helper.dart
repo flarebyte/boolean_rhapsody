@@ -78,19 +78,21 @@ class RhapsodyAnalyserFunctionHelper {
     RhapsodyTokenStreamFlyweight.consumeColon(tokens, contextual: "variable");
     final varToken = RhapsodyTokenStreamFlyweight.consumeIdentifier(tokens,
         contextual: "variable name");
-    
+
     var maxSegments = 12;
     var compositeName = "";
     while (maxSegments > 0 && RhapsodyTokenStreamFlyweight.isColon(tokens)) {
-      maxSegments = maxSegments -1;
-     RhapsodyTokenStreamFlyweight.consumeColon(tokens, contextual: "composite variable");
-    final partOfName = RhapsodyTokenStreamFlyweight.consumeIdentifier(tokens,
-        contextual: "composite variable name").text;
-        compositeName = "$compositeName:$partOfName";
+      maxSegments = maxSegments - 1;
+      RhapsodyTokenStreamFlyweight.consumeColon(tokens,
+          contextual: "composite variable");
+      final partOfName = RhapsodyTokenStreamFlyweight.consumeIdentifier(tokens,
+              contextual: "composite variable name")
+          .text;
+      compositeName = "$compositeName:$partOfName";
     }
     final varName = "${prefixToken.text}:${varToken.text}$compositeName";
-    
-    if (maxSegments<=0) {
+
+    if (maxSegments <= 0) {
       throw SemanticException(
           "Expecting a valid composite variable format with just a few colons but got $varName",
           prefixToken);
