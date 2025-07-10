@@ -33,7 +33,7 @@ void main() {
       expect(analyzed.gathering.requiredVariables, contains('env:variable1'));
     });
 
-    test('should parse a function with a single variable and inner colons', () {
+    test('should parse a function with a single composite variable', () {
       // "func1(env:var_one:var_two)"
       final t = MockTokenCreator();
       final List<RhapsodyToken> func = [
@@ -55,9 +55,39 @@ void main() {
               'FUNC {function: MockFunction(name: func1, params: [env:var_one:var_two])}'));
       expect(analyzed.gathering.requiredRules, isEmpty);
       expect(analyzed.gathering.requiredVariables, hasLength(1));
-      expect(analyzed.gathering.requiredVariables, contains('env:var_one:var_two'));
+      expect(analyzed.gathering.requiredVariables,
+          contains('env:var_one:var_two'));
     });
 
+    test(
+        'should parse a function with a single composite variable with three segments',
+        () {
+      // "func1(env:var_one:var_two:var_three)"
+      final t = MockTokenCreator();
+      final List<RhapsodyToken> func = [
+        t.token("func1", TokenTypes.identifier),
+        t.token("(", TokenTypes.lparen),
+        t.token("env", TokenTypes.identifier),
+        t.token(":", TokenTypes.colon),
+        t.token("var_one", TokenTypes.identifier),
+        t.token(":", TokenTypes.colon),
+        t.token("var_two", TokenTypes.identifier),
+        t.token(":", TokenTypes.colon),
+        t.token("var_three", TokenTypes.identifier),
+        t.token(")", TokenTypes.rparen),
+      ];
+      final gatherer = RhapsodyExpressionResultGatherer();
+      final analyzed =
+          analyser.parseFunctionCall(RhapsodyTokenStream(func), gatherer);
+      expect(
+          analyzed.expression.toString(),
+          equals(
+              'FUNC {function: MockFunction(name: func1, params: [env:var_one:var_two:var_three])}'));
+      expect(analyzed.gathering.requiredRules, isEmpty);
+      expect(analyzed.gathering.requiredVariables, hasLength(1));
+      expect(analyzed.gathering.requiredVariables,
+          contains('env:var_one:var_two:var_three'));
+    });
 
     test('should parse a function with multiple variables', () {
       // "func1(env:variable1,config:variable2)"
@@ -233,6 +263,30 @@ void main() {
         () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens), gatherer),
         throwsA(isA<SemanticException>().having((e) => e.message, 'message',
             contains('Expected colon ":" in variable but got'))),
+      );
+    });
+
+    test('should throw if variable identifier has too many segments', () {
+      List<RhapsodyToken> segments = [];
+      for (var i = 0; i < 15; i++) {
+        segments.add(t.token(":", TokenTypes.colon));
+        segments.add(t.token("v$i", TokenTypes.identifier));
+      }
+      final tokens = [
+        t.token("func1", TokenTypes.identifier),
+        t.token("(", TokenTypes.lparen),
+        t.token("env", TokenTypes.identifier),
+        ...segments,
+        t.token(")", TokenTypes.rparen),
+      ];
+      final gatherer = RhapsodyExpressionResultGatherer();
+      expect(
+        () => analyser.parseFunctionCall(RhapsodyTokenStream(tokens), gatherer),
+        throwsA(isA<SemanticException>().having(
+            (e) => e.message,
+            'message',
+            contains(
+                'Expecting a valid composite variable format with just a few colons but got env:v0:v1:v2:v3:v4:v5:v6:v7:v8:v9:v10:v11:v12'))),
       );
     });
 

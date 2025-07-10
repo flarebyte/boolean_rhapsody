@@ -88,8 +88,13 @@ class RhapsodyAnalyserFunctionHelper {
         contextual: "composite variable name").text;
         compositeName = "$compositeName:$partOfName";
     }
-    
     final varName = "${prefixToken.text}:${varToken.text}$compositeName";
+    
+    if (maxSegments<=0) {
+      throw SemanticException(
+          "Expecting a valid composite variable format with just a few colons but got $varName",
+          prefixToken);
+    }
 
     final isSupportedVar = options.isVariable(varName);
     if (!isSupportedVar) {
