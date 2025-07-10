@@ -78,8 +78,18 @@ class RhapsodyAnalyserFunctionHelper {
     RhapsodyTokenStreamFlyweight.consumeColon(tokens, contextual: "variable");
     final varToken = RhapsodyTokenStreamFlyweight.consumeIdentifier(tokens,
         contextual: "variable name");
-
-    final varName = "${prefixToken.text}:${varToken.text}";
+    
+    var maxSegments = 12;
+    var compositeName = "";
+    while (maxSegments > 0 && RhapsodyTokenStreamFlyweight.isColon(tokens)) {
+      maxSegments = maxSegments -1;
+     RhapsodyTokenStreamFlyweight.consumeColon(tokens, contextual: "composite variable");
+    final partOfName = RhapsodyTokenStreamFlyweight.consumeIdentifier(tokens,
+        contextual: "composite variable name").text;
+        compositeName = "$compositeName:$partOfName";
+    }
+    
+    final varName = "${prefixToken.text}:${varToken.text}$compositeName";
 
     final isSupportedVar = options.isVariable(varName);
     if (!isSupportedVar) {

@@ -33,6 +33,32 @@ void main() {
       expect(analyzed.gathering.requiredVariables, contains('env:variable1'));
     });
 
+    test('should parse a function with a single variable and inner colons', () {
+      // "func1(env:var_one:var_two)"
+      final t = MockTokenCreator();
+      final List<RhapsodyToken> func = [
+        t.token("func1", TokenTypes.identifier),
+        t.token("(", TokenTypes.lparen),
+        t.token("env", TokenTypes.identifier),
+        t.token(":", TokenTypes.colon),
+        t.token("var_one", TokenTypes.identifier),
+        t.token(":", TokenTypes.colon),
+        t.token("var_two", TokenTypes.identifier),
+        t.token(")", TokenTypes.rparen),
+      ];
+      final gatherer = RhapsodyExpressionResultGatherer();
+      final analyzed =
+          analyser.parseFunctionCall(RhapsodyTokenStream(func), gatherer);
+      expect(
+          analyzed.expression.toString(),
+          equals(
+              'FUNC {function: MockFunction(name: func1, params: [env:var_one:var_two])}'));
+      expect(analyzed.gathering.requiredRules, isEmpty);
+      expect(analyzed.gathering.requiredVariables, hasLength(1));
+      expect(analyzed.gathering.requiredVariables, contains('env:var_one:var_two'));
+    });
+
+
     test('should parse a function with multiple variables', () {
       // "func1(env:variable1,config:variable2)"
       final t = MockTokenCreator();
