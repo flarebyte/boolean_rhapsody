@@ -9,7 +9,7 @@ final RhapsodyAnalyserOptions fixtureMockOptions = RhapsodyAnalyserOptions(
       factory: MockBooleanRhapsodyFunctionFactory()),
   variableValidator: (String variableName) {
     // A valid variable name must start with a letter and may contain letters and digits.
-    return RegExp(r'^[a-zA-Z][a-zA-Z0-9]*$').hasMatch(variableName);
+    return RegExp(r'^[a-zA-Z][a-zA-Z0-9_:]*$').hasMatch(variableName);
   },
 );
 

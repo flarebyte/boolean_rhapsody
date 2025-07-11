@@ -27,7 +27,7 @@ A few examples:
 Check if a required environment variable is present:
 
 ```dart
-is_present(env:flag);
+is_present(env:flag:green);
 ```
 
 Validate that a numeric score exceeds a threshold:

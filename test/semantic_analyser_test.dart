@@ -19,6 +19,8 @@ void main() {
         t.token("env", TokenTypes.identifier),
         t.token(":", TokenTypes.colon),
         t.token("variable1", TokenTypes.identifier),
+        t.token(":", TokenTypes.colon),
+        t.token("v2", TokenTypes.identifier),
         t.token(")", TokenTypes.rparen),
         t.token("and", TokenTypes.operatorType),
         t.token("rule42", TokenTypes.identifier),
@@ -39,7 +41,7 @@ void main() {
       expect(analyzed.ruleDefinitions['rule11']?.requiredRules,
           contains('rule42'));
       expect(analyzed.ruleDefinitions['rule11']?.requiredVariables,
-          contains('env:variable1'));
+          contains('env:variable1:v2'));
     });
     test('should evaluate two rules', () {
       // func1(env:variable1) and rule42;
