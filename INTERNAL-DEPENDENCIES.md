@@ -4,7 +4,7 @@
 
 ```mermaid
   graph TD
-  
+
   Parsing --> Tokenization
   Parsing --> Expression_Model
 

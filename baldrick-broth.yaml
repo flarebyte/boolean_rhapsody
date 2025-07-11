@@ -28,7 +28,7 @@ model:
     cheatsheetFormat: dart
     cheatsheet:
       - title: Check if a required environment variable is present
-        example: is_present(env:flag);
+        example: is_present(env:flag:green);
       - title: Validate that a numeric score exceeds a threshold
         example: number_greater_than(env:score, config:passing_score);
       - title: Compare string values for exact match
