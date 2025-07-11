@@ -4,14 +4,6 @@
 
 ```mermaid
   graph TD
-  DSL_API --> Evaluation
-  DSL_API --> Tokenization
-  DSL_API --> Parsing
-  DSL_API --> Semantic_Analysis
-  DSL_API --> Functions
-  DSL_API --> Comparators
-  DSL_API --> Expression_Model
-  DSL_API --> Execution
   
   Parsing --> Tokenization
   Parsing --> Expression_Model
