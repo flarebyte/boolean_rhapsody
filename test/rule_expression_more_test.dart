@@ -46,15 +46,16 @@ void main() {
     test('creates expected expression types', () {
       final a = RhapsodyFunctionExpression(_NamedFn('A'));
       final b = RhapsodyFunctionExpression(_NamedFn('B'));
-      expect(RhapsodyBooleanExpressionFactory.and(a, b), isA<RhapsodyAndOperator>());
-      expect(RhapsodyBooleanExpressionFactory.or(a, b), isA<RhapsodyOrOperator>());
-      expect(RhapsodyBooleanExpressionFactory.not(a), isA<RhapsodyNotOperator>());
+      expect(RhapsodyBooleanExpressionFactory.and(a, b),
+          isA<RhapsodyAndOperator>());
       expect(
-          RhapsodyBooleanExpressionFactory.function(_NamedFn('F')),
+          RhapsodyBooleanExpressionFactory.or(a, b), isA<RhapsodyOrOperator>());
+      expect(
+          RhapsodyBooleanExpressionFactory.not(a), isA<RhapsodyNotOperator>());
+      expect(RhapsodyBooleanExpressionFactory.function(_NamedFn('F')),
           isA<RhapsodyFunctionExpression>());
       expect(RhapsodyBooleanExpressionFactory.ruleReference('r'),
           isA<RhapsodyRuleReference>());
     });
   });
 }
-
