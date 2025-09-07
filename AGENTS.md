@@ -126,3 +126,32 @@ Editing guidance for agents:
         update <sections>`.
     -   Include `broth md fix` in your PR checklist or commit footer for
         traceability.
+
+## Post‑Change Checks (Lint, Release, Regressions)
+
+-   Run static fixes and analysis
+
+    -   `broth lint fix` (runs `dart fix --apply`).
+    -   `dart analyze` must be clean.
+
+-   Validate release readiness
+
+    -   `broth release ready` should ideally pass. Do not block on Markdown/style/coverage warnings if not critical; tests must pass.
+
+-   Tests are mandatory
+
+    -   `dart test` (and/or `broth test unit`) must pass locally and in CI.
+
+-   Handle warnings pragmatically
+
+    -   If `broth release ready` reports Markdown warnings, prefer fixing in templates. If not feasible, confirm they are not regressions vs `main` and proceed.
+
+-   Check for regressions vs main
+
+    -   Without switching your working tree: create a temporary worktree and compare results.
+        -   Example:
+            -   `tmp=$(mktemp -d -t maincheck-XXXXXX)`
+            -   `git worktree add -f "$tmp" main`
+            -   `(cd "$tmp" && dart pub get && dart analyze && npx baldrick-dev-ts@latest markdown check && dart test)`
+            -   `git worktree remove -f "$tmp" && rm -rf "$tmp"`
+    -   If warnings also appear on `main`, they are not regressions.
