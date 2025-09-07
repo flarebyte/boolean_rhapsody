@@ -31,22 +31,26 @@ void main() {
       expect(ctx.getRefValueAsString('v:name', 'def'), equals('Alice'));
     });
 
-    test('getRefValueAsStringList splits and trims; supports custom separator', () {
+    test('getRefValueAsStringList splits and trims; supports custom separator',
+        () {
       final ctx = RhapsodyEvaluationContextBuilder(prefixes: prefixes)
           .setRefValue('v:items', 'a, b ,c')
           .setRefValue('v:pipes', ' x | y |z ')
           .build();
 
       expect(ctx.getRefValueAsStringList(null, ['d']), equals(['d']));
-      expect(ctx.getRefValueAsStringList('v:items', []), equals(['a', 'b', 'c']));
-      expect(ctx.getRefValueAsStringList('v:pipes', [], '|'), equals(['x', 'y', 'z']));
+      expect(
+          ctx.getRefValueAsStringList('v:items', []), equals(['a', 'b', 'c']));
+      expect(ctx.getRefValueAsStringList('v:pipes', [], '|'),
+          equals(['x', 'y', 'z']));
     });
   });
 
   group('RhapsodyEvaluationContext rule state', () {
     final prefixes = ["c", "v", "p", "d", "rule"];
 
-    test('clearRuleState clears recorded rule outcomes (and underlying store)', () {
+    test('clearRuleState clears recorded rule outcomes (and underlying store)',
+        () {
       final ctx = RhapsodyEvaluationContextBuilder(prefixes: prefixes)
           .setRefValue('v:x', '1')
           .build();
@@ -63,4 +67,3 @@ void main() {
     });
   });
 }
-
