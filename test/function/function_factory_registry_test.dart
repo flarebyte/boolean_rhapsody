@@ -28,14 +28,15 @@ void main() {
       final registry = BooleanRhapsodyFunctionRegistry();
 
       // Default factory does not know custom name
-      expect(() => registry.create('always_true', []), throwsA(isA<Exception>()));
+      expect(
+          () => registry.create('always_true', []), throwsA(isA<Exception>()));
 
       // After registering a custom factory the name is supported
       registry.registerFactory(_CustomFactory());
       final fn = registry.create('always_true', []);
-      final ctx = RhapsodyEvaluationContextBuilder(prefixes: ['v', 'c']).build();
+      final ctx =
+          RhapsodyEvaluationContextBuilder(prefixes: ['v', 'c']).build();
       expect(fn.isTrue(ctx), equals(RhapsodicBool.truth()));
     });
   });
 }
-
