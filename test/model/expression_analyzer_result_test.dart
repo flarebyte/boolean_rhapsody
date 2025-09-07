@@ -57,7 +57,8 @@ void main() {
       final g = RhapsodyExpressionResultGatherer()
         ..addRule('RuleX')
         ..addVariable('varY');
-      final res = RhapsodyExpressionAnalyserResult(expression: expr, gathering: g);
+      final res =
+          RhapsodyExpressionAnalyserResult(expression: expr, gathering: g);
 
       final s = res.toString();
       expect(s, contains('R.E.A.Result'));
@@ -67,4 +68,3 @@ void main() {
     });
   });
 }
-

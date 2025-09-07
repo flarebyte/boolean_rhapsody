@@ -97,5 +97,15 @@ void main() {
         equals('RhapsodicBool{value: false, certain: false}'),
       );
     });
+
+    test('fromChar parses valid chars and throws on invalid', () {
+      expect(RhapsodicBool.fromChar('T'), equals(RhapsodicBool.truth()));
+      expect(RhapsodicBool.fromChar('F'), equals(RhapsodicBool.untruth()));
+      expect(RhapsodicBool.fromChar('t'), equals(RhapsodicBool.truthy()));
+      expect(RhapsodicBool.fromChar('f'), equals(RhapsodicBool.untruthy()));
+
+      expect(() => RhapsodicBool.fromChar('X'), throwsA(isA<Exception>()));
+      expect(() => RhapsodicBool.fromChar(''), throwsA(isA<Exception>()));
+    });
   });
 }
