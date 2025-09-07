@@ -20,4 +20,3 @@ void main() {
     expect(s, contains('Unexpected token'));
   });
 }
-
