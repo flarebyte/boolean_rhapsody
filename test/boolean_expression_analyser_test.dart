@@ -33,7 +33,8 @@ void main() {
       expect(analyzed.gathering.requiredRules, contains('rule42'));
       expect(analyzed.gathering.requiredVariables, hasLength(1),
           reason: 'requiredVariables');
-      expect(analyzed.gathering.requiredVariables, contains('env:variable1:blue'));
+      expect(
+          analyzed.gathering.requiredVariables, contains('env:variable1:blue'));
     });
     test('should evaluate as truthy when comparator condition is satisfied',
         () {
