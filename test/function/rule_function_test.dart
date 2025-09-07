@@ -18,15 +18,18 @@ void main() {
 
     test('throws when fewer than minSize', () {
       expect(
-          () =>
-              dummy.basicValidateParams(refs: ['v:a'], minSize: 2, maxSize: 3, name: 'fn'),
+          () => dummy.basicValidateParams(
+              refs: ['v:a'], minSize: 2, maxSize: 3, name: 'fn'),
           throwsA(isA<Exception>()));
     });
 
     test('throws when greater than maxSize', () {
       expect(
           () => dummy.basicValidateParams(
-              refs: ['v:a', 'c:b', 'v:c', 'c:d'], minSize: 1, maxSize: 3, name: 'fn'),
+              refs: ['v:a', 'c:b', 'v:c', 'c:d'],
+              minSize: 1,
+              maxSize: 3,
+              name: 'fn'),
           throwsA(isA<Exception>()));
     });
 
