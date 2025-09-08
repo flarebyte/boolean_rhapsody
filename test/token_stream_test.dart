@@ -78,7 +78,7 @@ void main() {
       expect(() => stream.current, throwsA(isA<SemanticException>()));
     });
 
-    // 🔥 New tests for uncovered methods and edge cases
+    // Additional tests for uncovered methods and edge cases
 
     test('isNextAtEnd should correctly handle lookahead', () {
       expect(stream.isNextAtEnd(lookahead: 2), isFalse);

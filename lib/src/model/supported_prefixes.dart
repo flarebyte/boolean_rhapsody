@@ -1,5 +1,12 @@
-/// Represents a collection of supported prefixes for references.
-/// Provides utilities to validate and assert the use of these prefixes.
+/// Whitelist of allowed reference prefixes.
+///
+/// Prefixes should not include the trailing colon when passed in (e.g. `user`,
+/// not `user:`). Validation checks for `"<prefix>:"` at the start of a ref.
+///
+/// Tips:
+/// - Avoid overlapping prefixes (`u` and `user`) to reduce ambiguity.
+/// - Keep the list small and stable; it is consulted frequently during parse
+///   and evaluation.
 class RhapsodySupportedPrefixes {
   /// List of supported prefixes.
   final List<String> prefixes;
@@ -7,7 +14,7 @@ class RhapsodySupportedPrefixes {
   /// Constructs an instance of `RhapsodySupportedPrefixes` with the provided prefixes.
   RhapsodySupportedPrefixes(this.prefixes);
 
-  /// Checks if the given reference starts with any of the supported prefixes.
+  /// Return whether [ref] starts with any supported prefix.
   ///
   /// **Parameters:**
   /// - `ref`: The reference to validate.
@@ -18,7 +25,7 @@ class RhapsodySupportedPrefixes {
     return prefixes.any((prefix) => ref.startsWith("$prefix:"));
   }
 
-  /// Ensures the given reference starts with a supported prefix.
+  /// Assert that [ref] starts with a supported prefix; throws otherwise.
   ///
   /// **Parameters:**
   /// - `ref`: The reference to validate.

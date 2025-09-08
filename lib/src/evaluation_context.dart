@@ -2,26 +2,38 @@ import 'model/data_store.dart';
 import 'model/rule_state.dart';
 import 'model/supported_prefixes.dart';
 
-/// **Class: RhapsodyEvaluationContext**
+/// Evaluation context used by the boolean rhapsody engine.
 ///
-/// Manages a collection of reference-value pairs within a DSL for boolean logic.
-/// Provides support for retrieving values and enforcing prefix constraints.
+/// This is the runtime key/value lookup backing expression evaluation. Keys
+/// must use a supported prefix scheme (e.g. `user:age`, `rule:foo`). The
+/// context enforces prefixes and offers helpers to access values as common
+/// types.
+///
+/// Practical guidance:
+/// - Keep prefixes consistent across producers/consumers; treat them as part
+///   of your public contract.
+/// - Store booleans as the lowercase string `"true"`; anything else resolves
+///   to `false` via `getRefValueAsBool`.
+/// - For delimited lists, prefer comma separation and avoid empty segments;
+///   values are trimmed on read.
+/// - Consider providing a custom `RhapsodyBaseDataStore` when integrating with
+///   existing caches or when you need observability.
+/// - Call `clearRuleState()` between independent evaluations if you persist the
+///   builder/context across runs.
 class RhapsodyEvaluationContext {
-  /// Map containing references and their associated string values.
+  /// Key/value store for references and their associated string values.
   final RhapsodyBaseDataStore variables;
 
   late RhapsodyRuleState ruleState;
 
-  /// Validates and manages supported prefixes for references.
+  /// Supported prefixes used to validate reference keys.
   late final RhapsodySupportedPrefixes supportedPrefixes;
 
-  /// **Constructor:**
+  /// Create a new evaluation context.
   ///
-  /// Creates a new `RhapsodyEvaluationContext` instance.
-  ///
-  /// **Parameters:**
-  /// - `variables`: A map of references and their associated values.
-  /// - `prefixes`: A list of allowed prefixes for the references.
+  /// - `variables`: backing store implementation (in‑memory by default in the
+  ///   builder; inject your own for integration/testing).
+  /// - `prefixes`: allowed key prefixes (without the trailing colon).
   RhapsodyEvaluationContext({
     required this.variables,
     required List<String> prefixes,
@@ -30,29 +42,19 @@ class RhapsodyEvaluationContext {
     ruleState = RhapsodyRuleState(states: variables);
   }
 
-  /// Retrieves the value associated with a reference if it has a supported prefix.
+  /// Get the raw string value for `ref` after prefix validation.
   ///
-  /// **Parameters:**
-  /// - `ref`: The reference to retrieve the value for.
-  ///
-  /// **Returns:**
-  /// - The value corresponding to the reference, or `null` if not found.
-  ///
-  /// **Throws:**
-  /// - `Exception` if the reference does not have a supported prefix.
+  /// Returns `null` if unset. Throws if `ref` does not start with any supported
+  /// prefix (e.g. `user:`).
   String? getRefValue(String ref) {
     supportedPrefixes.assertPrefix(ref);
     return variables.get(ref);
   }
 
-  /// Retrieves the value of a reference as a boolean.
+  /// Read `ref` as a boolean.
   ///
-  /// **Parameters:**
-  /// - `ref`: The reference to retrieve the value for.
-  /// - `defaultValue`: The value to return if the reference is not found or invalid.
-  ///
-  /// **Returns:**
-  /// - The boolean value of the reference, or `defaultValue` if not found.
+  /// Only the lowercase string `"true"` maps to `true`; any other value or a
+  /// missing ref yields `defaultValue`.
   bool getRefValueAsBool(String? ref, bool defaultValue) {
     if (ref == null) {
       return defaultValue;
@@ -61,14 +63,7 @@ class RhapsodyEvaluationContext {
     return value == 'true' ? true : defaultValue;
   }
 
-  /// Retrieves the value of a reference as a string.
-  ///
-  /// **Parameters:**
-  /// - `ref`: The reference to retrieve the value for.
-  /// - `defaultValue`: The value to return if the reference is not found or invalid.
-  ///
-  /// **Returns:**
-  /// - The string value of the reference, or `defaultValue` if not found.
+  /// Read `ref` as a string, falling back to `defaultValue` when unset.
   String getRefValueAsString(String? ref, String defaultValue) {
     if (ref == null) {
       return defaultValue;
@@ -77,15 +72,9 @@ class RhapsodyEvaluationContext {
     return value ?? defaultValue;
   }
 
-  /// Retrieves the value of a reference as a list of strings, split by a separator.
+  /// Read `ref` as a list of strings using `separator` (default `,`).
   ///
-  /// **Parameters:**
-  /// - `ref`: The reference to retrieve the value for.
-  /// - `defaultValue`: The list to return if the reference is not found or invalid.
-  /// - `separator`: The character used to split the reference value (default: `,`).
-  ///
-  /// **Returns:**
-  /// - A list of strings derived from the reference value, or `defaultValue` if not found.
+  /// Empty segments are trimmed; missing refs return `defaultValue` unchanged.
   List<String> getRefValueAsStringList(String? ref, List<String> defaultValue,
       [String separator = ',']) {
     if (ref == null) {
@@ -103,26 +92,21 @@ class RhapsodyEvaluationContext {
 
 typedef RhapsodyStringTransformer = String Function(String);
 
-/// **Class: RhapsodyEvaluationContextBuilder**
+/// Builder for `RhapsodyEvaluationContext`.
 ///
-/// A builder class for creating `RhapsodyEvaluationContext` instances.
-/// Enables incremental construction of the context's variables and enforces prefix constraints.
+/// Use when constructing contexts from multiple sources or when you want to
+/// inject a custom `RhapsodyBaseDataStore`.
 class RhapsodyEvaluationContextBuilder {
-  /// Validates and manages supported prefixes for references.
+  /// Supported prefixes for validating reference keys.
   late final RhapsodySupportedPrefixes supportedPrefixes;
 
-  /// Map for accumulating references and their associated string values.
+  /// Accumulator for reference values prior to build.
   final Map<String, String> variables = {};
 
-  /// Key value store
+  /// Backing key/value store used by the built context.
   late final RhapsodyBaseDataStore keyValueStore;
 
-  /// **Constructor:**
-  ///
-  /// Creates a new `RhapsodyEvaluationContextBuilder` instance.
-  ///
-  /// **Parameters:**
-  /// - `prefixes`: A list of allowed prefixes for the references.
+  /// Create a new builder with allowed `prefixes` and an optional store.
   RhapsodyEvaluationContextBuilder({
     required List<String> prefixes,
     RhapsodyBaseDataStore? store,
@@ -131,44 +115,19 @@ class RhapsodyEvaluationContextBuilder {
     keyValueStore = store ?? RhapsodyDataStore();
   }
 
-  /// Adds or updates a reference and its value in the builder.
+  /// Set a reference value after validating its prefix.
   ///
-  /// **Parameters:**
-  /// - `ref`: The reference to add or update.
-  /// - `value`: The value to associate with the reference.
-  ///
-  /// **Returns:**
-  /// - The current builder instance, allowing for method chaining.
-  ///
-  /// **Throws:**
-  /// - `Exception` if the reference does not have a supported prefix.
+  /// Returns this builder for chaining. Throws if `ref` prefix is unsupported.
   RhapsodyEvaluationContextBuilder setRefValue(String ref, String value) {
     supportedPrefixes.assertPrefix(ref);
     variables[ref] = value;
     return this;
   }
 
-  /// Updates the value of a reference in the evaluation context, applying a
-  /// transformation if the reference already exists or setting a default value otherwise.
+  /// Update a reference value by transformation or initialize it.
   ///
-  /// The method ensures the `ref` value begins with a supported prefix before
-  /// proceeding. If the reference (`ref`) is not present in the `variables` map,
-  /// the `defaultValue` is assigned. Otherwise, the provided `transform` function
-  /// is applied to the existing value.
-  ///
-  /// - Parameters:
-  ///   - `ref`: The reference key to be updated. It must begin with a supported prefix.
-  ///   - `transform`: A function that transforms the current value of the reference,
-  ///      if it exists.
-  ///   - `defaultValue`: The value to be assigned if the reference does not
-  ///      currently exist in the `variables` map.
-  ///
-  /// - Returns:
-  ///   This builder instance (`RhapsodyEvaluationContextBuilder`) to allow
-  ///   method chaining.
-  ///
-  /// - Throws:
-  ///   An exception if the `ref` does not start with a supported prefix.
+  /// If `ref` exists, applies `transform(previous)`; otherwise sets
+  /// `defaultValue`. Throws if `ref` prefix is unsupported.
   RhapsodyEvaluationContextBuilder transformRefValue(
       String ref, RhapsodyStringTransformer transform, String defaultValue) {
     supportedPrefixes
@@ -187,10 +146,7 @@ class RhapsodyEvaluationContextBuilder {
     return this;
   }
 
-  /// Builds and returns a `RhapsodyEvaluationContext` with the accumulated variables.
-  ///
-  /// **Returns:**
-  /// - A new `RhapsodyEvaluationContext` instance.
+  /// Build the final `RhapsodyEvaluationContext`.
   RhapsodyEvaluationContext build() {
     keyValueStore.addAll(variables);
     return RhapsodyEvaluationContext(

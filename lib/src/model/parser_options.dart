@@ -1,10 +1,20 @@
 import '../function/function_factory.dart';
 import 'supported_prefixes.dart';
 
-/// Provides parsing options for Rhapsodic expressions, including variable and function validation.
+/// Options controlling parsing and validation of expressions.
 ///
-/// Variables are expected in the format `<prefix>:<variableName>`. The prefix must be one of the
-/// supported prefixes, and the variable name is validated using the provided function.
+/// Use to define which key prefixes are allowed, which function names are
+/// recognized, and how variable names are validated. Variables must follow the
+/// `<prefix>:<name>` convention where `prefix` is whitelisted and `name`
+/// passes `variableValidator`.
+///
+/// Guidance:
+/// - Keep `functions` consistent with the active function factory. Consider
+///   sourcing them from `rhapsodyFunctionNames` plus your custom additions.
+/// - `variableValidator` should be strict and cheap (regex or lookup); avoid
+///   I/O here as it is used frequently during analysis.
+/// - Prefix matching is case‑sensitive; settle on lowercase prefixes to avoid
+///   surprises.
 class RhapsodyAnalyserOptions {
   final List<String> prefixes;
   final List<String> functions;
@@ -13,13 +23,10 @@ class RhapsodyAnalyserOptions {
   final RhapsodySupportedPrefixes _supportedPrefixes;
   final Set<String> _functionsSet;
 
-  /// Creates an instance of [RhapsodyAnalyserOptions] with the specified [prefixes],
-  /// [functions], and a [variableValidator] function.
+  /// Create analyser options with allowed [prefixes], [functions], a
+  /// [variableValidator], and a [functionRegistry].
   ///
-  /// The [prefixes] are used to determine valid variable identifiers. Each variable
-  /// must be prefixed with one of these values followed by a colon (e.g. `myprefix:variable`).
-  /// The [functions] list is converted into a set for efficient lookup.
-  /// The [variableValidator] should validate the variable name (the part after `:`).
+  /// The [functions] list is converted to a set for fast lookups.
   RhapsodyAnalyserOptions({
     required this.prefixes,
     required this.functions,
@@ -28,11 +35,10 @@ class RhapsodyAnalyserOptions {
   })  : _supportedPrefixes = RhapsodySupportedPrefixes(prefixes),
         _functionsSet = functions.toSet();
 
-  /// Determines whether the given [text] represents a valid variable.
+  /// Check whether [text] is a valid variable reference.
   ///
-  /// The [text] must be in the format `<prefix>:<variableName>`, where the prefix is validated
-  /// using [RhapsodySupportedPrefixes]. If the prefix is valid, the variable name (after the colon)
-  /// is validated using [variableValidator].
+  /// Requires a supported prefix and a non‑empty name that passes
+  /// [variableValidator].
   bool isVariable(String text) {
     if (!_supportedPrefixes.isPrefixSupported(text)) return false;
     final int colonIndex = text.indexOf(':');
@@ -41,8 +47,6 @@ class RhapsodyAnalyserOptions {
     return variableValidator(variablePart);
   }
 
-  /// Determines whether the given [text] is a recognized function.
-  ///
-  /// Function recognition is case-sensitive and relies on the predefined set of functions.
+  /// Check whether [text] is a recognized function name (case‑sensitive).
   bool isFunction(String text) => _functionsSet.contains(text);
 }

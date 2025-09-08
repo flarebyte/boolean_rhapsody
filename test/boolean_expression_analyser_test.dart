@@ -5,7 +5,7 @@ import 'code_fixtures.dart';
 
 void main() {
   group('RhapsodyBooleanExpressionAnalyser', () {
-    test('should evaluate func1(env:variable1:blue) and rule42;', () {
+    test('parses function call with composite variable and rule reference', () {
       // func1(env:variable1) and rule42;
       final t = MockTokenCreator();
       final List<RhapsodyToken> tokens = [
@@ -36,8 +36,7 @@ void main() {
       expect(
           analyzed.gathering.requiredVariables, contains('env:variable1:blue'));
     });
-    test('should evaluate as truthy when comparator condition is satisfied',
-        () {
+    test('parses grouped OR/AND/NOT with two rule references', () {
       // (func1(env:variable1) or func2(config:variable2)) and not rule42;
       final t = MockTokenCreator();
       final List<RhapsodyToken> tokens = [

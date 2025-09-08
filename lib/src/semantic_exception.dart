@@ -1,6 +1,10 @@
 import 'model/token.dart';
 
-/// Thrown when the semantic analyser encounters an unexpected token.
+/// Error raised during semantic analysis with token context.
+///
+/// Include a concise, actionable [message] and the offending [token]. Downstream
+/// tooling can surface the token’s `startIndex`/positions for user‑friendly
+/// diagnostics. Keep messages deterministic to simplify testing.
 class SemanticException implements Exception {
   final String message;
   final RhapsodyToken token;

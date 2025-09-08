@@ -16,11 +16,16 @@ class TokenTypes {
   static const String unknown = 'unknown';
 }
 
-/// A lightweight tokeniser for Rhapsody rule expressions.
+/// Tokeniser for the Rhapsody rule language.
 ///
-/// This class converts a source [code] string into a sequence of [RhapsodyToken]s,
-/// preserving positional information for accurate error reporting and debugging.
-/// It now captures line comments as tokens and uses constants for token types.
+/// Produces a stream of [RhapsodyToken]s with precise positions for diagnostics.
+/// Notes:
+/// - Identifiers are ASCII letters/digits/underscore only (see helpers).
+/// - Comments start with `#` and run to end of line (kept as tokens).
+/// - Logical operators are recognized as keywords: `and`, `or`, `not`.
+/// - No string literal syntax is supported at this stage.
+/// - `unparse` rebuilds source with minimal spacing via [needsSpace]; round‑trip
+///   is best‑effort and intended for debugging, not formatting.
 class RhapsodyTokeniser {
   /// This tokeniser processes a textual representation of the Rhapsody rule language,
   /// splitting the source code into a sequence of lexical tokens. It recognizes:

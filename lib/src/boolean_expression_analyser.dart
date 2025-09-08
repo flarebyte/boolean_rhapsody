@@ -7,6 +7,17 @@ import 'model/token.dart';
 import 'token_stream.dart';
 import 'token_stream_flyweight.dart';
 
+/// Parses tokens into an evaluatable boolean expression AST.
+///
+/// Responsibilities:
+/// - Implements precedence: `not` > `and` > `or` (left‑associative for and/or).
+/// - Parses function calls via [RhapsodyAnalyserFunctionHelper].
+/// - Collects referenced rule names while building the AST.
+/// - Optionally consumes a trailing semicolon; rejects trailing garbage.
+///
+/// To extend function syntax, add logic in the function helper. To change
+/// precedence/associativity, adjust `_parseExpression*` methods and keep tests
+/// close to the grammar.
 class RhapsodyBooleanExpressionAnalyser {
   final RhapsodyAnalyserOptions options;
   late RhapsodyAnalyserFunctionHelper functionHelper;

@@ -3,13 +3,11 @@ import 'package:test/test.dart';
 
 import 'code_fixtures.dart';
 
-/// Stub implementation to support tests. In a real scenario this class would
-/// be part of your library.
+/// Local test stub for supported prefixes.
 class RhapsodySupportedPrefixes {
   final List<String> prefixes;
   RhapsodySupportedPrefixes(this.prefixes);
 
-  /// Returns `true` if [text] starts with any supported prefix followed by a colon.
   bool isPrefixSupported(String text) {
     for (final prefix in prefixes) {
       if (text.startsWith('$prefix:')) return true;
