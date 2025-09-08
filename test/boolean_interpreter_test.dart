@@ -5,7 +5,7 @@ import 'code_fixtures.dart';
 
 void main() {
   group('RhapsodyInterpreter', () {
-    test('should interpret some script', () {
+    test('evaluates dependent rules and updates ruleState', () {
       final t = MockTokenCreator();
       final List<RhapsodyToken> tokens = [
         t.token("rule", TokenTypes.identifier),
