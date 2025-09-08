@@ -48,10 +48,9 @@ class RhapsodySemanticAnalysis {
   }
 }
 
-/// Analyser for a boolean query language that produces semantic rule definitions.
+/// Analyser that produces semantic rule definitions from tokens.
 ///
-/// The analyser expects input tokens for one or more rule definitions that follow
-/// the syntax:
+/// Expects one or more rule definitions with the syntax:
 ///
 ///     rule <ruleName> = <boolean expression> ;
 ///
@@ -59,7 +58,9 @@ class RhapsodySemanticAnalysis {
 ///
 ///     rule rule23 = (func1(env:variable1) or func2(config:variable2)) and not rule42;
 ///
-/// In the above, the analyzer will record that `rule23` depends on `rule42`.
+/// The analyser records that `rule23` depends on `rule42` and captures the
+/// expression AST and source span for each rule. Comments are tokenised and
+/// ignored at this stage.
 class RhapsodySemanticAnalyser {
   /// Provides domain‐specific details (such as valid prefixes and functions)
   /// used during the analysis phase.
@@ -78,8 +79,8 @@ class RhapsodySemanticAnalyser {
   /// Each definition is expected to begin with the keyword `rule` (an identifier token),
   /// followed by a rule name, an equal sign, a boolean expression, and a terminating semicolon.
   ///
-  /// The boolean expression is scanned for identifiers that (by the current semantic rules)
-  /// represent dependencies on other rules.
+  /// The boolean expression is analysed to collect referenced rules/variables and
+  /// build an AST suitable for evaluation.
   RhapsodySemanticAnalysis analyse(List<RhapsodyToken> tokens) {
     final Map<String, RhapsodyRuleDefinition> ruleDefinitions = {};
     int index = 0;

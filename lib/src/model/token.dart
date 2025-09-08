@@ -1,7 +1,4 @@
-/// Represents a specific location in a two-dimensional coordinate system.
-///
-/// Use this class when you need to track positions in a multi-line source,
-/// keeping in mind that both [row] and [column] are zero-based.
+/// Zero‑based line/column position within the source.
 class RhapsodyPosition {
   /// The row index (0-based) where the element is located.
   final int row;
@@ -9,10 +6,7 @@ class RhapsodyPosition {
   /// The column index (0-based) indicating the horizontal position.
   final int column;
 
-  /// Creates a [RhapsodyPosition] with a given [row] and [column].
-  ///
-  /// **Hint:** Ensure that your row and column values follow 0-based indexing
-  /// to maintain consistency with common programming practices.
+  /// Create a position at [row]/[column] (both 0‑based).
   const RhapsodyPosition({
     required this.row,
     required this.column,
@@ -24,39 +18,29 @@ class RhapsodyPosition {
   }
 }
 
-/// Encapsulates the details of a token extracted from source code.
+/// Lexical token produced by the Rhapsody tokeniser.
 ///
-/// This class is designed to support precise source mapping and error handling.
-/// When constructing a [RhapsodyToken], ensure that the start/end indices
-/// and positions accurately reflect the token's boundaries in the source.
+/// Types are defined in `TokenTypes` (identifier, number, operator, lparen,
+/// rparen, comma, semicolon, colon, comment, unknown).
+///
+/// Invariants:
+/// - `endIndex > startIndex`
+/// - `text.length == endIndex - startIndex`
+/// - positions are 0‑based and refer to the original code snapshot
 class RhapsodyToken {
-  /// The semantic category of this token.
-  ///
-  /// **Guidance:** This value should align with the token types defined in
-  /// your language's specification. Use consistent naming to aid in parsing.
+  /// Token category (see `TokenTypes`).
   final String type;
 
-  /// The exact text as it appears in the source code.
-  ///
-  /// **Note:** This field preserves all characters, including whitespace,
-  /// to ensure an accurate representation of the original input.
+  /// Exact source slice for this token (no normalization).
   final String text;
 
-  /// The starting index in the source string where this token begins.
-  ///
-  /// **Tip:** Use this index for generating precise error messages or for
-  /// mapping tokens back to the source text.
+  /// Start index in the source string.
   final int startIndex;
 
-  /// The index immediately after the token in the source string.
-  ///
-  /// **Usage:** Subtract [startIndex] from [endIndex] to obtain the token's length.
+  /// Exclusive end index in the source string.
   final int endIndex;
 
-  /// The starting position (line and column) of this token.
-  ///
-  /// **Insight:** This helps in scenarios where the source spans multiple lines,
-  /// enabling detailed position tracking.
+  /// Starting position (line/column) of this token.
   final RhapsodyPosition startPosition;
 
   @override
@@ -64,23 +48,14 @@ class RhapsodyToken {
     return 'RhapsodyToken{type: $type, text: $text, startIndex: $startIndex, endIndex: $endIndex, startPosition: $startPosition, endPosition: $endPosition, hasError: $hasError}';
   }
 
-  /// The ending position (line and column) of this token.
-  ///
-  /// **Advice:** Ensure that [endPosition] correctly represents the token's
-  /// final character to facilitate accurate highlighting in editors.
+  /// Ending position (line/column) of this token.
   final RhapsodyPosition endPosition;
 
-  /// Indicates if an error was encountered during tokenization.
-  ///
-  /// **Recommendation:** Utilize this flag for error recovery and debugging;
-  /// a value of `true` signals that the token may not conform to expected standards.
+  /// Whether tokenisation flagged this token as erroneous (e.g. `unknown`).
   final bool hasError;
 
-  /// Constructs a [RhapsodyToken] with all necessary properties.
-  ///
-  /// All fields are required except [hasError], which defaults to `false`.
-  /// Ensure that the positional information ([startIndex], [endIndex],
-  /// [startPosition], and [endPosition]) are in sync for reliable source mapping.
+  /// Construct a token. Leave [hasError] at default unless you explicitly
+  /// want downstream stages to treat this token as suspicious.
   const RhapsodyToken({
     required this.type,
     required this.text,

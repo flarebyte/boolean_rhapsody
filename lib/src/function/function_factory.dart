@@ -10,12 +10,23 @@ import 'number_function.dart';
 import 'rule_function.dart';
 import 'string_function.dart';
 
-/// A factory class that creates instances of [BooleanRhapsodyFunction] based
-/// on the provided [name] and [params].
+/// Factory for boolean rhapsody functions.
 ///
-/// This class centralizes the creation of Boolean evaluation functions,
-/// supporting various checks such as string, numeric, date-time, list, and set
-/// operations.
+/// Centralizes construction of built‑in predicates (string/number/date/list/set)
+/// so the parser can resolve a function name to an executable implementation.
+///
+/// Developer guidance:
+/// - Parameters are reference keys (`v:` variables or `c:` constants) unless a
+///   function explicitly documents otherwise. The concrete functions validate
+///   arity and prefixes at construction.
+/// - Function names are stable API; prefer adding new names instead of changing
+///   semantics of existing ones.
+/// - To introduce custom functions without forking, implement
+///   [BooleanRhapsodyFunctionBaseFactory] and register it via
+///   [BooleanRhapsodyFunctionRegistry]; your factory can either wrap or replace
+///   the default behavior.
+/// - Use the comparators in `src/comparator/*` to keep comparison semantics
+///   consistent across functions.
 class BooleanRhapsodyFunctionFactory {
   /// Creates a [BooleanRhapsodyFunction] instance corresponding to the given [name].
   ///
@@ -48,7 +59,7 @@ class BooleanRhapsodyFunctionFactory {
   /// - **Set operations**:
   ///   - `'set_equals'`, `'is_subset_of'`, `'is_superset_of'`, `'is_disjoint'`.
   ///
-  /// Throws an [Exception] if the [name] does not match any known Boolean function.
+  /// Throws if the [name] is unknown or the target implementation rejects [params].
   ///
   /// Example usage:
   /// ```dart
@@ -57,7 +68,6 @@ class BooleanRhapsodyFunctionFactory {
   ///   ['param1', 'param2'],
   /// );
   /// ```
-  ///
   /// Returns a concrete implementation of [BooleanRhapsodyFunction].
   static BooleanRhapsodyFunction create(String name, List<String> params) {
     switch (name) {
@@ -235,8 +245,10 @@ class BooleanRhapsodyFunctionFactory {
   }
 }
 
-/// An abstract base class defining the contract for factories responsible
-/// for creating [BooleanRhapsodyFunction] instances.
+/// Pluggable factory contract for creating functions.
+///
+/// Implement to extend/override the set of available functions, then register
+/// it with [BooleanRhapsodyFunctionRegistry].
 abstract class BooleanRhapsodyFunctionBaseFactory {
   /// Creates an instance of [BooleanRhapsodyFunction] based on the given [name] and [params].
   ///
@@ -249,8 +261,7 @@ abstract class BooleanRhapsodyFunctionBaseFactory {
   BooleanRhapsodyFunction create(String name, List<String> params);
 }
 
-/// A default implementation of [BooleanRhapsodyFunctionBaseFactory] that
-/// delegates creation to [BooleanRhapsodyFunctionFactory].
+/// Default factory that delegates to [BooleanRhapsodyFunctionFactory].
 class BooleanRhapsodyFunctionRegisterableFactory
     extends BooleanRhapsodyFunctionBaseFactory {
   /// Creates a [BooleanRhapsodyFunction] by delegating to [BooleanRhapsodyFunctionFactory].
@@ -266,30 +277,20 @@ class BooleanRhapsodyFunctionRegisterableFactory
   }
 }
 
-/// A registry responsible for managing a [BooleanRhapsodyFunctionBaseFactory]
-/// and providing access to create [BooleanRhapsodyFunction] instances.
+/// Registry holding the current function factory.
 ///
-/// This class allows for dynamic replacement of the factory at runtime,
-/// enabling extensibility with custom function factories.
+/// Allows swapping the implementation at runtime (useful for tests or
+/// host‑specific extensions).
 class BooleanRhapsodyFunctionRegistry {
   /// The currently registered factory used to create Boolean functions.
-  ///
-  /// By default, this should be set to an instance of
-  /// [BooleanRhapsodyFunctionRegisterableFactory].
   late BooleanRhapsodyFunctionBaseFactory _factory;
 
-  /// Creates an instance of [BooleanRhapsodyFunctionRegistry] with an optional custom [factory].
-  ///
-  /// If [factory] is not provided, a default [BooleanRhapsodyFunctionRegisterableFactory]
-  /// is used.
+  /// Create a registry with an optional custom [factory].
   BooleanRhapsodyFunctionRegistry({
     BooleanRhapsodyFunctionBaseFactory? factory,
   }) : _factory = factory ?? BooleanRhapsodyFunctionRegisterableFactory();
 
-  /// Registers a new [factory] for creating [BooleanRhapsodyFunction] instances.
-  ///
-  /// This allows dynamic replacement of the factory at runtime, enabling support
-  /// for custom Boolean functions.
+  /// Register a new [factory] to create [BooleanRhapsodyFunction] instances.
   ///
   /// Example:
   /// ```dart
@@ -300,12 +301,9 @@ class BooleanRhapsodyFunctionRegistry {
     _factory = factory;
   }
 
-  /// Creates a [BooleanRhapsodyFunction] using the currently registered factory.
+  /// Create a [BooleanRhapsodyFunction] using the registered factory.
   ///
-  /// - [name]: The identifier for the Boolean function to create.
-  /// - [params]: A list of parameters required for the function.
-  ///
-  /// Throws an [Exception] if the [name] is not supported by the current factory.
+  /// Throws if the [name] is unknown.
   ///
   /// Example:
   /// ```dart
@@ -317,6 +315,9 @@ class BooleanRhapsodyFunctionRegistry {
   }
 }
 
+/// Canonical list of built‑in function names.
+///
+/// Use this for validation, autocomplete, and documentation.
 const List<String> rhapsodyFunctionNames = [
   // Basic checks
   'is_absent',

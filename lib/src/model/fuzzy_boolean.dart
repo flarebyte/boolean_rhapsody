@@ -1,6 +1,16 @@
-/// Represents a boolean value with an additional certainty flag.
-/// This allows distinguishing between definite (`certain: true`)
-/// and uncertain (`certain: false`) truth values.
+/// Boolean with certainty used by the engine.
+///
+/// Encodes both the truth value and whether it is certain. This enables
+/// propagation of uncertainty across logical operators:
+/// - AND: a definite false dominates; any uncertainty yields an uncertain result
+///   unless both sides are definitively true.
+/// - OR: a definite true dominates; uncertainty remains unless both sides are
+///   definitively false.
+/// - NOT: flips truth while preserving certainty.
+///
+/// Storage/interchange:
+/// - Use `toChar()`/`fromChar()` for compact persistence (see `rule_state`).
+/// - Prefer `fromBool` when certainty is known at the source boundary.
 class RhapsodicBool {
   /// The boolean value (true or false).
   final bool value;
